@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Lay Ao</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_categories">Categories</string>
+    <string name="title_cart">Cart</string>
+    <string name="title_user">You</string>
 </resources>
