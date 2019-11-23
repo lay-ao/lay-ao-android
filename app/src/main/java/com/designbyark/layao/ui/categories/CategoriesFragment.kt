@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.notifications
+package com.designbyark.layao.ui.categories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.designbyark.layao.R
 
-class NotificationsFragment : Fragment() {
+class CategoriesFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var categoriesViewModel: CategoriesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-            ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(this, Observer {
+        categoriesViewModel =
+            ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_categories, container, false)
+        val textView: TextView = root.findViewById(R.id.text_dashboard)
+        categoriesViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root

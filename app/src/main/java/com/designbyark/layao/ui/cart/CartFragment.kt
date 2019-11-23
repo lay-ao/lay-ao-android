@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.dashboard
+package com.designbyark.layao.ui.cart
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.designbyark.layao.R
 
-class DashboardFragment : Fragment() {
+class CartFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var cartViewModel: CartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(this, Observer {
+        cartViewModel =
+            ViewModelProviders.of(this).get(CartViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_cart, container, false)
+        val textView: TextView = root.findViewById(R.id.text_notifications)
+        cartViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root
