@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_home"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/banner_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+        android:layout_marginEnd="@dimen/default_recycler_view_cell_margin"
+        android:layout_marginRight="@dimen/default_recycler_view_cell_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry"
+        tools:listitem="@layout/body_banner" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:includeFontPadding="true"
+        android:padding="10dp"
+        android:text="Items on Discount"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/black"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/banner_recycler_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
+        android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
+        android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:listitem="@layout/body_discount_items"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

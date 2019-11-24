@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
+    android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
+    tools:ignore="RtlSymmetry">
+
+    <!-- TODO: Add Content Description -->
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@color/colorPrimary"
+        android:contentDescription="@null"/>
+
+    <!-- TODO: Add Content Description -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_corner_black_24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="sans-serif"
+        android:padding="12dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/holo_green_dark"
+        android:textStyle="bold|italic"
+        android:typeface="normal"
+        app:fontFamily="sans-serif"
+        tools:text="10%" />
+
+</RelativeLayout>

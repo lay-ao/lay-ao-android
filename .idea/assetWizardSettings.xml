@@ -29,8 +29,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_user_black_24dp" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../resources/layao/svg/user.svg" />
+                            <entry key="outputName" value="ic_corner_black_24dp" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../resources/layao/svg/corner.svg" />
                           </map>
                         </option>
                       </PersistentState>
