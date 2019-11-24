@@ -1,16 +1,15 @@
 package com.designbyark.layao.ui.categories
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.CATEGORIES_COLLECTION
 import com.designbyark.layao.data.Category
+import com.designbyark.layao.helper.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -53,6 +52,10 @@ class CategoriesFragment : Fragment() {
 
         // Assigning adapter class
         mAdapter = CategoryAdapter(options, requireContext())
+
+        // Applying item decoration to recycler view components
+        recyclerView.addItemDecoration(MarginItemDecoration(
+            resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt()))
 
         // Assigning adapter to Recycler View
         recyclerView.adapter = mAdapter
