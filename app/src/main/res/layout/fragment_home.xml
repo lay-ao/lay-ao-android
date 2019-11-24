@@ -25,7 +25,7 @@
         android:fontFamily="cursive"
         android:includeFontPadding="true"
         android:padding="10dp"
-        android:text="Items on Discount"
+        android:text="Items on Discxount"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@android:color/black"
         android:typeface="normal"
@@ -34,6 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/banner_recycler_view" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/discount_item_recycler_view"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
@@ -42,6 +43,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:listitem="@layout/body_discount_items"/>
+        tools:listitem="@layout/body_discount_items" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
