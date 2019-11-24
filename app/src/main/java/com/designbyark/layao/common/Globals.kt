@@ -1,3 +1,7 @@
 package com.designbyark.layao.common
 
-const val CATEGORIES_COLLECTION: String = "Categories"
+// Firebase collections
+const val CATEGORIES_COLLECTION = "Categories"
+
+// Firebase query fields
+const val TITLE = "title"
