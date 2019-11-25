@@ -11,16 +11,13 @@ class Product {
     var brand: String = ""
 
     @PropertyName("discount")
-    var discount: Int = 0
+    var discount: Long = 0
 
     @PropertyName("image")
     var image: String = ""
 
     @PropertyName("newArrival")
     var newArrival: Boolean = false
-
-    @PropertyName("packageTag")
-    var packageTag: String = ""
 
     @PropertyName("price")
     var price: Long = 0
