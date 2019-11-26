@@ -1,6 +1,10 @@
 package com.designbyark.layao
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -26,5 +30,29 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.general_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.general_lists -> {
+                Toast.makeText(this, "Lists", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.general_favorites -> {
+                Toast.makeText(this, "Favorites", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.general_info -> {
+                Toast.makeText(this, "Info", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
