@@ -179,7 +179,7 @@ class HomeFragment : Fragment(),
     override fun onBannerItemClickListener(bannerId: String) {
         val args = Bundle()
         args.putString("bannerId", bannerId)
-        navController.navigate(R.id.action_nav_bannerDetailFragment)
+        navController.navigate(R.id.action_nav_bannerDetailFragment, args)
     }
 
 
