@@ -1,7 +1,9 @@
 package com.designbyark.layao.data
 
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 
+@IgnoreExtraProperties
 class Product {
 
     @PropertyName("available")

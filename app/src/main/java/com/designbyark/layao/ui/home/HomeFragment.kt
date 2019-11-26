@@ -21,11 +21,10 @@ import com.google.firebase.firestore.Query
 
 class HomeFragment : Fragment() {
 
-    private lateinit var mBannerAdapter: BannerAdapter
-    private lateinit var mDiscountItemsAdapter: DiscountItemsAdapter
-    private lateinit var mNewArrivalAdapter: NewArrivalAdapter
-    private lateinit var mBrandsAdapter: BrandsAdapter
-
+    private var mBannerAdapter: BannerAdapter? = null
+    private var mDiscountItemsAdapter: DiscountItemsAdapter? = null
+    private var mNewArrivalAdapter: NewArrivalAdapter? = null
+    private var mBrandsAdapter: BrandsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,11 +66,15 @@ class HomeFragment : Fragment() {
             .build()
 
         // Assigning adapter class
-        mBannerAdapter = BannerAdapter(options)
+        if (mBannerAdapter == null) {
+            mBannerAdapter = BannerAdapter(options)
+            // Assigning adapter to Recycler View
+            setListLayout(recyclerView, requireContext())
+            recyclerView.adapter = mBannerAdapter
+            mBannerAdapter?.startListening()
+        }
 
-        // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireContext())
-        recyclerView.adapter = mBannerAdapter
+
     }
 
     private fun getDiscountItemsData(root: View, collection: CollectionReference) {
@@ -87,11 +90,14 @@ class HomeFragment : Fragment() {
         val options = getProductOptions(query)
 
         // Assigning adapter class
-        mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext())
+        if (mDiscountItemsAdapter == null) {
+            mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext())
 
-        // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireContext())
-        recyclerView.adapter = mDiscountItemsAdapter
+            // Assigning adapter to Recycler View
+            setListLayout(recyclerView, requireContext())
+            recyclerView.adapter = mDiscountItemsAdapter
+            mDiscountItemsAdapter?.startListening()
+        }
     }
 
     private fun getNewArrivalData(root: View, collection: CollectionReference) {
@@ -107,11 +113,14 @@ class HomeFragment : Fragment() {
         val options = getProductOptions(query)
 
         // Assigning adapter class
-        mNewArrivalAdapter = NewArrivalAdapter(options, requireContext())
+        if (mNewArrivalAdapter == null) {
+            mNewArrivalAdapter = NewArrivalAdapter(options, requireContext())
 
-        // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireActivity())
-        recyclerView.adapter = mNewArrivalAdapter
+            // Assigning adapter to Recycler View
+            setListLayout(recyclerView, requireActivity())
+            recyclerView.adapter = mNewArrivalAdapter
+            mNewArrivalAdapter?.startListening()
+        }
     }
 
     private fun getBrandsData(root: View, firestore: FirebaseFirestore) {
@@ -131,27 +140,51 @@ class HomeFragment : Fragment() {
             .build()
 
         // Assigning adapter class
-        mBrandsAdapter = BrandsAdapter(options, requireContext())
+        if (mBrandsAdapter == null) {
+            mBrandsAdapter = BrandsAdapter(options, requireContext())
 
-        // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireContext())
-        recyclerView.adapter = mBrandsAdapter
+            // Assigning adapter to Recycler View
+            setListLayout(recyclerView, requireContext())
+            recyclerView.adapter = mBrandsAdapter
+            mBrandsAdapter?.startListening()
+        }
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        mBannerAdapter.startListening()
-        mDiscountItemsAdapter.startListening()
-        mNewArrivalAdapter.startListening()
-        mBrandsAdapter.startListening()
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        mBannerAdapter?.startListening()
+//        mDiscountItemsAdapter?.startListening()
+//        mNewArrivalAdapter?.startListening()
+//        mBrandsAdapter?.startListening()
+//    }
 
-    override fun onStop() {
-        super.onStop()
-        mBannerAdapter.stopListening()
-        mDiscountItemsAdapter.stopListening()
-        mNewArrivalAdapter.stopListening()
-        mBrandsAdapter.stopListening()
+//    override fun onStop() {
+//        super.onStop()
+//        mBannerAdapter.stopListening()
+//        mDiscountItemsAdapter.stopListening()
+//        mNewArrivalAdapter.stopListening()
+//        mBrandsAdapter.stopListening()
+//    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        if (mBannerAdapter != null) {
+            mBannerAdapter?.stopListening()
+        }
+
+        if (mDiscountItemsAdapter != null) {
+            mDiscountItemsAdapter?.stopListening()
+        }
+
+        if (mNewArrivalAdapter != null) {
+            mNewArrivalAdapter?.stopListening()
+        }
+
+        if (mBrandsAdapter == null) {
+            mBrandsAdapter?.stopListening()
+        }
+
     }
 }
