@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
@@ -19,18 +23,28 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(),
+    BannerAdapter.BannerItemClickListener {
 
     private var mBannerAdapter: BannerAdapter? = null
     private var mDiscountItemsAdapter: DiscountItemsAdapter? = null
     private var mNewArrivalAdapter: NewArrivalAdapter? = null
     private var mBrandsAdapter: BrandsAdapter? = null
 
+    private lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
+        setHasOptionsMenu(true)
+
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -65,15 +79,10 @@ class HomeFragment : Fragment() {
             .setQuery(query, Banner::class.java)
             .build()
 
-        // Assigning adapter class
-        if (mBannerAdapter == null) {
-            mBannerAdapter = BannerAdapter(options)
-            // Assigning adapter to Recycler View
-            setListLayout(recyclerView, requireContext())
-            recyclerView.adapter = mBannerAdapter
-            mBannerAdapter?.startListening()
-        }
-
+        mBannerAdapter = BannerAdapter(options, this)
+        // Assigning adapter to Recycler View
+        setListLayout(recyclerView, requireContext())
+        recyclerView.adapter = mBannerAdapter
 
     }
 
@@ -89,15 +98,11 @@ class HomeFragment : Fragment() {
         // Setting query with model class
         val options = getProductOptions(query)
 
-        // Assigning adapter class
-        if (mDiscountItemsAdapter == null) {
-            mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext())
+        mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext())
 
-            // Assigning adapter to Recycler View
-            setListLayout(recyclerView, requireContext())
-            recyclerView.adapter = mDiscountItemsAdapter
-            mDiscountItemsAdapter?.startListening()
-        }
+        // Assigning adapter to Recycler View
+        setListLayout(recyclerView, requireContext())
+        recyclerView.adapter = mDiscountItemsAdapter
     }
 
     private fun getNewArrivalData(root: View, collection: CollectionReference) {
@@ -112,15 +117,11 @@ class HomeFragment : Fragment() {
         // Setting query with model class
         val options = getProductOptions(query)
 
-        // Assigning adapter class
-        if (mNewArrivalAdapter == null) {
-            mNewArrivalAdapter = NewArrivalAdapter(options, requireContext())
+        mNewArrivalAdapter = NewArrivalAdapter(options, requireContext())
 
-            // Assigning adapter to Recycler View
-            setListLayout(recyclerView, requireActivity())
-            recyclerView.adapter = mNewArrivalAdapter
-            mNewArrivalAdapter?.startListening()
-        }
+        // Assigning adapter to Recycler View
+        setListLayout(recyclerView, requireActivity())
+        recyclerView.adapter = mNewArrivalAdapter
     }
 
     private fun getBrandsData(root: View, firestore: FirebaseFirestore) {
@@ -139,36 +140,23 @@ class HomeFragment : Fragment() {
             .setQuery(query, Category::class.java)
             .build()
 
-        // Assigning adapter class
-        if (mBrandsAdapter == null) {
-            mBrandsAdapter = BrandsAdapter(options, requireContext())
+        mBrandsAdapter = BrandsAdapter(options, requireContext())
 
-            // Assigning adapter to Recycler View
-            setListLayout(recyclerView, requireContext())
-            recyclerView.adapter = mBrandsAdapter
-            mBrandsAdapter?.startListening()
-        }
-
+        // Assigning adapter to Recycler View
+        setListLayout(recyclerView, requireContext())
+        recyclerView.adapter = mBrandsAdapter
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        mBannerAdapter?.startListening()
-//        mDiscountItemsAdapter?.startListening()
-//        mNewArrivalAdapter?.startListening()
-//        mBrandsAdapter?.startListening()
-//    }
+    override fun onStart() {
+        super.onStart()
+        mBannerAdapter?.startListening()
+        mDiscountItemsAdapter?.startListening()
+        mNewArrivalAdapter?.startListening()
+        mBrandsAdapter?.startListening()
 
-//    override fun onStop() {
-//        super.onStop()
-//        mBannerAdapter.stopListening()
-//        mDiscountItemsAdapter.stopListening()
-//        mNewArrivalAdapter.stopListening()
-//        mBrandsAdapter.stopListening()
-//    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
+    }
+    override fun onStop() {
+        super.onStop()
 
         if (mBannerAdapter != null) {
             mBannerAdapter?.stopListening()
@@ -182,9 +170,17 @@ class HomeFragment : Fragment() {
             mNewArrivalAdapter?.stopListening()
         }
 
-        if (mBrandsAdapter == null) {
+        if (mBrandsAdapter != null) {
             mBrandsAdapter?.stopListening()
         }
 
     }
+
+    override fun onBannerItemClickListener(bannerId: String) {
+        val args = Bundle()
+        args.putString("bannerId", bannerId)
+        navController.navigate(R.id.action_nav_bannerDetailFragment)
+    }
+
+
 }

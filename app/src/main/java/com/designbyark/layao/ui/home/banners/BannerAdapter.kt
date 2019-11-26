@@ -10,8 +10,10 @@ import com.designbyark.layao.data.Banner
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class BannerAdapter internal constructor(options: FirestoreRecyclerOptions<Banner>) :
-    FirestoreRecyclerAdapter<Banner, BannerAdapter.BannerViewHolder>(options) {
+class BannerAdapter internal constructor(
+    options: FirestoreRecyclerOptions<Banner>,
+    val itemClickListener: BannerItemClickListener
+) : FirestoreRecyclerAdapter<Banner, BannerAdapter.BannerViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -21,6 +23,9 @@ class BannerAdapter internal constructor(options: FirestoreRecyclerOptions<Banne
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int, model: Banner) {
         holder.setTitle(model.title)
+        holder.itemView.setOnClickListener {
+            itemClickListener.onBannerItemClickListener(snapshots.getSnapshot(holder.adapterPosition).id)
+        }
     }
 
     inner class BannerViewHolder internal constructor(private val view: View) :
@@ -30,7 +35,10 @@ class BannerAdapter internal constructor(options: FirestoreRecyclerOptions<Banne
             val textView: TextView = view.findViewById(R.id.title)
             textView.text = title
         }
+    }
 
+    interface BannerItemClickListener {
+        fun onBannerItemClickListener(bannerId: String)
     }
 
 }
