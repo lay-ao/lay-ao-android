@@ -1,73 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/banner_recycler_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
-        android:layout_marginEnd="@dimen/default_recycler_view_cell_margin"
-        android:layout_marginRight="@dimen/default_recycler_view_cell_margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlSymmetry"
-        tools:listitem="@layout/body_banner" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:includeFontPadding="true"
-        android:padding="10dp"
-        android:text="Items on Discxount"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@android:color/black"
-        android:typeface="normal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner_recycler_view" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/banner_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginEnd="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginRight="@dimen/default_recycler_view_cell_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry"
+            tools:listitem="@layout/body_banner" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/discount_item_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
-        android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
-        android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:listitem="@layout/body_discount_items" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:includeFontPadding="true"
+            android:padding="10dp"
+            android:text="Items on Discxount"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/black"
+            android:typeface="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/banner_recycler_view" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:includeFontPadding="true"
-        android:padding="10dp"
-        android:text="New Arrival"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@android:color/black"
-        android:typeface="normal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/discount_item_recycler_view" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/discount_item_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:listitem="@layout/body_discount_items" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/new_arrival_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
-        android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
-        android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:listitem="@layout/body_new_arrival" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:includeFontPadding="true"
+            android:padding="10dp"
+            android:text="New Arrival"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/black"
+            android:typeface="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/discount_item_recycler_view" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/new_arrival_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:listitem="@layout/body_new_arrival" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:includeFontPadding="true"
+            android:padding="10dp"
+            android:text="Brands"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/black"
+            android:typeface="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_arrival_recycler_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/brands_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            tools:listitem="@layout/body_new_arrival" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
