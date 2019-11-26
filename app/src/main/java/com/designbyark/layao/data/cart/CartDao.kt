@@ -20,6 +20,6 @@ interface CartDao {
     suspend fun deleteItemFromCart(cart: Cart)
 
     @Query("SELECT COUNT(*) FROM cart_table")
-    suspend fun getCount(): Int
+    suspend fun itemCount(): Int
 
 }

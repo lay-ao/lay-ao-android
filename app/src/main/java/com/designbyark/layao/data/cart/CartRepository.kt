@@ -18,8 +18,8 @@ class CartRepository(private val cartDao: CartDao) {
         cartDao.deleteItemFromCart(cart)
     }
 
-    suspend fun getCount(): Int {
-        return cartDao.getCount()
+    suspend fun itemCount(): Int {
+        return cartDao.itemCount()
     }
 
 }

@@ -8,7 +8,8 @@ import com.designbyark.layao.R
 import com.designbyark.layao.data.cart.Cart
 
 class CartAdapter internal constructor(
-    private val context: Context
+    private val context: Context,
+    private val cartViewModel: CartViewModel
 ) : RecyclerView.Adapter<CartViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -31,6 +32,10 @@ class CartAdapter internal constructor(
             setQuantity(model.price, model.unit, model.quantity)
             setBrand(model.brand)
             setDiscount(model.discount)
+            deleteItem.setOnClickListener {
+                cartViewModel.deleteCartItem(model)
+                notifyDataSetChanged()
+            }
         }
     }
 

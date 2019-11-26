@@ -33,5 +33,4 @@ abstract class LayAoRoomDatabase : RoomDatabase() {
             }
         }
     }
-
 }

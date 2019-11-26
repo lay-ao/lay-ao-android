@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.data.cart.CartRepository
 import com.designbyark.layao.helper.LayAoRoomDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -34,8 +35,8 @@ class CartViewModel(application: Application): AndroidViewModel(application) {
         repository.deleteCartItem(cart)
     }
 
-    fun getCount(): Int = runBlocking {
-        repository.getCount()
+    fun itemCount(): Int = runBlocking(Dispatchers.IO) {
+        repository.itemCount()
     }
 
 }

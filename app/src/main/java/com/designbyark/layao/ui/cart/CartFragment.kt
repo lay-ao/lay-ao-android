@@ -12,6 +12,8 @@ import com.designbyark.layao.R
 
 class CartFragment : Fragment() {
 
+
+
     private lateinit var cartViewModel: CartViewModel
 
 
@@ -22,17 +24,22 @@ class CartFragment : Fragment() {
     ): View? {
 
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
+        val count = cartViewModel.itemCount()
 
-        val root = inflater.inflate(R.layout.fragment_cart, container, false)
+        if (count > 0) {
 
-        val recyclerView: RecyclerView = root.findViewById(R.id.cart_recycler_view)
-        val cartAdapter = CartAdapter(requireContext())
-        recyclerView.adapter = cartAdapter
+            val root = inflater.inflate(R.layout.fragment_cart, container, false)
 
-        cartViewModel.allCartItems.observe(requireActivity(), Observer { items ->
-            items?.let { cartAdapter.setItems(it) }
-        })
+            val recyclerView: RecyclerView = root.findViewById(R.id.cart_recycler_view)
+            val cartAdapter = CartAdapter(requireContext(), cartViewModel)
+            recyclerView.adapter = cartAdapter
 
-        return root
+            cartViewModel.allCartItems.observe(requireActivity(), Observer { items ->
+                items?.let { cartAdapter.setItems(it) }
+            })
+            return root
+        }
+
+        return inflater.inflate(R.layout.fragment_empty_cart, container, false)
     }
 }

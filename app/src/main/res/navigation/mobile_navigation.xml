@@ -9,7 +9,15 @@
         android:id="@+id/navigation_home"
         android:name="com.designbyark.layao.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_bannerDetailFragment"
+            app:destination="@id/bannerDetailFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -28,4 +36,9 @@
         android:name="com.designbyark.layao.ui.user.UserFragment"
         android:label="@string/title_user"
         tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/bannerDetailFragment"
+        android:name="com.designbyark.layao.BannerDetailFragment"
+        android:label="fragment_banner_detail"
+        tools:layout="@layout/fragment_banner_detail" />
 </navigation>
