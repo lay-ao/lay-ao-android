@@ -17,6 +17,13 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_navigation_home_to_productDetailFragment"
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
 
     <fragment
@@ -41,4 +48,9 @@
         android:name="com.designbyark.layao.BannerDetailFragment"
         android:label="fragment_banner_detail"
         tools:layout="@layout/fragment_banner_detail" />
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.designbyark.layao.ProductDetailFragment"
+        android:label="fragment_product_detail"
+        tools:layout="@layout/fragment_product_detail" />
 </navigation>

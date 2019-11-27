@@ -7,7 +7,6 @@
     android:padding="16dp"
     tools:context=".BannerDetailFragment">
 
-
     <ImageView
         android:id="@+id/image"
         android:layout_width="0dp"
