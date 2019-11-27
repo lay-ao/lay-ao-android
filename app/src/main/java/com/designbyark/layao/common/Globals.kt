@@ -1,11 +1,14 @@
 package com.designbyark.layao.common
 
 import android.content.Context
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.data.Product
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import java.text.SimpleDateFormat
+import java.util.*
 
 // Sample Data
 const val IMAGE = "https://firebasestorage.googleapis.com/v0/b/lay-ao.appspot.com/o/Fruits%2Fapple.jpg?alt=media&token=16e5b18f-0069-4c27-8387-caa1a233b43b"
@@ -37,4 +40,10 @@ fun getProductOptions(query: Query): FirestoreRecyclerOptions<Product> {
         .setQuery(query, Product::class.java)
         .build()
     return options
+}
+
+
+fun formatTimeDate(timestamp: Date): String {
+    val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
+    return formatter.format(timestamp)
 }
