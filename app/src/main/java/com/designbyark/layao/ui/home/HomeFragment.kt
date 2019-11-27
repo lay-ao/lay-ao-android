@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.designbyark.layao.BannerDetailFragment
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
@@ -155,6 +156,7 @@ class HomeFragment : Fragment(),
         mBrandsAdapter?.startListening()
 
     }
+
     override fun onStop() {
         super.onStop()
 
