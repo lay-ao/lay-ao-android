@@ -22,4 +22,7 @@ interface CartDao {
     @Query("SELECT COUNT(*) FROM cart_table")
     suspend fun itemCount(): Int
 
+    @Query("SELECT SUM(total) FROM cart_table")
+    fun getTotal(): LiveData<Double>
+
 }

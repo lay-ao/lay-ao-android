@@ -16,11 +16,13 @@ class CartViewModel(application: Application): AndroidViewModel(application) {
     private val repository: CartRepository
 
     val allCartItems: LiveData<List<Cart>>
+    val total: LiveData<Double>
 
     init {
         val cartDao = LayAoRoomDatabase.getDatabase(application).cartDao()
         repository = CartRepository(cartDao)
         allCartItems = repository.allCartItems
+        total = repository.total
     }
 
     fun insert(cart: Cart) = viewModelScope.launch {
@@ -38,5 +40,6 @@ class CartViewModel(application: Application): AndroidViewModel(application) {
     fun itemCount(): Int = runBlocking(Dispatchers.IO) {
         repository.itemCount()
     }
+
 
 }

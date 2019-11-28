@@ -58,7 +58,11 @@ fun setQuantityPrice(price: Double, quantity: Long, discount: Double, unit: Stri
             unit
         )
     } else {
+<<<<<<< HEAD
+        return String.format(Locale.getDefault(), "Rs. %.0f / %d %s", price * quantity, quantity, unit)
+=======
         return String.format(Locale.getDefault(), "Rs. %d / %d %s", price * quantity, quantity, unit)
+>>>>>>> master
     }
 }
 

@@ -34,4 +34,7 @@ class Cart() {
     @ColumnInfo(name = "quantity")
     var quantity: Long = 0
 
+    @ColumnInfo(name = "total")
+    var total: Double = 0.0
+
 }

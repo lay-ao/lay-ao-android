@@ -80,6 +80,7 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     internal fun setDiscount(discount: Double) {
         val discountPlaceHolder: TextView = itemView.findViewById(R.id.discount)
+        val discountLabel: TextView = itemView.findViewById(R.id.discount_label)
         if (discount > 0) {
             discountPlaceHolder.text = String.format(
                 Locale.getDefault(),
@@ -87,7 +88,16 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             )
         } else {
             discountPlaceHolder.visibility = View.INVISIBLE
+<<<<<<< HEAD
+            discountLabel.visibility = View.INVISIBLE
+=======
+>>>>>>> master
         }
     }
 
+    internal fun setTotal(total: Double) {
+        val totalPlaceHolder: TextView = itemView.findViewById(R.id.total)
+        totalPlaceHolder.text = String.format(Locale.getDefault(),
+            "Rs. %.0f", total)
+    }
 }

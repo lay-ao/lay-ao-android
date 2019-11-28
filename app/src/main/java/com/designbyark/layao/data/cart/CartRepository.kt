@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 class CartRepository(private val cartDao: CartDao) {
 
     val allCartItems: LiveData<List<Cart>> = cartDao.getAllItemsFromCart()
+    val total: LiveData<Double> = cartDao.getTotal()
 
     suspend fun insert(cart: Cart) {
         cartDao.insert(cart)

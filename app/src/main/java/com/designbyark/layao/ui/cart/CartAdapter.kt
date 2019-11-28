@@ -36,6 +36,7 @@ class CartAdapter internal constructor(
                 cartViewModel.deleteCartItem(model)
                 notifyDataSetChanged()
             }
+            setTotal(model.total)
         }
     }
 

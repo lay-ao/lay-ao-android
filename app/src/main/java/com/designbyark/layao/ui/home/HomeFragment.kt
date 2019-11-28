@@ -24,7 +24,12 @@ import com.google.firebase.firestore.Query
 
 class HomeFragment : Fragment(),
     BannerAdapter.BannerItemClickListener,
+<<<<<<< HEAD
+    DiscountItemsAdapter.DiscountItemClickListener,
+    NewArrivalAdapter.NewArrivalClickListener {
+=======
     DiscountItemsAdapter.DiscountItemClickListener {
+>>>>>>> master
 
     companion object {
         const val BANNER_ID = "bannerId"
@@ -122,7 +127,7 @@ class HomeFragment : Fragment(),
         // Setting query with model class
         val options = getProductOptions(query)
 
-        mNewArrivalAdapter = NewArrivalAdapter(options, requireContext())
+        mNewArrivalAdapter = NewArrivalAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
         setListLayout(recyclerView, requireActivity())
@@ -192,6 +197,15 @@ class HomeFragment : Fragment(),
         val args = Bundle()
         args.putString(PRODUCT_ID, productId)
         navController.navigate(R.id.action_nav_productDetailFragment, args)
+<<<<<<< HEAD
+    }
+
+    override fun mNewArrivalClickListener(productId: String) {
+        val args = Bundle()
+        args.putString(PRODUCT_ID, productId)
+        navController.navigate(R.id.action_nav_productDetailFragment, args)
+=======
+>>>>>>> master
     }
 
 
