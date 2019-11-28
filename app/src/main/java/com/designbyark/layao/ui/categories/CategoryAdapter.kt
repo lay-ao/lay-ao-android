@@ -1,11 +1,9 @@
 package com.designbyark.layao.ui.categories
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.data.Category
@@ -13,8 +11,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class CategoryAdapter internal constructor(
-    options: FirestoreRecyclerOptions<Category>,
-    var context: Context
+    options: FirestoreRecyclerOptions<Category>
 ) : FirestoreRecyclerAdapter<Category, CategoryAdapter.CategoryViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -24,7 +21,6 @@ class CategoryAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int, model: Category) {
-        Toast.makeText(context, model.title, Toast.LENGTH_LONG).show()
         holder.setTitle(model.title)
     }
 

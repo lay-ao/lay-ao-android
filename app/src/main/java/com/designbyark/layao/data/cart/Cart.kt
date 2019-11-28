@@ -14,13 +14,13 @@ class Cart() {
     var brand: String = ""
 
     @ColumnInfo(name = "discount")
-    var discount: Long = 0
+    var discount: Double = 0.0
 
     @ColumnInfo(name = "image")
     var image: String = ""
 
     @ColumnInfo(name = "price")
-    var price: Long = 0
+    var price: Double = 0.0
 
     @ColumnInfo(name = "tag")
     var tag: String = ""

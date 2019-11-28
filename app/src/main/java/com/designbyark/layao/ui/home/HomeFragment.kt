@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.designbyark.layao.BannerDetailFragment
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
@@ -25,7 +23,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 class HomeFragment : Fragment(),
-    BannerAdapter.BannerItemClickListener {
+    BannerAdapter.BannerItemClickListener,
+    DiscountItemsAdapter.DiscountItemClickListener {
+
+    companion object {
+        const val BANNER_ID = "bannerId"
+        const val PRODUCT_ID = "productId"
+    }
 
     private var mBannerAdapter: BannerAdapter? = null
     private var mDiscountItemsAdapter: DiscountItemsAdapter? = null
@@ -99,7 +103,7 @@ class HomeFragment : Fragment(),
         // Setting query with model class
         val options = getProductOptions(query)
 
-        mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext())
+        mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
         setListLayout(recyclerView, requireContext())
@@ -180,8 +184,14 @@ class HomeFragment : Fragment(),
 
     override fun onBannerItemClickListener(bannerId: String) {
         val args = Bundle()
-        args.putString("bannerId", bannerId)
+        args.putString(BANNER_ID, bannerId)
         navController.navigate(R.id.action_nav_bannerDetailFragment, args)
+    }
+
+    override fun onDiscountItemClickListener(productId: String) {
+        val args = Bundle()
+        args.putString(PRODUCT_ID, productId)
+        navController.navigate(R.id.action_nav_productDetailFragment, args)
     }
 
 

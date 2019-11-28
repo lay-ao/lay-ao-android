@@ -103,6 +103,18 @@
             tools:text="Rs. 100/kg" />
 
         <TextView
+            android:id="@+id/discount_price"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintBottom_toBottomOf="@+id/per_price"
+            app:layout_constraintStart_toEndOf="@+id/per_price"
+            tools:text="Rs. 100/kg" />
+
+        <TextView
             android:id="@+id/brand"
             android:layout_width="wrap_content"
             android:layout_height="0dp"

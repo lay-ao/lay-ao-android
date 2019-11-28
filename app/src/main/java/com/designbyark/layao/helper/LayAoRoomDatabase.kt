@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.data.cart.CartDao
 
-@Database(entities = arrayOf(Cart::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Cart::class), version = 2, exportSchema = false)
 abstract class LayAoRoomDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
@@ -27,7 +27,7 @@ abstract class LayAoRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     LayAoRoomDatabase::class.java,
                     "cart_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

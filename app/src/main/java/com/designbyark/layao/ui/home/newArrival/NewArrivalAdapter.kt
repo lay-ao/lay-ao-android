@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.designbyark.layao.R
 import com.designbyark.layao.data.Product
-import com.designbyark.layao.ui.home.ProductViewHolder
+import com.designbyark.layao.ui.home.product.ProductViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
