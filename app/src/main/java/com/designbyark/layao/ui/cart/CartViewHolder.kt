@@ -88,10 +88,7 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             )
         } else {
             discountPlaceHolder.visibility = View.INVISIBLE
-<<<<<<< HEAD
             discountLabel.visibility = View.INVISIBLE
-=======
->>>>>>> master
         }
     }
 

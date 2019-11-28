@@ -5,10 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.designbyark.layao.R
 import com.designbyark.layao.data.Product
-<<<<<<< HEAD
-import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
-=======
->>>>>>> master
 import com.designbyark.layao.ui.home.product.ProductViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions

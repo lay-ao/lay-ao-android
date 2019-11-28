@@ -7,11 +7,8 @@ import androidx.room.RoomDatabase
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.data.cart.CartDao
 
-<<<<<<< HEAD
+
 @Database(entities = arrayOf(Cart::class), version = 3, exportSchema = false)
-=======
-@Database(entities = arrayOf(Cart::class), version = 2, exportSchema = false)
->>>>>>> master
 abstract class LayAoRoomDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao

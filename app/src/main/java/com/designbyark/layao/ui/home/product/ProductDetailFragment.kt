@@ -114,15 +114,11 @@ class ProductDetailFragment : Fragment() {
             cart.title = title
             cart.unit = unit
             cart.quantity = quantity
-<<<<<<< HEAD
             if (discount > 0) {
                 cart.total = setDiscountPrice(price, discount) * quantity
             } else {
                 cart.total = price * quantity
             }
-=======
->>>>>>> master
-
             cartViewModel.insert(cart)
             Toast.makeText(requireActivity(), "Added to cart!", Toast.LENGTH_LONG).show()
 

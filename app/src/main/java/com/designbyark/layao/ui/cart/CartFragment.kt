@@ -65,12 +65,11 @@ class CartFragment : Fragment() {
                     .setTitle("Delete all items")
                     .setIcon(R.drawable.ic_warning_color_24dp)
                     .setMessage("All items will be deleted from your cart. Do you want to proceed?")
-                    .setPositiveButton(android.R.string.ok) { dialog, which ->
+                    .setPositiveButton(android.R.string.ok) { dialog, _ ->
                         cartViewModel.deleteCart()
-                        onCreateView(inflater, container, savedInstanceState)
                         dialog.dismiss()
                     }
-                    .setNegativeButton(android.R.string.cancel) { dialog, which ->
+                    .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                         dialog.dismiss()
                     }
                     .show()
