@@ -28,8 +28,8 @@ class CartAdapter internal constructor(
             setImage(model.image, context)
             setTitle(model.title)
             setUnitLabel(model.unit)
-            setPerPrice(model.price, model.unit)
-            setQuantity(model.price, model.unit, model.quantity)
+            setPerPrice(model.price, model.unit, model.discount)
+            setQuantity(model.price, model.unit, model.quantity, model.discount)
             setBrand(model.brand)
             setDiscount(model.discount)
             deleteItem.setOnClickListener {

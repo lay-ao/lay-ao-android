@@ -51,7 +51,7 @@ class CategoriesFragment : Fragment() {
             .build()
 
         // Assigning adapter class
-        mAdapter = CategoryAdapter(options, requireContext())
+        mAdapter = CategoryAdapter(options)
 
         // Applying item decoration to recycler view components
         recyclerView.addItemDecoration(MarginItemDecoration(
