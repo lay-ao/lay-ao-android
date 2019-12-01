@@ -1,17 +1,21 @@
 package com.designbyark.layao.ui.categories
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.data.Category
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class CategoryAdapter internal constructor(
-    options: FirestoreRecyclerOptions<Category>
+    options: FirestoreRecyclerOptions<Category>,
+    private val context: Context,
+    private val itemClickListener: CategoryClickListener
 ) : FirestoreRecyclerAdapter<Category, CategoryAdapter.CategoryViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -21,17 +25,32 @@ class CategoryAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int, model: Category) {
-        holder.setTitle(model.title)
+        holder.run {
+            setImage(context, model.image)
+            itemView.setOnClickListener {
+                itemClickListener.mCategoryClickListener(snapshots
+                    .getSnapshot(holder.adapterPosition).id)
+            }
+        }
     }
 
     inner class CategoryViewHolder internal constructor(private val view: View) :
         RecyclerView.ViewHolder(view) {
 
-        internal fun setTitle(title: String) {
-            val textView: TextView = view.findViewById(R.id.title)
-            textView.text = title
+//        internal fun setTitle(title: String) {
+//            val textView: TextView = view.findViewById(R.id.title)
+//            textView.text = title
+//        }
+
+        internal fun setImage(context: Context, image: String) {
+            val imageView: ImageView = view.findViewById(R.id.image)
+            Glide.with(context).load(image).into(imageView)
         }
 
+    }
+
+    interface CategoryClickListener {
+        fun mCategoryClickListener(categoryId: String)
     }
 
 }

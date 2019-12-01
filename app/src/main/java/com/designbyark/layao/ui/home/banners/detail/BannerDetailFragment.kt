@@ -98,9 +98,7 @@ class BannerDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
-            }
+            android.R.id.home -> navController.navigateUp()
             else -> super.onOptionsItemSelected(item)
         }
     }

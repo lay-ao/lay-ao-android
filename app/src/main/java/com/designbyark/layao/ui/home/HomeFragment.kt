@@ -25,11 +25,15 @@ import com.google.firebase.firestore.Query
 class HomeFragment : Fragment(),
     BannerAdapter.BannerItemClickListener,
     DiscountItemsAdapter.DiscountItemClickListener,
-    NewArrivalAdapter.NewArrivalClickListener {
+    NewArrivalAdapter.NewArrivalClickListener,
+    BrandsAdapter.BrandItemClickListener {
 
     companion object {
         const val BANNER_ID = "bannerId"
         const val PRODUCT_ID = "productId"
+        const val BRAND_ID = "brandId"
+        const val CATEGORY_ID = "categoryId"
+        const val PASSED_ID = "passedId"
     }
 
     private var mBannerAdapter: BannerAdapter? = null
@@ -85,7 +89,7 @@ class HomeFragment : Fragment(),
             .setQuery(query, Banner::class.java)
             .build()
 
-        mBannerAdapter = BannerAdapter(options, this)
+        mBannerAdapter = BannerAdapter(options, this, requireActivity())
         // Assigning adapter to Recycler View
         setListLayout(recyclerView, requireContext())
         recyclerView.adapter = mBannerAdapter
@@ -146,7 +150,7 @@ class HomeFragment : Fragment(),
             .setQuery(query, Category::class.java)
             .build()
 
-        mBrandsAdapter = BrandsAdapter(options, requireContext())
+        mBrandsAdapter = BrandsAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
         setListLayout(recyclerView, requireContext())
@@ -199,6 +203,12 @@ class HomeFragment : Fragment(),
         val args = Bundle()
         args.putString(PRODUCT_ID, productId)
         navController.navigate(R.id.action_nav_productDetailFragment, args)
+    }
+
+    override fun mBrandItemClickListener(brandId: String) {
+        val args = Bundle()
+        args.putString(BRAND_ID, brandId)
+        navController.navigate(R.id.action_nav_productListFragment, args)
     }
 
 }

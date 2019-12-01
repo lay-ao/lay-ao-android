@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import com.designbyark.layao.R
 import com.designbyark.layao.data.Category
 import com.designbyark.layao.ui.home.product.ProductViewHolder
+import com.designbyark.layao.ui.productList.ProductListAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class BrandsAdapter internal constructor(
     options: FirestoreRecyclerOptions<Category>,
-    var context: Context
+    val context: Context,
+    val itemClickListener: BrandItemClickListener
 ) : FirestoreRecyclerAdapter<Category, ProductViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -22,6 +24,14 @@ class BrandsAdapter internal constructor(
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int, model: Category) {
         holder.setImage(model.image, context)
+        holder.itemView.setOnClickListener {
+            itemClickListener.mBrandItemClickListener(snapshots
+                .getSnapshot(holder.adapterPosition).id)
+        }
+    }
+
+    interface BrandItemClickListener {
+        fun mBrandItemClickListener(brandId: String)
     }
 
 }

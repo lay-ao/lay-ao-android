@@ -22,6 +22,4 @@ class ProductViewHolder internal constructor(private val view: View) :
         Glide.with(context).load(image).into(imageView)
     }
 
-
-
 }
