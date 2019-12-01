@@ -2,13 +2,13 @@ package com.designbyark.layao.ui.categories
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +17,7 @@ import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Product
 import com.designbyark.layao.helper.MarginItemDecoration
+import com.designbyark.layao.ui.favorites.FavoriteViewModel
 import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.ui.productList.ProductListAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -30,6 +31,7 @@ class CPListFragment : Fragment(),
     private var categoryId: String? = null
 
     private lateinit var navController: NavController
+    private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var mAdapter: ProductListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,7 @@ class CPListFragment : Fragment(),
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(PRODUCTS_COLLECTION)
 
+        favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoriteViewModel::class.java)
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -79,7 +82,7 @@ class CPListFragment : Fragment(),
             .setQuery(query, Product::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(options, requireActivity(), this)
+        mAdapter = ProductListAdapter(options, requireActivity(), this, favoriteViewModel)
 
         recyclerView.addItemDecoration(
             MarginItemDecoration(

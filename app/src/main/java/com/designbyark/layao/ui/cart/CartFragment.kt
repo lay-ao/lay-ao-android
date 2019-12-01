@@ -42,7 +42,6 @@ class CartFragment : Fragment() {
             totalItems = root.findViewById(R.id.total_items)
             mDeleteAll = root.findViewById(R.id.delete_all)
 
-
             val recyclerView: RecyclerView = root.findViewById(R.id.cart_recycler_view)
             val cartAdapter = CartAdapter(requireContext(), cartViewModel)
             recyclerView.adapter = cartAdapter
@@ -61,23 +60,27 @@ class CartFragment : Fragment() {
             })
 
             mDeleteAll.setOnClickListener {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Delete all items")
-                    .setIcon(R.drawable.ic_warning_color_24dp)
-                    .setMessage("All items will be deleted from your cart. Do you want to proceed?")
-                    .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                        cartViewModel.deleteCart()
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
+                showAlert()
             }
 
             return root
         }
 
         return inflater.inflate(R.layout.fragment_empty_cart, container, false)
+    }
+
+    private fun showAlert() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete all items")
+            .setIcon(R.drawable.ic_warning_color_24dp)
+            .setMessage("All items will be deleted from your cart. Do you want to proceed?")
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                cartViewModel.deleteCart()
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

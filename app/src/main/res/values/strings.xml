@@ -8,10 +8,9 @@
     <string name="title_user">You</string>
 
     <!-- General menu labels -->
-    <string name="title_list">lists</string>
-    <string name="title_favorites">favorites</string>
-    <string name="title_info">info</string>
+    <string name="title_list">Lists</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_info">Info</string>
+    <string name="title_sync">Sync</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

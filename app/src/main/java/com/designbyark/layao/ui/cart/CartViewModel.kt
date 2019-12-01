@@ -37,7 +37,7 @@ class CartViewModel(application: Application): AndroidViewModel(application) {
         repository.deleteCartItem(cart)
     }
 
-    fun itemCount(): Int = runBlocking(Dispatchers.IO) {
+    fun itemCount(): Int = runBlocking {
         repository.itemCount()
     }
 

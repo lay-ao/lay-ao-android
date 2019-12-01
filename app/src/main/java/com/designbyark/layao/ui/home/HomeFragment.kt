@@ -2,8 +2,10 @@ package com.designbyark.layao.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -209,6 +211,23 @@ class HomeFragment : Fragment(),
         val args = Bundle()
         args.putString(BRAND_ID, brandId)
         navController.navigate(R.id.action_nav_productListFragment, args)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.general_lists -> {
+                true
+            }
+            R.id.general_favorites -> {
+                navController.navigate(R.id.action_navigation_home_to_favoritesFragment)
+                true
+            }
+            R.id.general_info -> {
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }
