@@ -17,7 +17,9 @@ import com.designbyark.layao.common.setDiscountPrice
 import com.designbyark.layao.common.setQuantityPrice
 import com.designbyark.layao.data.Product
 import com.designbyark.layao.data.cart.Cart
+import com.designbyark.layao.data.favorite.Favorite
 import com.designbyark.layao.ui.cart.CartViewModel
+import com.designbyark.layao.ui.favorites.FavoriteViewModel
 import com.designbyark.layao.ui.home.HomeFragment
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,6 +29,7 @@ class ProductDetailFragment : Fragment() {
 
     private var productId: String? = null
     private lateinit var navController: NavController
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     private lateinit var mImage: ImageView
     private lateinit var mTitle: TextView
@@ -53,6 +56,8 @@ class ProductDetailFragment : Fragment() {
     private var mTag: String = ""
     private var title: String = ""
 
+    private var isClickedFavorite: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -66,6 +71,7 @@ class ProductDetailFragment : Fragment() {
     ): View? {
 
         val cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
+        favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoriteViewModel::class.java)
 
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(PRODUCTS_COLLECTION)
@@ -189,8 +195,33 @@ class ProductDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
+            android.R.id.home -> navController.navigateUp()
+            R.id.product_favorite -> {
+
+                if (!isClickedFavorite) {
+                    val favorite = Favorite()
+                    favorite.title = title
+                    favorite.dbId = productId!!
+                    favorite.image = image
+                    favorite.favorite = 1
+
+                    favoriteViewModel.insert(favorite)
+                    item.setIcon(R.drawable.ic_favorite_clicked_color_24dp)
+                    isClickedFavorite = true
+                    activity?.invalidateOptionsMenu()
+                    return true
+                }
+
+                if (isClickedFavorite) {
+                    favoriteViewModel.deleteFavorite(favoriteViewModel.findFavoriteById(productId!!))
+                    item.setIcon(R.drawable.ic_favorite_color_24dp)
+                    isClickedFavorite = false
+                    activity?.invalidateOptionsMenu()
+                    return true
+                }
+
+                return true
+
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -199,7 +230,16 @@ class ProductDetailFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.product_menu, menu)
+
+        val menuItem = menu.findItem(R.id.product_favorite)
+        if (favoriteViewModel.isFavorite(productId!!) > 0) {
+            menuItem.setIcon(R.drawable.ic_favorite_clicked_color_24dp)
+            isClickedFavorite = true
+        }
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+    }
 
 }

@@ -9,9 +9,8 @@ import com.google.firebase.firestore.Query
 import java.text.SimpleDateFormat
 import java.util.*
 
-// Sample Data
-const val IMAGE =
-    "https://firebasestorage.googleapis.com/v0/b/lay-ao.appspot.com/o/Fruits%2Fapple.jpg?alt=media&token=16e5b18f-0069-4c27-8387-caa1a233b43b"
+// Logging
+const val LOG_TAG = "LOG TAG"
 
 // Firebase collections
 const val CATEGORIES_COLLECTION = "Categories"
@@ -24,6 +23,8 @@ const val TITLE = "title"
 const val ACTIVE = "active"
 const val DISCOUNT = "discount"
 const val NEW_ARRIVAL = "newArrival"
+
+
 
 // RecyclerView Helper Methods
 fun setListLayout(recyclerView: RecyclerView, context: Context) {
