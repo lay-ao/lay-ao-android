@@ -93,7 +93,7 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     internal fun setTotal(total: Double) {
-        val totalPlaceHolder: TextView = itemView.findViewById(R.id.total)
+        val totalPlaceHolder: TextView = itemView.findViewById(R.id.total_label)
         totalPlaceHolder.text = String.format(Locale.getDefault(),
             "Rs. %.0f", total)
     }

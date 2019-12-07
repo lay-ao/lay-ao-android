@@ -10,20 +10,32 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.setDiscountPrice
+import com.designbyark.layao.ui.home.HomeFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.fragment_cart.view.*
 import java.util.*
 import kotlin.math.ceil
 
 class CartFragment : Fragment() {
 
     private lateinit var cartViewModel: CartViewModel
+
     private lateinit var grandTotal: TextView
     private lateinit var totalItems: TextView
     private lateinit var mDeleteAll: TextView
 
-    private var total: Double = 0.0
+    private lateinit var mCheckout: FloatingActionButton
+
+    private lateinit var navController: NavController
+
+    private var totalPrice: Double = 0.0
+    private var totalItemCount: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +46,20 @@ class CartFragment : Fragment() {
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         val count = cartViewModel.itemCount()
 
+        navController = Navigation.findNavController(requireActivity(),
+            R.id.nav_host_fragment)
+
         if (count > 0) {
 
             val root = inflater.inflate(R.layout.fragment_cart, container, false)
 
+            val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+            bottomMenu.visibility = View.VISIBLE
+
             grandTotal = root.findViewById(R.id.grand_total)
             totalItems = root.findViewById(R.id.total_items)
             mDeleteAll = root.findViewById(R.id.delete_all)
+            mCheckout = root.findViewById(R.id.checkout)
 
             val recyclerView: RecyclerView = root.findViewById(R.id.cart_recycler_view)
             val cartAdapter = CartAdapter(requireContext(), cartViewModel)
@@ -48,7 +67,8 @@ class CartFragment : Fragment() {
 
             cartViewModel.allCartItems.observe(requireActivity(), Observer { items ->
                 items?.let { cartAdapter.setItems(it) }
-                totalItems.text = String.format(Locale.getDefault(), "x%d", items.size)
+                totalItemCount = items.size
+                totalItems.text = String.format(Locale.getDefault(), "x%d", totalItemCount)
             })
 
             cartViewModel.total.observe(requireActivity(), Observer {
@@ -57,10 +77,23 @@ class CartFragment : Fragment() {
                     return@Observer
                 }
                 grandTotal.text = String.format(Locale.getDefault(), "Rs. %.0f", it)
+                totalPrice = it
             })
 
             mDeleteAll.setOnClickListener {
                 showAlert()
+            }
+
+            mCheckout.setOnClickListener {
+                if (totalPrice < 500) {
+                    Toast.makeText(requireActivity(), "Amount too low, add more items", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                } else {
+                    val args = Bundle()
+                    args.putDouble("grand_total", totalPrice)
+                    args.putInt("total_items", totalItemCount)
+                    navController.navigate(R.id.action_navigation_cart_to_checkoutFragment, args)
+                }
             }
 
             return root

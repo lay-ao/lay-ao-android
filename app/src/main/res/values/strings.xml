@@ -13,4 +13,40 @@
     <string name="title_info">Info</string>
     <string name="title_sync">Sync</string>
 
+    <!-- Wapda Town Blocks -->
+    <string-array name="blocks">
+        <item>Select Block</item>
+        <item>Block D2</item>
+        <item>Block D3</item>
+        <item>Block E1</item>
+        <item>Block E2</item>
+        <item>Block F1</item>
+        <item>Block F2</item>
+        <item>Block G1</item>
+        <item>Block G2</item>
+        <item>Block G3</item>
+        <item>Block G4</item>
+        <item>Block G5</item>
+        <item>Block H1</item>
+        <item>Block H2</item>
+        <item>Block H3</item>
+        <item>Block H4</item>
+        <item>Block J1</item>
+        <item>Block J2</item>
+        <item>Block J3</item>
+        <item>Block K1</item>
+        <item>Block K2</item>
+        <item>Block K3</item>
+        <item>Block M</item>
+        <item>Block N1</item>
+        <item>Block N2</item>
+        <item>Block N3</item>
+        <item>Block P1</item>
+        <item>Block P2</item>
+        <item>Block P3</item>
+        <item>Block Q1</item>
+        <item>Block Q2</item>
+        <item>Block R</item>
+    </string-array>
+
 </resources>
