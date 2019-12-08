@@ -20,6 +20,7 @@ import com.designbyark.layao.ui.home.brands.BrandsAdapter
 import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
 import com.designbyark.layao.ui.home.newArrival.NewArrivalAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -50,6 +51,11 @@ class HomeFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        if (bottomMenu.visibility == View.GONE) {
+            bottomMenu.visibility = View.VISIBLE
+        }
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(false)

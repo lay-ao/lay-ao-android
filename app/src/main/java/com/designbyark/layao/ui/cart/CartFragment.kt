@@ -54,7 +54,9 @@ class CartFragment : Fragment() {
             val root = inflater.inflate(R.layout.fragment_cart, container, false)
 
             val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-            bottomMenu.visibility = View.VISIBLE
+            if (bottomMenu.visibility == View.GONE) {
+                bottomMenu.visibility = View.VISIBLE
+            }
 
             grandTotal = root.findViewById(R.id.grand_total)
             totalItems = root.findViewById(R.id.total_items)

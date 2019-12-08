@@ -2,6 +2,7 @@ package com.designbyark.layao.ui.checkout
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -13,14 +14,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.emptyValidation
 import com.designbyark.layao.common.phoneValidation
+import com.designbyark.layao.data.Order
+import com.designbyark.layao.ui.cart.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 class CheckoutFragment : Fragment() {
@@ -29,6 +37,8 @@ class CheckoutFragment : Fragment() {
     private var totalItems: Int = 0
 
     private lateinit var navController: NavController
+    private lateinit var cartViewModel: CartViewModel
+    private lateinit var orderCollection: CollectionReference
 
     private lateinit var grandTotalView: TextView
     private lateinit var totalItemsView: TextView
@@ -66,6 +76,10 @@ class CheckoutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
+        val firebase = FirebaseFirestore.getInstance()
+        orderCollection = firebase.collection("Orders")
+
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle("Checkout")
@@ -84,7 +98,7 @@ class CheckoutFragment : Fragment() {
 
         findingViews(root)
 
-        val deliveryFee: Double = 30.0
+        val deliveryFee = 30.0
         val totalAmount = grandTotal + deliveryFee
 
         grandTotalView.text = String.format(
@@ -110,10 +124,10 @@ class CheckoutFragment : Fragment() {
 
         placeOrder.setOnClickListener {
 
-            val fullName = fullNameEditText.text.toString()
-            val phoneNumber = phoneNumberEditText.text.toString()
-            val houseNumber = houseNoEditText.text.toString()
-            val comment = commentEditText.text.toString()
+            val fullName = fullNameEditText.text.toString().trim()
+            val phoneNumber = phoneNumberEditText.text.toString().trim()
+            val houseNumber = houseNoEditText.text.toString().trim()
+            val comment = commentEditText.text.toString().trim()
 
             if (emptyValidation(fullName, fullNameInputLayout)) return@setOnClickListener
             if (phoneValidation(phoneNumber, phoneNumberInputLayout)) return@setOnClickListener
@@ -124,7 +138,31 @@ class CheckoutFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            
+
+            val order = Order()
+            order.fullName = fullName
+            order.contactNumber = phoneNumber
+            order.houseNumber = houseNumber
+            order.block = blocks.selectedItem.toString()
+            order.completeAddress = "House #$houseNumber, ${blocks.selectedItem}, Wapda Town"
+            if (comment.isBlank() || comment.isEmpty()) {
+                order.comment = "No comments added!"
+            } else {
+                order.comment = comment
+            }
+            order.items = cartViewModel.allCartItems.value!!
+            order.orderTime = Timestamp.now()
+            order.orderStatus = 1
+
+            orderCollection.add(order)
+                .addOnSuccessListener { _ ->
+                    Toast.makeText(requireContext(), "Order Placed!", Toast.LENGTH_LONG).show()
+                    cartViewModel.deleteCart()
+                    navController.navigate(R.id.action_checkoutFragment_to_navigation_home)
+                }
+                .addOnFailureListener { e ->
+                    Log.e(LOG_TAG, "Error adding document", e)
+                }
 
         }
 

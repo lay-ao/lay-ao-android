@@ -126,6 +126,14 @@
         android:id="@+id/checkoutFragment"
         android:name="com.designbyark.layao.ui.checkout.CheckoutFragment"
         android:label="fragment_checkout"
-        tools:layout="@layout/fragment_checkout" />
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+    </fragment>
 
 </navigation>
