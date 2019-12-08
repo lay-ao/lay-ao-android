@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.data.Product
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.Query
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,7 +24,6 @@ const val TITLE = "title"
 const val ACTIVE = "active"
 const val DISCOUNT = "discount"
 const val NEW_ARRIVAL = "newArrival"
-
 
 
 // RecyclerView Helper Methods
@@ -59,7 +59,13 @@ fun setQuantityPrice(price: Double, quantity: Long, discount: Double, unit: Stri
             unit
         )
     } else {
-        return String.format(Locale.getDefault(), "Rs. %.0f / %d %s", price * quantity, quantity, unit)
+        return String.format(
+            Locale.getDefault(),
+            "Rs. %.0f / %d %s",
+            price * quantity,
+            quantity,
+            unit
+        )
     }
 }
 
@@ -67,4 +73,33 @@ fun setDiscountPrice(price: Double, discount: Double): Double {
     val formula = discount / 100
     val salePrice = price * formula
     return price - salePrice
+}
+
+fun emptyValidation(
+    value: String,
+    inputLayout: TextInputLayout
+): Boolean {
+    return if (value.isEmpty() || value == "") {
+        inputLayout.error = "Field cannot be empty"
+        true
+    } else {
+        inputLayout.error = null
+        false
+    }
+}
+
+fun phoneValidation(
+    value: String,
+    inputLayout: TextInputLayout
+): Boolean {
+
+    return if (emptyValidation(value, inputLayout)) {
+        true
+    } else if (!value.matches("^0(3|42)\\d+".toRegex())) {
+        inputLayout.error = "Invalid phone number"
+        true
+    } else {
+        inputLayout.error = null
+        false
+    }
 }

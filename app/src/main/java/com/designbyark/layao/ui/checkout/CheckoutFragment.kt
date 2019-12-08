@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
-import com.google.android.material.bottomnavigation.BottomNavigationMenu
+import com.designbyark.layao.common.emptyValidation
+import com.designbyark.layao.common.phoneValidation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -64,14 +66,16 @@ class CheckoutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        (requireActivity() as AppCompatActivity).run{
+        (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle("Checkout")
         }
         setHasOptionsMenu(true)
 
-        navController = Navigation.findNavController(requireActivity(),
-            R.id.nav_host_fragment)
+        navController = Navigation.findNavController(
+            requireActivity(),
+            R.id.nav_host_fragment
+        )
 
         val root = inflater.inflate(R.layout.fragment_checkout, container, false)
 
@@ -83,21 +87,50 @@ class CheckoutFragment : Fragment() {
         val deliveryFee: Double = 30.0
         val totalAmount = grandTotal + deliveryFee
 
-        grandTotalView.text = String.format(Locale.getDefault(),
-            "Rs. %.0f", grandTotal)
-        totalItemsView.text = String.format(Locale.getDefault(),
-            "%d items", totalItems)
-        deliveryFeeView.text = String.format(Locale.getDefault(),
-            "Rs. %.0f", deliveryFee)
-        totalView.text = String.format(Locale.getDefault(),
-            "Rs. %.0f", totalAmount)
+        grandTotalView.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f", grandTotal
+        )
+        totalItemsView.text = String.format(
+            Locale.getDefault(),
+            "%d items", totalItems
+        )
+        deliveryFeeView.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f", deliveryFee
+        )
+        totalView.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f", totalAmount
+        )
 
         addressHelp.setOnClickListener {
             showAddressWarning()
         }
 
+        placeOrder.setOnClickListener {
+
+            val fullName = fullNameEditText.text.toString()
+            val phoneNumber = phoneNumberEditText.text.toString()
+            val houseNumber = houseNoEditText.text.toString()
+            val comment = commentEditText.text.toString()
+
+            if (emptyValidation(fullName, fullNameInputLayout)) return@setOnClickListener
+            if (phoneValidation(phoneNumber, phoneNumberInputLayout)) return@setOnClickListener
+            if (emptyValidation(houseNumber, houseNoInputLayout)) return@setOnClickListener
+
+            if (blocks.selectedItemPosition == 0) {
+                Toast.makeText(requireContext(), "Invalid block selected", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            
+
+        }
+
         return root
     }
+
 
     private fun findingViews(root: View) {
         grandTotalView = root.findViewById(R.id.grand_total)
