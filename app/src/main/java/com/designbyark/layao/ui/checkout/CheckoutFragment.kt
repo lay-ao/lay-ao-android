@@ -19,6 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
+import com.designbyark.layao.common.displayNotification
 import com.designbyark.layao.common.emptyValidation
 import com.designbyark.layao.common.phoneValidation
 import com.designbyark.layao.data.Order
@@ -138,7 +139,6 @@ class CheckoutFragment : Fragment() {
                 return@setOnClickListener
             }
 
-
             val order = Order()
             order.fullName = fullName
             order.contactNumber = phoneNumber
@@ -155,15 +155,22 @@ class CheckoutFragment : Fragment() {
             order.orderStatus = 1
 
             orderCollection.add(order)
-                .addOnSuccessListener { _ ->
+                .addOnSuccessListener { documentReference ->
                     Toast.makeText(requireContext(), "Order Placed!", Toast.LENGTH_LONG).show()
+                    displayNotification(
+                        requireContext(),
+                        R.drawable.ic_favorite_color_24dp,
+                        "Order received",
+                        "Your order is placed. You will be receiving the order soon."
+                    )
+                    orderCollection.document(documentReference.id)
+                        .update("orderId", documentReference.id)
                     cartViewModel.deleteCart()
                     navController.navigate(R.id.action_checkoutFragment_to_navigation_home)
                 }
                 .addOnFailureListener { e ->
                     Log.e(LOG_TAG, "Error adding document", e)
                 }
-
         }
 
         return root

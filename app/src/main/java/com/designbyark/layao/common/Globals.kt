@@ -1,6 +1,10 @@
 package com.designbyark.layao.common
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.data.Product
@@ -24,6 +28,11 @@ const val TITLE = "title"
 const val ACTIVE = "active"
 const val DISCOUNT = "discount"
 const val NEW_ARRIVAL = "newArrival"
+
+// Notification
+const val CHANNEL_ID = "default"
+const val CHANNEL_NAME = "Default"
+const val CHANNEL_DESC = "Default channels is for testing"
 
 
 // RecyclerView Helper Methods
@@ -101,5 +110,33 @@ fun phoneValidation(
     } else {
         inputLayout.error = null
         false
+    }
+}
+
+private fun createNotification(context: Context, icon: Int, title: String, content: String): NotificationCompat.Builder {
+    return NotificationCompat.Builder(context, CHANNEL_ID)
+        .setSmallIcon(icon)
+        .setContentTitle(title)
+        .setStyle(
+            NotificationCompat.BigTextStyle()
+                .bigText(content)
+        )
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+}
+
+fun displayNotification(context: Context,icon: Int, title: String, content: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = CHANNEL_NAME
+        val descriptionText = CHANNEL_DESC
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            description = descriptionText
+        }
+
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+
+        notificationManager.notify(1, createNotification(context, icon, title, content).build())
     }
 }
