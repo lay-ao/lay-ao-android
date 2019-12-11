@@ -12,7 +12,6 @@ import com.designbyark.layao.common.formatOrderId
 import com.designbyark.layao.common.formatTimeDate
 import com.designbyark.layao.common.getOrderStatus
 import com.google.firebase.Timestamp
-import java.time.LocalDateTime
 import java.util.*
 
 class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,13 +19,13 @@ class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val cancelOrder: Button = itemView.findViewById(R.id.cancel_order)
 
     internal fun setOrderStatus(status: Int, context: Context, @ColorRes color: Int) {
-        val textView: TextView = itemView.findViewById(R.id.order_status)
+        val textView: TextView = itemView.findViewById(R.id.order_id)
         textView.text = getOrderStatus(status)
         textView.setTextColor(ContextCompat.getColor(context, color))
     }
 
     internal fun setOrderId(orderId: String, phoneNumber: String) {
-        val textView: TextView = itemView.findViewById(R.id.order_id)
+        val textView: TextView = itemView.findViewById(R.id.order_status)
         textView.text = formatOrderId(orderId, phoneNumber)
     }
 

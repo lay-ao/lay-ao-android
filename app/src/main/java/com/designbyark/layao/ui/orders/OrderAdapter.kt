@@ -66,7 +66,7 @@ class OrderAdapter internal constructor(
         documentId: String
     ) {
         AlertDialog.Builder(context)
-            .setTitle("Cancelling the order")
+            .setTitle("Warning")
             .setIcon(R.drawable.ic_warning_color_24dp)
             .setMessage(
                 "Cancelling the order will charge you an amount of " +

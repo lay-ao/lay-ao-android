@@ -13,7 +13,7 @@
         android:layout_margin="16dp">
 
         <TextView
-            android:id="@+id/order_id"
+            android:id="@+id/order_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
             tools:text="Order Id" />
 
         <TextView
-            android:id="@+id/order_status"
+            android:id="@+id/order_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -30,7 +30,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/order_id"
+            app:layout_constraintEnd_toStartOf="@+id/order_status"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,8 +43,8 @@
             android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/order_status"
-            app:layout_constraintTop_toBottomOf="@+id/order_status"
+            app:layout_constraintStart_toStartOf="@+id/order_id"
+            app:layout_constraintTop_toBottomOf="@+id/order_id"
             tools:text="Placed by Arslan Mushtaq" />
 
         <TextView
