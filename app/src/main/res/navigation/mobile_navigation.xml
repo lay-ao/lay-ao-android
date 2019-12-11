@@ -34,6 +34,7 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+
         <action
             android:id="@+id/action_navigation_home_to_favoritesFragment"
             app:destination="@id/favoritesFragment"
@@ -48,7 +49,8 @@
         android:id="@+id/navigation_category"
         android:name="com.designbyark.layao.ui.categories.CategoriesFragment"
         android:label="@string/title_categories"
-        tools:layout="@layout/fragment_categories" >
+        tools:layout="@layout/fragment_categories">
+
         <action
             android:id="@+id/action_navigation_category_to_CPListFragment"
             app:destination="@id/CPListFragment"
@@ -56,13 +58,14 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+
     </fragment>
 
     <fragment
         android:id="@+id/navigation_cart"
         android:name="com.designbyark.layao.ui.cart.CartFragment"
         android:label="@string/title_cart"
-        tools:layout="@layout/fragment_cart" >
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_navigation_cart_to_checkoutFragment"
             app:destination="@id/checkoutFragment"
@@ -94,7 +97,7 @@
         android:id="@+id/productListFragment"
         android:name="com.designbyark.layao.ui.productList.ProductListFragment"
         android:label="fragment_product"
-        tools:layout="@layout/fragment_product_list" >
+        tools:layout="@layout/fragment_product_list">
         <action
             android:id="@+id/action_productListFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment"
@@ -103,6 +106,7 @@
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
+
     <fragment
         android:id="@+id/CPListFragment"
         android:name="com.designbyark.layao.ui.categories.CPListFragment"
@@ -112,21 +116,24 @@
             android:id="@+id/action_CPListFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.designbyark.layao.ui.favorites.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
+
     <activity
         android:id="@+id/mainActivity"
         android:name="com.designbyark.layao.MainActivity"
         android:label="MainActivity"
-        tools:layout="@layout/activity_main"/>
+        tools:layout="@layout/activity_main" />
+
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.designbyark.layao.ui.checkout.CheckoutFragment"
         android:label="fragment_checkout"
-        tools:layout="@layout/fragment_checkout" >
+        tools:layout="@layout/fragment_checkout">
         <action
             android:id="@+id/action_checkoutFragment_to_navigation_home"
             app:destination="@id/navigation_home"
@@ -135,5 +142,24 @@
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_orders"
+        android:name="com.designbyark.layao.ui.orders.OrdersFragment"
+        android:label="@string/title_order"
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_navigation_orders_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.designbyark.layao.OrderDetailFragment"
+        android:label="fragment_order_detail"
+        tools:layout="@layout/fragment_order_detail" />
 
 </navigation>

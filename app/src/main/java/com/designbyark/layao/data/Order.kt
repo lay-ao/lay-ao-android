@@ -10,6 +10,9 @@ import java.util.*
 @IgnoreExtraProperties
 class Order {
 
+    @PropertyName("orderId")
+    var orderId: String = ""
+
     @PropertyName("name")
     var fullName: String = ""
 
@@ -33,9 +36,15 @@ class Order {
 
     @PropertyName("orderTime")
     @ServerTimestamp
-    var orderTime: Timestamp? = null
+    var orderTime: Timestamp = Timestamp.now()
 
     @PropertyName("orderStatus")
     var orderStatus: Int = 0
+
+    @PropertyName("total_items")
+    var totalItems: Int = 0
+
+    @PropertyName("grand_total")
+    var grandTotal: Double = 0.0
 
 }

@@ -15,13 +15,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 // Logging
-const val LOG_TAG = "LOG TAG"
+const val LOG_TAG = "LAYAO_LOG"
 
 // Firebase collections
 const val CATEGORIES_COLLECTION = "Categories"
 const val BANNER_COLLECTION = "Banners"
 const val PRODUCTS_COLLECTION = "Products"
 const val BRANDS_COLLECTION = "Brands"
+const val ORDERS_COLLECTION = "Orders"
 
 // Firebase query fields
 const val TITLE = "title"
@@ -54,7 +55,7 @@ fun getProductOptions(query: Query): FirestoreRecyclerOptions<Product> {
 
 
 fun formatTimeDate(timestamp: Date): String {
-    val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
+    val formatter = SimpleDateFormat("EEEE, dd MMMM, yyyy", Locale.getDefault())
     return formatter.format(timestamp)
 }
 
@@ -113,7 +114,12 @@ fun phoneValidation(
     }
 }
 
-private fun createNotification(context: Context, icon: Int, title: String, content: String): NotificationCompat.Builder {
+private fun createNotification(
+    context: Context,
+    icon: Int,
+    title: String,
+    content: String
+): NotificationCompat.Builder {
     return NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(icon)
         .setContentTitle(title)
@@ -124,7 +130,7 @@ private fun createNotification(context: Context, icon: Int, title: String, conte
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 }
 
-fun displayNotification(context: Context,icon: Int, title: String, content: String) {
+fun displayNotification(context: Context, icon: Int, title: String, content: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val name = CHANNEL_NAME
         val descriptionText = CHANNEL_DESC
@@ -139,4 +145,23 @@ fun displayNotification(context: Context,icon: Int, title: String, content: Stri
 
         notificationManager.notify(1, createNotification(context, icon, title, content).build())
     }
+}
+
+fun getOrderStatus(status: Int): String {
+    return when (status) {
+        0 -> "Processing Order"
+        1 -> "Order Active"
+        2 -> "Order on the way"
+        3 -> "Order arrived"
+        4 -> "Order delayed"
+        5 -> "Order received"
+        6 -> "Order cancelled"
+        else -> return "Status Unknown"
+    }
+}
+
+fun formatOrderId(orderId: String, phoneNumber: String): String {
+    return orderId.slice(10..12).toUpperCase(Locale.getDefault()) +
+            phoneNumber.slice(4..6) +
+            orderId.takeLast(3)
 }

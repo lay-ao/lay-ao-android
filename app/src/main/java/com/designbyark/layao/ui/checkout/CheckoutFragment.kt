@@ -153,6 +153,8 @@ class CheckoutFragment : Fragment() {
             order.items = cartViewModel.allCartItems.value!!
             order.orderTime = Timestamp.now()
             order.orderStatus = 1
+            order.totalItems = totalItems
+            order.grandTotal = grandTotal
 
             orderCollection.add(order)
                 .addOnSuccessListener { documentReference ->
