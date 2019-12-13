@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -25,7 +26,11 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val auth = FirebaseAuth.getInstance()
+        val firebaseUser = auth.currentUser
+
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        bottomMenu.visibility = View.VISIBLE
 
         navController = Navigation.findNavController(
             requireActivity(),
@@ -55,7 +60,15 @@ class UserFragment : Fragment() {
             return noUserView
         }
 
-        return inflater.inflate(R.layout.fragment_active_user, container, false)
+        val root = inflater.inflate(R.layout.fragment_active_user, container, false)
+
+        val signOut: Button = root.findViewById(R.id.sign_out_button)
+
+        signOut.setOnClickListener {
+            auth.signOut()
+        }
+
+        return root
     }
 
 

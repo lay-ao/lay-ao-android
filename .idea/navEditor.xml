@@ -196,6 +196,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_navigation_user_to_registerFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_navigation_user_to_signInFragment">
                               <value>
                                 <LayoutPositions />
@@ -256,9 +261,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1208" />
-                            <option name="y" value="325" />
+                            <option name="x" value="979" />
+                            <option name="y" value="-370" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_registerFragment_to_navigation_user">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.util.Patterns
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -85,16 +86,21 @@ fun setDiscountPrice(price: Double, discount: Double): Double {
     return price - salePrice
 }
 
+// region VALIDATIONS
+
 fun emptyValidation(
     value: String,
     inputLayout: TextInputLayout
 ): Boolean {
-    return if (value.isEmpty() || value == "") {
-        inputLayout.error = "Field cannot be empty"
-        true
-    } else {
-        inputLayout.error = null
-        false
+    return when {
+        value.isEmpty() || value == "" -> {
+            inputLayout.error = "Field cannot be empty"
+            true
+        }
+        else -> {
+            inputLayout.error = null
+            false
+        }
     }
 }
 
@@ -103,16 +109,83 @@ fun phoneValidation(
     inputLayout: TextInputLayout
 ): Boolean {
 
-    return if (emptyValidation(value, inputLayout)) {
-        true
-    } else if (!value.matches("^0(3|42)\\d+".toRegex())) {
-        inputLayout.error = "Invalid phone number"
-        true
-    } else {
-        inputLayout.error = null
-        false
+    return when {
+        emptyValidation(value, inputLayout) -> {
+            true
+        }
+        !value.matches("^0(3|42)\\d+".toRegex()) || value.length != 11 -> {
+            inputLayout.error = "Invalid phone number"
+            true
+        }
+        else -> {
+            inputLayout.error = null
+            false
+        }
     }
 }
+
+fun emailValidation(
+    value: String,
+    inputLayout: TextInputLayout
+): Boolean {
+
+    return when {
+        emptyValidation(value, inputLayout) -> {
+            true
+        }
+        !Patterns.EMAIL_ADDRESS.matcher(value).matches() -> {
+            inputLayout.error = "Invalid email address"
+            true
+        }
+        else -> {
+            inputLayout.error = null
+            false
+        }
+    }
+}
+
+fun passwordValidation(
+    value: String,
+    inputLayout: TextInputLayout
+) : Boolean {
+
+    return when {
+        emptyValidation(value, inputLayout) -> {
+            true
+        }
+        value.length <= 8 -> {
+            inputLayout.error = "Password should exceed 8 characters"
+            true
+        }
+        else -> {
+            inputLayout.error = null
+            false
+        }
+    }
+}
+
+fun confirmPasswordValidation(
+    value: String,
+    confirmValue: String,
+    inputLayout: TextInputLayout
+) : Boolean {
+
+    return when {
+        passwordValidation(value, inputLayout) -> {
+            true
+        }
+        value != confirmValue -> {
+            inputLayout.error = "Passwords should match"
+            true
+        }
+        else -> {
+            inputLayout.error = null
+            false
+        }
+    }
+}
+
+// endregion
 
 private fun createNotification(
     context: Context,
