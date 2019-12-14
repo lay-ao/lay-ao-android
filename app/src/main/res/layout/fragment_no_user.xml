@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="REGISTER USING EMAIL"
+        android:text="SIGN UP USING EMAIL"
         app:elevation="0.5dp"
         app:icon="@drawable/ic_email"
         app:layout_constraintBottom_toTopOf="@+id/view2"

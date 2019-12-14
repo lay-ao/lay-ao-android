@@ -3,15 +3,29 @@ package com.designbyark.layao.common
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.util.Patterns
+import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.designbyark.layao.R
 import com.designbyark.layao.data.Product
+import com.designbyark.layao.data.User
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,6 +38,7 @@ const val BANNER_COLLECTION = "Banners"
 const val PRODUCTS_COLLECTION = "Products"
 const val BRANDS_COLLECTION = "Brands"
 const val ORDERS_COLLECTION = "Orders"
+const val USERS_COLLECTION = "Users"
 
 // Firebase query fields
 const val TITLE = "title"
@@ -147,7 +162,7 @@ fun emailValidation(
 fun passwordValidation(
     value: String,
     inputLayout: TextInputLayout
-) : Boolean {
+): Boolean {
 
     return when {
         emptyValidation(value, inputLayout) -> {
@@ -168,7 +183,7 @@ fun confirmPasswordValidation(
     value: String,
     confirmValue: String,
     inputLayout: TextInputLayout
-) : Boolean {
+): Boolean {
 
     return when {
         passwordValidation(value, inputLayout) -> {
@@ -237,4 +252,13 @@ fun formatOrderId(orderId: String, phoneNumber: String): String {
     return orderId.slice(10..12).toUpperCase(Locale.getDefault()) +
             phoneNumber.slice(4..6) +
             orderId.takeLast(3)
+}
+
+fun formatGender(code: Int): String {
+    return when (code) {
+        1 -> "Female"
+        2 -> "Male"
+        3 -> "Super Human"
+        else -> "Not specified"
+    }
 }

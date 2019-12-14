@@ -40,4 +40,7 @@ class User {
     @PropertyName("favoriteItems")
     var favoriteItems: List<Favorite> = emptyList()
 
+    @PropertyName("profileImage")
+    var profileImage: String = ""
+
 }

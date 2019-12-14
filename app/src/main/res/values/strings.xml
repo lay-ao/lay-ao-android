@@ -7,7 +7,7 @@
     <string name="title_cart">Cart</string>
     <string name="title_user">You</string>
     <string name="title_order">Orders</string>
-    <string name="title_registration">Registration</string>
+    <string name="title_sign_up">Sign Up</string>
 
     <!-- General menu labels -->
     <string name="title_list">Lists</string>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/full_name_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:hint="Full Name"
+            android:textColorHint="@android:color/darker_gray"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="filled"
+            app:boxStrokeColor="@android:color/holo_green_dark"
+            app:boxStrokeWidth="0.5dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="33"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/full_name_edit_text"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLength="33"
+                android:singleLine="true"
+                android:text="Eduardo Dutra"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Email Address"
+            android:textColorHint="@android:color/darker_gray"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="filled"
+            app:boxStrokeColor="@android:color/holo_green_dark"
+            app:boxStrokeWidth="0.5dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:layout_constraintEnd_toEndOf="@+id/full_name_input_layout"
+            app:layout_constraintStart_toStartOf="@+id/full_name_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/full_name_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_input_edit_text"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textWebEmailAddress|textEmailAddress"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:text="eduardodutra@email.com"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Password"
+            android:textColorHint="@android:color/darker_gray"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="filled"
+            app:boxStrokeColor="@android:color/holo_green_dark"
+            app:boxStrokeWidth="0.5dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="16"
+            app:errorEnabled="true"
+            app:helperTextEnabled="false"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="@+id/email_input_layout"
+            app:layout_constraintStart_toStartOf="@+id/email_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/email_input_layout"
+            app:passwordToggleContentDescription="Show Password"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_input_edit_text"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textWebPassword"
+                android:maxLength="16"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:text="secretpassword"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/confirm_password_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Confirm Password"
+            android:textColorHint="@android:color/darker_gray"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="filled"
+            app:boxStrokeColor="@android:color/holo_green_dark"
+            app:boxStrokeWidth="0.5dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="16"
+            app:errorEnabled="true"
+            app:helperTextEnabled="false"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="@+id/password_input_layout"
+            app:layout_constraintStart_toStartOf="@+id/password_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/password_input_layout"
+            app:passwordToggleContentDescription="Show Password"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirm_password_input_edit_text"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textWebPassword"
+                android:maxLength="16"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:text="secretpassword"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="SIGN UP"
+            app:backgroundTint="@android:color/holo_blue_dark"
+            app:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="@+id/confirm_password_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password_input_layout"
+            app:strokeColor="@android:color/holo_blue_light"
+            app:strokeWidth="1dp" />
+
+        <CheckBox
+            android:id="@+id/terms_and_condition"
+            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:checked="false"
+            android:clickable="true"
+            android:duplicateParentState="true"
+            android:focusable="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
+            app:buttonTint="@android:color/holo_blue_dark"
+            app:layout_constraintStart_toStartOf="@+id/confirm_password_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password_input_layout" />
+
+        <TextView
+            android:id="@+id/terms_and_condition_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Accept our terms and condition"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/terms_and_condition"
+            app:layout_constraintEnd_toStartOf="@+id/register_button"
+            app:layout_constraintStart_toEndOf="@+id/terms_and_condition"
+            app:layout_constraintTop_toTopOf="@+id/terms_and_condition" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/title_sign_up"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/holo_green_dark"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
