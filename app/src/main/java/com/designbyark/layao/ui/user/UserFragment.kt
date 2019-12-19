@@ -19,6 +19,8 @@ import com.designbyark.layao.common.formatGender
 import com.designbyark.layao.data.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
@@ -85,6 +87,24 @@ class UserFragment : Fragment() {
 
         findingViews(root)
 
+        getUserData(userCollection, firebaseUser)
+
+        edit.setOnClickListener {
+            navController.navigate(R.id.action_navigation_user_to_editUserFragment)
+        }
+
+        signOut.setOnClickListener {
+            auth.signOut()
+            navController.navigate(R.id.action_navigation_user_to_signInFragment)
+        }
+
+        return root
+    }
+
+    private fun getUserData(
+        userCollection: CollectionReference,
+        firebaseUser: FirebaseUser
+    ) {
         userCollection.document(firebaseUser.uid)
             .addSnapshotListener { snapshot, e ->
                 e?.printStackTrace()
@@ -129,13 +149,6 @@ class UserFragment : Fragment() {
                     }
                 }
             }
-
-        signOut.setOnClickListener {
-            auth.signOut()
-            navController.navigate(R.id.action_navigation_user_to_signInFragment)
-        }
-
-        return root
     }
 
     private fun findingViews(root: View) {

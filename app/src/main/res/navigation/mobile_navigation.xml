@@ -94,6 +94,13 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_navigation_user_to_editUserFragment"
+            app:destination="@id/editUserFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
 
     <fragment
@@ -208,5 +215,10 @@
             app:popUpTo="@+id/navigation_user"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/editUserFragment"
+        android:name="com.designbyark.layao.EditUserFragment"
+        android:label="fragment_edit_user"
+        tools:layout="@layout/fragment_edit_user" />
 
 </navigation>
