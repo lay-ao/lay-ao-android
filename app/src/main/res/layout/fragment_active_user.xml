@@ -178,7 +178,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/full_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_edit_color_24dp" />
+            app:srcCompat="@drawable/ic_edit_color_24dp"
+            android:clickable="true"
+            android:focusable="true"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

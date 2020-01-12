@@ -200,6 +200,13 @@ fun confirmPasswordValidation(
     }
 }
 
+fun duplicationValue(
+    value: String,
+    confirmValue: String
+): Boolean {
+    return value != confirmValue
+}
+
 // endregion
 
 private fun createNotification(

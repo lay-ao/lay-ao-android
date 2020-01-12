@@ -66,6 +66,7 @@ class SignInFragment : Fragment() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isComplete && task.isSuccessful) {
+                        // TODO SAVE USER DATA TO LOCAL DB
                         navController.navigate(R.id.action_signInFragment_to_navigation_user)
                     } else {
                         Toast.makeText(

@@ -8,6 +8,7 @@
     <string name="title_user">You</string>
     <string name="title_order">Orders</string>
     <string name="title_sign_up">Sign Up</string>
+    <string name="title_edit_user">Edit User</string>
 
     <!-- General menu labels -->
     <string name="title_list">Lists</string>
@@ -51,7 +52,12 @@
         <item>Block R</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="gender">
+        <item>Not comfortable telling</item>
+        <item>Female</item>
+        <item>Male</item>
+        <item>Super Human</item>
+    </string-array>
+
 
 </resources>
