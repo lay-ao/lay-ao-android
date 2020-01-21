@@ -23,7 +23,7 @@ class Order {
     var houseNumber: String = ""
 
     @PropertyName("block")
-    var block: String = ""
+    var block: Int = 0
 
     @PropertyName("address")
     var completeAddress: String = ""

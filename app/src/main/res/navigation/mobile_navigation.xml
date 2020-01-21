@@ -177,6 +177,20 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
 
     <fragment
@@ -231,7 +245,7 @@
     </fragment>
     <fragment
         android:id="@+id/editUserFragment"
-        android:name="com.designbyark.layao.EditUserFragment"
+        android:name="com.designbyark.layao.ui.user.EditUserFragment"
         android:label="@string/title_edit_user"
         tools:layout="@layout/fragment_edit_user" >
         <action

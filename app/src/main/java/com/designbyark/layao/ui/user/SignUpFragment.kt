@@ -126,7 +126,7 @@ class SignUpFragment : Fragment() {
         userModel.wallet = 0.0
         userModel.completeAddress = ""
         userModel.houseNumber = ""
-        userModel.blockNumber = ""
+        userModel.blockNumber = 0
         userModel.contact = ""
         userModel.gender = 0
         userModel.favoriteItems = emptyList()

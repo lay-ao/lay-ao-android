@@ -57,6 +57,16 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_checkoutFragment_to_signInFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_checkoutFragment_to_signUpFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>

@@ -1,4 +1,4 @@
-package com.designbyark.layao
+package com.designbyark.layao.ui.user
 
 
 import android.os.Bundle
@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.common.duplicationValue
@@ -36,18 +37,20 @@ class EditUserFragment : Fragment() {
     private lateinit var emailInputLayout: TextInputLayout
     private lateinit var emailEditText: TextInputEditText
 
-    private lateinit var addressInputLayout: TextInputLayout
-    private lateinit var addressEditText: TextInputEditText
+    private lateinit var homeNoInputLayout: TextInputLayout
+    private lateinit var homeNoEditText: TextInputEditText
 
     private lateinit var contactInputLayout: TextInputLayout
     private lateinit var contactEditText: TextInputEditText
 
     private lateinit var genderSpinner: Spinner
+    private lateinit var blockSpinner: Spinner
 
     private lateinit var deleteButton: Button
     private lateinit var editButton: Button
 
     private lateinit var userDoc: DocumentReference
+
     private var user: User? = null
 
     override fun onCreateView(
@@ -93,11 +96,17 @@ class EditUserFragment : Fragment() {
         val fullName = fullNameEditText.text.toString().trim()
         if (emptyValidation(fullName, fullNameInputLayout)) return
 
-        val address = addressEditText.text.toString().trim()
-        if (emptyValidation(address, addressInputLayout)) return
+        val houseNumber = homeNoEditText.text.toString().trim()
+        if (emptyValidation(houseNumber, homeNoInputLayout)) return
 
         val contact = contactEditText.text.toString().trim()
         if (emptyValidation(contact, contactInputLayout)) return
+
+        if (blockSpinner.selectedItemPosition == 0) {
+            Toast.makeText(requireContext(), "Kindly select block number", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
 
         // Check for duplicate values
         if (duplicationValue(user!!.fullName, fullName)) {
@@ -105,9 +114,9 @@ class EditUserFragment : Fragment() {
             Toast.makeText(requireContext(), "Name updated", Toast.LENGTH_SHORT).show()
         }
 
-        if (duplicationValue(user!!.completeAddress, address)) {
-            userDoc.update("completeAddress", address)
-            Toast.makeText(requireContext(), "Address updated", Toast.LENGTH_SHORT).show()
+        if (duplicationValue(user!!.houseNumber, houseNumber)) {
+            userDoc.update("houseNumber", houseNumber)
+            Toast.makeText(requireContext(), "House Number updated", Toast.LENGTH_SHORT).show()
         }
 
         if (duplicationValue(user!!.contact, contact)) {
@@ -115,9 +124,20 @@ class EditUserFragment : Fragment() {
             Toast.makeText(requireContext(), "Contact updated", Toast.LENGTH_SHORT).show()
         }
 
+        if (blockSpinner.selectedItemPosition != 0) {
+            userDoc.update("blockNumber", blockSpinner.selectedItemPosition)
+            userDoc.update(
+                "completeAddress",
+                "House #$houseNumber, ${blockSpinner.selectedItem}, Wapda Town, " +
+                        "Lahore, Punjab, Pakistan"
+            )
+            Toast.makeText(requireContext(), "Block Number updated", Toast.LENGTH_SHORT).show()
+        }
+
+
         if (genderSpinner.selectedItemPosition != user!!.gender) {
             userDoc.update("gender", genderSpinner.selectedItemPosition)
-            Toast.makeText(requireContext(), "Contact updated", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Gender updated", Toast.LENGTH_SHORT).show()
         }
 
         navController.navigate(R.id.action_editUserFragment_to_navigation_user)
@@ -138,9 +158,12 @@ class EditUserFragment : Fragment() {
                 if (user != null) {
                     fullNameEditText.setText(user!!.fullName, TextView.BufferType.EDITABLE)
                     emailEditText.setText(user!!.email, TextView.BufferType.EDITABLE)
-                    addressEditText.setText(user!!.completeAddress, TextView.BufferType.EDITABLE)
+                    homeNoEditText.setText(user!!.houseNumber, TextView.BufferType.EDITABLE)
                     contactEditText.setText(user!!.contact, TextView.BufferType.EDITABLE)
                     genderSpinner.setSelection(user!!.gender)
+                    if (user!!.blockNumber != 0) {
+                        blockSpinner.setSelection(user!!.blockNumber)
+                    }
                 }
             }
         }
@@ -153,13 +176,14 @@ class EditUserFragment : Fragment() {
             fullNameEditText = findViewById(R.id.full_name_edit_text)
             emailInputLayout = findViewById(R.id.email_input_layout)
             emailEditText = findViewById(R.id.email_input_edit_text)
-            addressInputLayout = findViewById(R.id.address_input_layout)
-            addressEditText = findViewById(R.id.address_edit_text)
+            homeNoInputLayout = findViewById(R.id.house_no_input_layout)
+            homeNoEditText = findViewById(R.id.house_no_edit_text)
             contactInputLayout = findViewById(R.id.contact_input_layout)
             contactEditText = findViewById(R.id.contact_edit_text)
             genderSpinner = findViewById(R.id.gender_spinner)
             deleteButton = findViewById(R.id.delete_button)
             editButton = findViewById(R.id.edit_button)
+            blockSpinner = findViewById(R.id.block_spinner)
         }
     }
 

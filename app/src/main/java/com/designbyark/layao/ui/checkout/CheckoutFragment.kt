@@ -7,10 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -23,11 +20,13 @@ import com.designbyark.layao.common.displayNotification
 import com.designbyark.layao.common.emptyValidation
 import com.designbyark.layao.common.phoneValidation
 import com.designbyark.layao.data.Order
+import com.designbyark.layao.data.User
 import com.designbyark.layao.ui.cart.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
@@ -40,6 +39,8 @@ class CheckoutFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var cartViewModel: CartViewModel
     private lateinit var orderCollection: CollectionReference
+    private lateinit var userCollection: CollectionReference
+    private lateinit var firebaseUser: FirebaseAuth
 
     private lateinit var grandTotalView: TextView
     private lateinit var totalItemsView: TextView
@@ -48,6 +49,7 @@ class CheckoutFragment : Fragment() {
     private lateinit var totalView: TextView
 
     private lateinit var placeOrder: Button
+    private lateinit var retrieveData: Button
 
     private lateinit var blocks: Spinner
 
@@ -79,6 +81,7 @@ class CheckoutFragment : Fragment() {
 
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         val firebase = FirebaseFirestore.getInstance()
+        firebaseUser = FirebaseAuth.getInstance()
         orderCollection = firebase.collection("Orders")
 
         (requireActivity() as AppCompatActivity).run {
@@ -98,6 +101,17 @@ class CheckoutFragment : Fragment() {
         bottomMenu.visibility = View.GONE
 
         findingViews(root)
+
+        val blocksAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.blocks, android.R.layout.simple_spinner_dropdown_item
+        )
+        blocksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        blocks.adapter = blocksAdapter
+
+        if (firebaseUser.currentUser == null) {
+            retrieveData.visibility = View.GONE
+        }
 
         val deliveryFee = 30.0
         val totalAmount = grandTotal + deliveryFee
@@ -125,6 +139,11 @@ class CheckoutFragment : Fragment() {
 
         placeOrder.setOnClickListener {
 
+            if (firebaseUser.currentUser == null) {
+                showLoginInfo()
+                return@setOnClickListener
+            }
+
             val fullName = fullNameEditText.text.toString().trim()
             val phoneNumber = phoneNumberEditText.text.toString().trim()
             val houseNumber = houseNoEditText.text.toString().trim()
@@ -140,15 +159,15 @@ class CheckoutFragment : Fragment() {
             }
 
             val order = Order()
-            order.fullName = fullName
-            order.contactNumber = phoneNumber
-            order.houseNumber = houseNumber
-            order.block = blocks.selectedItem.toString()
+            order.fullName = fullName.trim()
+            order.contactNumber = phoneNumber.trim()
+            order.houseNumber = houseNumber.trim()
+            order.block = blocks.selectedItemPosition
             order.completeAddress = "House #$houseNumber, ${blocks.selectedItem}, Wapda Town"
             if (comment.isBlank() || comment.isEmpty()) {
                 order.comment = "No comments added!"
             } else {
-                order.comment = comment
+                order.comment = comment.trim()
             }
             order.items = cartViewModel.allCartItems.value!!
             order.orderTime = Timestamp.now()
@@ -175,6 +194,40 @@ class CheckoutFragment : Fragment() {
                 }
         }
 
+
+        retrieveData.setOnClickListener {
+            userCollection = firebase.collection("Users")
+            userCollection.document(firebaseUser.currentUser!!.uid).get()
+                .addOnSuccessListener {
+                    val model = it.toObject(User::class.java)
+                    if (model != null) {
+
+                        if (model.fullName.isEmpty()) {
+                            fullNameInputLayout.error = "No name found!"
+                        } else {
+                            fullNameEditText.setText(model.fullName, TextView.BufferType.EDITABLE)
+                        }
+
+                        if (model.contact.isEmpty()) {
+                            phoneNumberInputLayout.error = "No phone number found!"
+                        } else {
+                            phoneNumberEditText.setText(model.contact, TextView.BufferType.EDITABLE)
+                        }
+
+                        if (model.houseNumber.isEmpty()) {
+                            houseNoInputLayout.error = "No house number found!"
+                        } else {
+                            houseNoEditText.setText(model.houseNumber, TextView.BufferType.EDITABLE)
+                        }
+
+                        if (model.blockNumber != 0) {
+                            blocks.setSelection(model.blockNumber)
+                        }
+
+                    }
+                }
+        }
+
         return root
     }
 
@@ -186,6 +239,7 @@ class CheckoutFragment : Fragment() {
         addressHelp = root.findViewById(R.id.address_help)
         totalView = root.findViewById(R.id.total)
         placeOrder = root.findViewById(R.id.place_order)
+        retrieveData = root.findViewById(R.id.retrieve_data)
         blocks = root.findViewById(R.id.block_spinner)
         fullNameInputLayout = root.findViewById(R.id.full_name_input_layout)
         fullNameEditText = root.findViewById(R.id.full_name_edit_text)
@@ -213,6 +267,23 @@ class CheckoutFragment : Fragment() {
             .setIcon(R.drawable.ic_delivery)
             .setMessage("Our delivery service is limited to Wapda Town Phase 1 & 2 only.")
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showLoginInfo() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Login")
+            .setIcon(R.drawable.ic_delivery)
+            .setMessage("Sign up or Login to place order.")
+            .setPositiveButton("Sign Up") { dialog, _ ->
+                navController.navigate(R.id.action_checkoutFragment_to_signUpFragment)
+            }
+            .setNegativeButton("Login") { dialog, _ ->
+                navController.navigate(R.id.action_checkoutFragment_to_signInFragment)
+            }
+            .setNeutralButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

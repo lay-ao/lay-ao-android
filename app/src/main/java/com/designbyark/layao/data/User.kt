@@ -29,7 +29,7 @@ class User {
     var houseNumber: String = ""
 
     @PropertyName("blockNumber")
-    var blockNumber: String = ""
+    var blockNumber: Int = 0
 
     @PropertyName("contact")
     var contact: String = ""
