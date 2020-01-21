@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.data.Product
 import com.designbyark.layao.data.User
+import com.designbyark.layao.data.favorite.Favorite
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
@@ -26,8 +27,10 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import java.io.ByteArrayOutputStream
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashSet
 
 // Logging
 const val LOG_TAG = "LAYAO_LOG"
@@ -268,4 +271,18 @@ fun formatGender(code: Int): String {
         3 -> "Super Human"
         else -> "Not specified"
     }
+}
+
+fun listOutput(favList: List<Favorite>): String {
+    val stringBuilder = StringBuilder()
+    for (favorite in favList) {
+        stringBuilder.append(favorite.dbId)
+        stringBuilder.append(", ")
+        stringBuilder.append(favorite.favorite)
+        stringBuilder.append(", ")
+        stringBuilder.append(favorite.image)
+        stringBuilder.append(", ")
+        stringBuilder.append(favorite.title)
+    }
+    return stringBuilder.toString()
 }

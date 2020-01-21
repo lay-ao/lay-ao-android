@@ -36,6 +36,7 @@ class UserFragment : Fragment() {
     private lateinit var contactView: TextView
     private lateinit var genderView: TextView
     private lateinit var favoriteItemsLabel: TextView
+    private lateinit var editFavorites: TextView
 
     private lateinit var favoriteItems: RecyclerView
 
@@ -86,7 +87,6 @@ class UserFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_active_user, container, false)
 
         findingViews(root)
-
         getUserData(userCollection, firebaseUser)
 
         edit.setOnClickListener {
@@ -96,6 +96,10 @@ class UserFragment : Fragment() {
         signOut.setOnClickListener {
             auth.signOut()
             navController.navigate(R.id.action_navigation_user_to_signInFragment)
+        }
+
+        editFavorites.setOnClickListener {
+            navController.navigate(R.id.action_navigation_user_to_favoritesFragment)
         }
 
         return root
@@ -138,14 +142,11 @@ class UserFragment : Fragment() {
                         if (model.favoriteItems.isEmpty()) {
                             favoriteItems.visibility = View.GONE
                             favoriteItemsLabel.text = "No Favorite Items Yet!"
-                            favoriteItemsLabel.setTextColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    android.R.color.holo_purple
-                                )
-                            )
                         }
 
+                        val favList = UserFavoriteAdapter(requireContext(), navController)
+                        favList.setItems(model.favoriteItems)
+                        favoriteItems.adapter = favList
                     }
                 }
             }
@@ -163,6 +164,7 @@ class UserFragment : Fragment() {
             signOut = findViewById(R.id.sign_out_button)
             edit = findViewById(R.id.edit_button)
             favoriteItemsLabel = findViewById(R.id.favorite_items_label)
+            editFavorites = findViewById(R.id.edit_favorites)
         }
     }
 

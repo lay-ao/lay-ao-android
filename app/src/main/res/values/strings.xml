@@ -14,7 +14,7 @@
     <string name="title_list">Lists</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_info">Info</string>
-    <string name="title_sync">Sync</string>
+    <string name="title_delete">Delete</string>
 
     <!-- Wapda Town Blocks -->
     <string-array name="blocks">
