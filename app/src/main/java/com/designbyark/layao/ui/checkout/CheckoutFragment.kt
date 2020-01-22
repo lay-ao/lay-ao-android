@@ -15,10 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
-import com.designbyark.layao.common.LOG_TAG
-import com.designbyark.layao.common.displayNotification
-import com.designbyark.layao.common.emptyValidation
-import com.designbyark.layao.common.phoneValidation
+import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.User
 import com.designbyark.layao.ui.cart.CartViewModel
@@ -171,21 +168,24 @@ class CheckoutFragment : Fragment() {
             }
             order.items = cartViewModel.allCartItems.value!!
             order.orderTime = Timestamp.now()
-            order.orderStatus = 1
+            order.orderStatus = 0
             order.totalItems = totalItems
             order.grandTotal = grandTotal
 
             orderCollection.add(order)
                 .addOnSuccessListener { documentReference ->
                     Toast.makeText(requireContext(), "Order Placed!", Toast.LENGTH_LONG).show()
+                    orderCollection.document(documentReference.id)
+                        .update("orderId", documentReference.id)
                     displayNotification(
                         requireContext(),
                         R.drawable.ic_favorite_color_24dp,
                         "Order received",
-                        "Your order is placed. You will be receiving the order soon."
+                        "Thank you for placing your order. Your order id is ${formatOrderId(
+                            documentReference.id,
+                            phoneNumber.trim()
+                        )}. Kindly, contact on our helpline for any further assistance. Thank you."
                     )
-                    orderCollection.document(documentReference.id)
-                        .update("orderId", documentReference.id)
                     cartViewModel.deleteCart()
                     navController.navigate(R.id.action_checkoutFragment_to_navigation_home)
                 }

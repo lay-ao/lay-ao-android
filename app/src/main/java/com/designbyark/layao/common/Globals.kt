@@ -250,10 +250,10 @@ fun getOrderStatus(status: Int): String {
         0 -> "Processing Order"
         1 -> "Order Active"
         2 -> "Order on the way"
-        3 -> "Order arrived"
-        4 -> "Order delayed"
-        5 -> "Order received"
-        6 -> "Order cancelled"
+        3 -> "Order Arrived"
+        4 -> "Order Delayed"
+        5 -> "Order Received"
+        6 -> "Order Cancelled"
         else -> return "Status Unknown"
     }
 }
