@@ -221,9 +221,6 @@ class HomeFragment : Fragment(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.general_lists -> {
-                true
-            }
             R.id.general_favorites -> {
                 navController.navigate(R.id.action_navigation_home_to_favoritesFragment)
                 true
