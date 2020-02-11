@@ -3,6 +3,7 @@ package com.designbyark.layao.ui.orders
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.designbyark.layao.R
 import com.designbyark.layao.common.displayNotification
@@ -29,14 +30,54 @@ class OrderAdapter internal constructor(
 
         holder.run {
             when (model.orderStatus) {
-                0 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_orange_dark)
-                1 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_green_dark)
-                2 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_blue_dark)
-                3 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_purple)
-                4 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_red_light)
-                5 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_green_dark)
-                6 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_red_dark)
-                else -> setOrderStatus(model.orderStatus, context, android.R.color.black)
+                0 -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.holo_orange_dark,
+                    View.VISIBLE
+                )
+                1 -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.holo_green_dark,
+                    View.VISIBLE
+                )
+                2 -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.holo_blue_dark,
+                    View.GONE
+                )
+                3 -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.holo_purple,
+                    View.GONE
+                )
+                4 -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.holo_red_light,
+                    View.VISIBLE
+                )
+                5 -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.holo_green_dark,
+                    View.GONE
+                )
+                6 -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.holo_red_dark,
+                    View.GONE
+                )
+                else -> setOrderStatus(
+                    model.orderStatus,
+                    context,
+                    android.R.color.black,
+                    View.VISIBLE
+                )
             }
             setOrderId(model.orderId, model.contactNumber)
             setCustomerName(model.fullName)

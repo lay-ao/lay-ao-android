@@ -37,10 +37,6 @@ class CategoryAdapter internal constructor(
     inner class CategoryViewHolder internal constructor(private val view: View) :
         RecyclerView.ViewHolder(view) {
 
-//        internal fun setTitle(title: String) {
-//            val textView: TextView = view.findViewById(R.id.title)
-//            textView.text = title
-//        }
 
         internal fun setImage(context: Context, image: String) {
             val imageView: ImageView = view.findViewById(R.id.image)

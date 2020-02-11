@@ -42,6 +42,13 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_navigation_home_to_brandsListFragment"
+            app:destination="@id/brandsListFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
 
     </fragment>
 
@@ -205,6 +212,13 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_navigation_orders_to_navigation_user"
+            app:destination="@id/navigation_user"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailFragment"
@@ -251,6 +265,19 @@
         <action
             android:id="@+id/action_editUserFragment_to_navigation_user"
             app:destination="@id/navigation_user"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/brandsListFragment"
+        android:name="com.designbyark.layao.ui.brands.BrandsListFragment"
+        android:label="fragment_brands_list"
+        tools:layout="@layout/fragment_brands_list" >
+        <action
+            android:id="@+id/action_brandsListFragment_to_productListFragment"
+            app:destination="@id/productListFragment"
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_open_enter"

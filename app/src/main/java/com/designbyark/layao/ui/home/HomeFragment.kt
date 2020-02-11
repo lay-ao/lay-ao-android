@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -66,6 +66,10 @@ class HomeFragment : Fragment(),
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
+        val moreDiscountItems: TextView = root.findViewById(R.id.more_discount_items)
+        val moreNewArrivals: TextView = root.findViewById(R.id.more_new_arrival)
+        val moreBrands: TextView = root.findViewById(R.id.more_brands)
+
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
 
@@ -77,19 +81,34 @@ class HomeFragment : Fragment(),
         getNewArrivalData(root, productsCollection)
         getBrandsData(root, firestore)
 
+        moreDiscountItems.setOnClickListener {
+            navController.navigate(R.id.action_nav_productListFragment)
+        }
+
+        moreNewArrivals.setOnClickListener {
+            val args = Bundle()
+            args.putString(PASSED_ID, "newArrival")
+            navController.navigate(R.id.action_nav_productListFragment, args)
+        }
+
+        moreBrands.setOnClickListener {
+            navController.navigate(R.id.action_navigation_home_to_brandsListFragment)
+        }
+
         return root
     }
 
     private fun getBannerData(root: View, firestore: FirebaseFirestore) {
 
-        // Capturing recycler view
+        // Getting recycler view
         val recyclerView: RecyclerView = root.findViewById(R.id.banner_recycler_view)
 
         // Getting collection reference from firestore
         val collection = firestore.collection(BANNER_COLLECTION)
 
         // Applying query to collection reference
-        val query = collection.whereEqualTo(ACTIVE, true)
+        val query = collection
+            .whereEqualTo(ACTIVE, true)
             .orderBy("validity", Query.Direction.ASCENDING)
 
         // Setting query with model class
@@ -99,7 +118,7 @@ class HomeFragment : Fragment(),
 
         mBannerAdapter = BannerAdapter(options, this, requireActivity())
         // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireContext())
+        setHorizontalListLayout(recyclerView, requireContext())
         recyclerView.adapter = mBannerAdapter
 
     }
@@ -119,7 +138,7 @@ class HomeFragment : Fragment(),
         mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireContext())
+        setHorizontalListLayout(recyclerView, requireContext())
         recyclerView.adapter = mDiscountItemsAdapter
     }
 
@@ -138,7 +157,7 @@ class HomeFragment : Fragment(),
         mNewArrivalAdapter = NewArrivalAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireActivity())
+        setHorizontalListLayout(recyclerView, requireActivity())
         recyclerView.adapter = mNewArrivalAdapter
     }
 
@@ -161,7 +180,7 @@ class HomeFragment : Fragment(),
         mBrandsAdapter = BrandsAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
-        setListLayout(recyclerView, requireContext())
+        setHorizontalListLayout(recyclerView, requireContext())
         recyclerView.adapter = mBrandsAdapter
     }
 

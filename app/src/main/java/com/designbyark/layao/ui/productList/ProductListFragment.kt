@@ -29,6 +29,7 @@ import java.util.*
 class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickListener {
 
     private var brandId: String? = null
+    private var newArrivalId: String? = null
 
     private lateinit var navController: NavController
     private lateinit var favoriteViewModel: FavoriteViewModel
@@ -38,6 +39,7 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         super.onCreate(savedInstanceState)
         arguments?.let {
             brandId = it.getString(HomeFragment.BRAND_ID)
+            newArrivalId = it.getString(HomeFragment.PASSED_ID)
         }
     }
 
@@ -52,7 +54,13 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setTitle(brandId?.toUpperCase(Locale.ENGLISH))
+            if (brandId != null) {
+                supportActionBar?.setTitle(brandId?.toUpperCase(Locale.ENGLISH))
+            } else if (newArrivalId != null) {
+                supportActionBar?.setTitle("New Arrival")
+            } else {
+                supportActionBar?.setTitle("Items on Discount")
+            }
         }
         setHasOptionsMenu(true)
 
@@ -63,8 +71,20 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
         val root = inflater.inflate(R.layout.fragment_product_list, container, false)
 
-        val query = collection.whereEqualTo("brand", brandId)
-            .orderBy(TITLE, Query.Direction.ASCENDING)
+        val query: Query?
+
+        if (brandId != null) {
+            query = collection.whereEqualTo("brand", brandId)
+                .orderBy(TITLE, Query.Direction.ASCENDING)
+        } else if (newArrivalId != null) {
+            query = collection.whereEqualTo("newArrival", true)
+                .orderBy(TITLE, Query.Direction.ASCENDING)
+        } else {
+            query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
+        }
+
+//        val query = collection.whereEqualTo("brand", brandId)
+//            .orderBy(TITLE, Query.Direction.ASCENDING)
 
         getData(root, query)
 
@@ -94,7 +114,12 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
+            android.R.id.home -> {
+                // Clearing all passed ids
+                brandId = ""
+                newArrivalId = ""
+                navController.navigateUp()
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

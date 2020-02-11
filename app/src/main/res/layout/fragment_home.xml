@@ -29,7 +29,7 @@
             android:fontFamily="cursive"
             android:includeFontPadding="true"
             android:padding="10dp"
-            android:text="Items on Discxount"
+            android:text="Items on Discount"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/black"
             android:typeface="normal"

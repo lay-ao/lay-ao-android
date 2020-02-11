@@ -160,21 +160,60 @@ class OrderDetailFragment : Fragment() {
     private fun setOrderStatus(status: Int) {
         statusView.text = getOrderStatus(status)
         when (status) {
-            0 -> setTextColor(android.R.color.holo_orange_dark, cancelOrder, View.VISIBLE)
-            1 -> setTextColor(android.R.color.holo_green_dark, cancelOrder, View.VISIBLE)
-            2 -> setTextColor(android.R.color.holo_blue_dark, cancelOrder, View.INVISIBLE)
-            3 -> setTextColor(android.R.color.holo_purple, cancelOrder, View.INVISIBLE)
-            4 -> setTextColor(android.R.color.holo_red_light, cancelOrder, View.VISIBLE)
-            5 -> setTextColor(android.R.color.holo_green_dark, cancelOrder, View.INVISIBLE)
-            6 -> setTextColor(android.R.color.holo_red_dark, cancelOrder, View.INVISIBLE)
-            else -> setTextColor(android.R.color.black, cancelOrder, View.VISIBLE)
+            0 -> setTextColor(
+                android.R.color.holo_orange_dark,
+                cancelOrder,
+                View.VISIBLE,
+                requireContext()
+            )
+            1 -> setTextColor(
+                android.R.color.holo_green_dark,
+                cancelOrder,
+                View.VISIBLE,
+                requireContext()
+            )
+            2 -> setTextColor(
+                android.R.color.holo_blue_dark,
+                cancelOrder,
+                View.INVISIBLE,
+                requireContext()
+            )
+            3 -> setTextColor(
+                android.R.color.holo_purple,
+                cancelOrder,
+                View.INVISIBLE,
+                requireContext()
+            )
+            4 -> setTextColor(
+                android.R.color.holo_red_light,
+                cancelOrder,
+                View.VISIBLE,
+                requireContext()
+            )
+            5 -> setTextColor(
+                android.R.color.holo_green_dark,
+                cancelOrder,
+                View.INVISIBLE,
+                requireContext()
+            )
+            6 -> setTextColor(
+                android.R.color.holo_red_dark,
+                cancelOrder,
+                View.INVISIBLE,
+                requireContext()
+            )
+            else -> setTextColor(android.R.color.black, cancelOrder, View.VISIBLE, requireContext())
         }
     }
 
-    private fun setTextColor(@ColorRes color: Int, button: Button, visibility: Int) {
+    private fun setTextColor(
+        @ColorRes color: Int, button: Button,
+        visibility: Int,
+        context: Context
+    ) {
         statusView.setTextColor(
             ContextCompat.getColor(
-                requireContext(),
+                context,
                 color
             )
         )

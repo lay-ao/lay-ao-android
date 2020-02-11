@@ -171,6 +171,7 @@ class CheckoutFragment : Fragment() {
             order.orderStatus = 0
             order.totalItems = totalItems
             order.grandTotal = grandTotal
+            order.userId = firebaseUser.uid!!
 
             orderCollection.add(order)
                 .addOnSuccessListener { documentReference ->

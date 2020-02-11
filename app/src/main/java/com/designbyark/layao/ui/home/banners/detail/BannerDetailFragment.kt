@@ -51,6 +51,7 @@ class BannerDetailFragment : Fragment() {
         val collection = firestore.collection(BANNER_COLLECTION)
         val document = bannerId?.let { collection.document(it) }
 
+
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle(null)

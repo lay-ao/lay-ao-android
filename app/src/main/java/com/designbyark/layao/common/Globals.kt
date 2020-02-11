@@ -56,7 +56,7 @@ const val CHANNEL_DESC = "Default channels is for testing"
 
 
 // RecyclerView Helper Methods
-fun setListLayout(recyclerView: RecyclerView, context: Context) {
+fun setHorizontalListLayout(recyclerView: RecyclerView, context: Context) {
     val layoutManager = LinearLayoutManager(
         context,
         LinearLayoutManager.HORIZONTAL, false

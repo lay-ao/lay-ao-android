@@ -1,6 +1,7 @@
 package com.designbyark.layao.ui.home.banners
 
 import android.content.Context
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ class BannerAdapter internal constructor(
 ) : FirestoreRecyclerAdapter<Banner, BannerAdapter.BannerViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(context)
             .inflate(R.layout.body_banner, parent, false)
         return BannerViewHolder(view)
     }
@@ -34,13 +35,10 @@ class BannerAdapter internal constructor(
         }
     }
 
+
+
     inner class BannerViewHolder internal constructor(private val view: View) :
         RecyclerView.ViewHolder(view) {
-
-//        internal fun setTitle(title: String) {
-//            val textView: TextView = view.findViewById(R.id.title)
-//            textView.text = title
-//        }
 
         internal fun setImage(image: String, context: Context) {
             val imageView: ImageView = view.findViewById(R.id.image)

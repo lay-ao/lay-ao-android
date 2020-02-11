@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
@@ -18,10 +19,11 @@ class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val cancelOrder: Button = itemView.findViewById(R.id.cancel_order)
 
-    internal fun setOrderStatus(status: Int, context: Context, @ColorRes color: Int) {
+    internal fun setOrderStatus(status: Int, context: Context, @ColorRes color: Int, visibility: Int) {
         val textView: TextView = itemView.findViewById(R.id.order_id)
         textView.text = getOrderStatus(status)
         textView.setTextColor(ContextCompat.getColor(context, color))
+        cancelOrder.visibility = visibility
     }
 
     internal fun setOrderId(orderId: String, phoneNumber: String) {

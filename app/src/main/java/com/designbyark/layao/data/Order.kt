@@ -47,4 +47,7 @@ class Order {
     @PropertyName("grand_total")
     var grandTotal: Double = 0.0
 
+    @PropertyName("userId")
+    var userId: String = ""
+
 }
