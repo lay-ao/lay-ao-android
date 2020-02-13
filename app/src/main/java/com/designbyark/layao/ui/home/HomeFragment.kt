@@ -1,10 +1,7 @@
 package com.designbyark.layao.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -236,6 +233,10 @@ class HomeFragment : Fragment(),
         val args = Bundle()
         args.putString(BRAND_ID, brandId)
         navController.navigate(R.id.action_nav_productListFragment, args)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.general_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

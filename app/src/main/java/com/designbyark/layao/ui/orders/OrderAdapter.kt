@@ -10,6 +10,7 @@ import com.designbyark.layao.common.displayNotification
 import com.designbyark.layao.data.Order
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 
 class OrderAdapter internal constructor(

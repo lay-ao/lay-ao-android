@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
+import com.designbyark.layao.common.circularProgressBar
 import com.designbyark.layao.data.Banner
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -35,14 +37,16 @@ class BannerAdapter internal constructor(
         }
     }
 
-
-
     inner class BannerViewHolder internal constructor(private val view: View) :
         RecyclerView.ViewHolder(view) {
 
         internal fun setImage(image: String, context: Context) {
+
             val imageView: ImageView = view.findViewById(R.id.image)
-            Glide.with(context).load(image).into(imageView)
+            Glide.with(context)
+                .load(image)
+                .placeholder(circularProgressBar(context))
+                .into(imageView)
         }
     }
 

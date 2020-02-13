@@ -75,6 +75,12 @@ class SignUpFragment : Fragment() {
         findingViews(root)
 
         registerButton.setOnClickListener {
+
+            if (!isConnectedToInternet(requireContext())) {
+                Log.e(LOG_TAG, "Not connected to the internet!")
+                return@setOnClickListener
+            }
+
             startRegistrationProcess(auth, userCollection)
         }
 

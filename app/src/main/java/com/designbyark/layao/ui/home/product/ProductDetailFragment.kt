@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
+import com.designbyark.layao.common.circularProgressBar
 import com.designbyark.layao.common.setDiscountPrice
 import com.designbyark.layao.common.setQuantityPrice
 import com.designbyark.layao.data.Product
@@ -145,7 +146,8 @@ class ProductDetailFragment : Fragment() {
                 unit = model.unit
                 stock = model.stock.toDouble()
 
-                Glide.with(requireActivity()).load(model.image).into(mImage)
+                Glide.with(requireContext()).load(model.image)
+                    .placeholder(circularProgressBar(requireContext())).into(mImage)
                 mTitle.text = model.title
                 (requireActivity() as AppCompatActivity).run {
                     supportActionBar?.setTitle(model.title)

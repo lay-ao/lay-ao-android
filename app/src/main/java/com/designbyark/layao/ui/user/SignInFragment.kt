@@ -2,6 +2,7 @@ package com.designbyark.layao.ui.user
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
@@ -11,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.emailValidation
+import com.designbyark.layao.common.isConnectedToInternet
 import com.designbyark.layao.common.passwordValidation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
@@ -56,6 +59,11 @@ class SignInFragment : Fragment() {
         findingViews(root)
 
         signInButton.setOnClickListener {
+
+            if (!isConnectedToInternet(requireContext())) {
+                Log.e(LOG_TAG, "Not connected to the internet!")
+                return@setOnClickListener
+            }
 
             val email = emailEditText.text.toString()
             if (emailValidation(email, emailInputLayout)) return@setOnClickListener

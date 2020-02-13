@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,7 +16,7 @@
             android:layout_marginTop="16dp"
             android:text="SIGN OUT"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/favorite_items_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@+id/gender" />
 
         <TextView
             android:id="@+id/full_name"
@@ -124,28 +123,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
         <TextView
-            android:id="@+id/favorite_items_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Favorite Items"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/gender"
-            app:layout_constraintTop_toBottomOf="@+id/gender" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favorite_items_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="4dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/favorite_items_label"
-            app:layout_constraintTop_toBottomOf="@+id/favorite_items_label" />
-
-        <TextView
             android:id="@+id/textView31"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -183,16 +160,6 @@
             app:srcCompat="@drawable/ic_edit_color_24dp"
             android:clickable="true"
             android:focusable="true"/>
-
-        <TextView
-            android:id="@+id/edit_favorites"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:text="Edit Favorites"
-            app:layout_constraintBottom_toBottomOf="@+id/favorite_items_label"
-            app:layout_constraintEnd_toEndOf="@+id/gender"
-            app:layout_constraintTop_toTopOf="@+id/favorite_items_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

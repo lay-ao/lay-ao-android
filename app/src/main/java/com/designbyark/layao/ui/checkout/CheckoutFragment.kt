@@ -136,6 +136,11 @@ class CheckoutFragment : Fragment() {
 
         placeOrder.setOnClickListener {
 
+            if (!isConnectedToInternet(requireContext())) {
+                Log.e(LOG_TAG, "Not connected to the internet!")
+                return@setOnClickListener
+            }
+
             if (firebaseUser.currentUser == null) {
                 showLoginInfo()
                 return@setOnClickListener

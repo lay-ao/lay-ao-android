@@ -2,20 +2,21 @@ package com.designbyark.layao.ui.user
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
+import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.common.formatGender
+import com.designbyark.layao.common.isConnectedToInternet
 import com.designbyark.layao.data.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -35,10 +36,6 @@ class UserFragment : Fragment() {
     private lateinit var addressView: TextView
     private lateinit var contactView: TextView
     private lateinit var genderView: TextView
-    private lateinit var favoriteItemsLabel: TextView
-    private lateinit var editFavorites: TextView
-
-    private lateinit var favoriteItems: RecyclerView
 
     private lateinit var signOut: Button
 
@@ -94,12 +91,14 @@ class UserFragment : Fragment() {
         }
 
         signOut.setOnClickListener {
+
+            if (!isConnectedToInternet(requireContext())) {
+                Log.e(LOG_TAG, "Not connected to the internet!")
+                return@setOnClickListener
+            }
+
             auth.signOut()
             navController.navigate(R.id.action_navigation_user_to_signInFragment)
-        }
-
-        editFavorites.setOnClickListener {
-            navController.navigate(R.id.action_navigation_user_to_favoritesFragment)
         }
 
         return root
@@ -138,15 +137,6 @@ class UserFragment : Fragment() {
                             contactView.text = model.contact
                         }
                         genderView.text = formatGender(model.gender)
-
-                        if (model.favoriteItems.isEmpty()) {
-                            favoriteItems.visibility = View.GONE
-                            favoriteItemsLabel.text = "No Favorite Items Yet!"
-                        }
-
-                        val favList = UserFavoriteAdapter(requireContext(), navController)
-                        favList.setItems(model.favoriteItems)
-                        favoriteItems.adapter = favList
                     }
                 }
             }
@@ -160,11 +150,8 @@ class UserFragment : Fragment() {
             addressView = findViewById(R.id.address)
             contactView = findViewById(R.id.contact)
             genderView = findViewById(R.id.gender)
-            favoriteItems = findViewById(R.id.favorite_items_recycler_view)
             signOut = findViewById(R.id.sign_out_button)
             edit = findViewById(R.id.edit_button)
-            favoriteItemsLabel = findViewById(R.id.favorite_items_label)
-            editFavorites = findViewById(R.id.edit_favorites)
         }
     }
 

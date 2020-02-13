@@ -131,7 +131,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/phone_number_input_layout"
-            android:layout_width="377dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Phone Number"
             app:boxBackgroundColor="@android:color/transparent"

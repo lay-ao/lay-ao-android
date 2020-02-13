@@ -43,9 +43,7 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.number = it.size
                 badgeCount.isVisible = true
             }
-
         })
 
     }
-
 }

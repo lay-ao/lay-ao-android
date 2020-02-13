@@ -1,6 +1,9 @@
 package com.designbyark.layao.ui.home.banners.detail
 
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -35,6 +39,8 @@ class BannerDetailFragment : Fragment() {
     private lateinit var mPromoCode: TextView
     private lateinit var mCopyCode: TextView
 
+    private lateinit var promoCode: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -58,7 +64,8 @@ class BannerDetailFragment : Fragment() {
         }
         setHasOptionsMenu(true)
 
-        navController = Navigation.findNavController(requireActivity(),
+        navController = Navigation.findNavController(
+            requireActivity(),
             R.id.nav_host_fragment
         )
 
@@ -66,6 +73,13 @@ class BannerDetailFragment : Fragment() {
 
         findingViews(root)
         getData(document)
+
+        mCopyCode.setOnClickListener {
+            val clipboard =
+                requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setPrimaryClip(ClipData.newPlainText("promo", promoCode))
+            Toast.makeText(requireContext(), "Promo Code Copied!", Toast.LENGTH_SHORT).show()
+        }
 
         return root
     }
@@ -82,6 +96,8 @@ class BannerDetailFragment : Fragment() {
                 mDescription.text = model.description
                 mValidity.text = model.validity?.let { "Valid till ${formatTimeDate(it)}" }
                 mPromoCode.text = String.format("Promo Code: %s", model.code)
+                promoCode = model.code
+
             }
         }?.addOnFailureListener { exception ->
             Log.d("Banner Detail: ", "get failed with ", exception)

@@ -1,36 +1,26 @@
 package com.designbyark.layao.common
 
+import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkInfo
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
-import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.designbyark.layao.R
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.designbyark.layao.data.Product
-import com.designbyark.layao.data.User
-import com.designbyark.layao.data.favorite.Favorite
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
-import java.io.ByteArrayOutputStream
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashSet
 
 // Logging
 const val LOG_TAG = "LAYAO_LOG"
@@ -54,6 +44,10 @@ const val CHANNEL_ID = "default"
 const val CHANNEL_NAME = "Default"
 const val CHANNEL_DESC = "Default channels is for testing"
 
+const val DEFAULT_NETWORK_STATE = "Default"
+const val ON_LOST = "onLost"
+const val ON_UNAVAILABLE = "onUnavailable"
+const val ON_AVAILABLE = "onAvailable"
 
 // RecyclerView Helper Methods
 fun setHorizontalListLayout(recyclerView: RecyclerView, context: Context) {
@@ -71,7 +65,6 @@ fun getProductOptions(query: Query): FirestoreRecyclerOptions<Product> {
         .build()
     return options
 }
-
 
 fun formatTimeDate(timestamp: Date): String {
     val formatter = SimpleDateFormat("EEEE, dd MMMM, yyyy", Locale.getDefault())
@@ -273,16 +266,25 @@ fun formatGender(code: Int): String {
     }
 }
 
-fun listOutput(favList: List<Favorite>): String {
-    val stringBuilder = StringBuilder()
-    for (favorite in favList) {
-        stringBuilder.append(favorite.dbId)
-        stringBuilder.append(", ")
-        stringBuilder.append(favorite.favorite)
-        stringBuilder.append(", ")
-        stringBuilder.append(favorite.image)
-        stringBuilder.append(", ")
-        stringBuilder.append(favorite.title)
-    }
-    return stringBuilder.toString()
+fun circularProgressBar(context: Context): CircularProgressDrawable {
+    val circularProgressBar = CircularProgressDrawable(context)
+    circularProgressBar.strokeWidth = 2.5f
+    circularProgressBar.centerRadius = 25.0f
+    circularProgressBar.start()
+    return circularProgressBar
 }
+
+// TODO: Add solution for Android 10
+@Suppress("DEPRECATION")
+fun isConnectedToInternet(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val info = connectivityManager.allNetworkInfo
+    for (networkInfo in info) {
+        if (networkInfo.state == NetworkInfo.State.CONNECTED) {
+            return true
+        }
+    }
+    return false
+}
+

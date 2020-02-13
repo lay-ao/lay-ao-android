@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
+import com.designbyark.layao.common.circularProgressBar
 
 class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -20,7 +21,7 @@ class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     internal fun setImage(image: String, context: Context) {
         val imageView: ImageView = itemView.findViewById(R.id.image)
-        Glide.with(context).load(image).into(imageView)
+        Glide.with(context).load(image).placeholder(circularProgressBar(context)).into(imageView)
     }
 
 }

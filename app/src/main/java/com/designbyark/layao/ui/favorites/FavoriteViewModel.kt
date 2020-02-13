@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.designbyark.layao.data.favorite.Favorite
 import com.designbyark.layao.data.favorite.FavoriteDao
 import com.designbyark.layao.data.favorite.FavoriteRepository
-import com.designbyark.layao.helper.LayAoRoomDatabase
+import com.designbyark.layao.db.LayAoRoomDatabase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

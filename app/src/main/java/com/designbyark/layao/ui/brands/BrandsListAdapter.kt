@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
+import com.designbyark.layao.common.circularProgressBar
 import com.designbyark.layao.data.Brands
 import com.designbyark.layao.data.Category
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -47,7 +48,7 @@ class BrandsListAdapter internal constructor(
 
         internal fun setImage(context: Context, image: String) {
             val imageView: ImageView = view.findViewById(R.id.image)
-            Glide.with(context).load(image).into(imageView)
+            Glide.with(context).load(image).placeholder(circularProgressBar(context)).into(imageView)
         }
 
 

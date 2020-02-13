@@ -12,7 +12,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.common.CATEGORIES_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Category
-import com.designbyark.layao.helper.MarginItemDecoration
+import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore

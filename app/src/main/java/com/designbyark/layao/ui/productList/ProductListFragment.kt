@@ -16,11 +16,10 @@ import com.designbyark.layao.R
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Product
-import com.designbyark.layao.helper.MarginItemDecoration
+import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.ui.favorites.FavoriteViewModel
 import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import java.util.*

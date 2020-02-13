@@ -16,7 +16,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Product
-import com.designbyark.layao.helper.MarginItemDecoration
+import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.ui.favorites.FavoriteViewModel
 import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.ui.productList.ProductListAdapter

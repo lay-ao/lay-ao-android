@@ -1,4 +1,4 @@
-package com.designbyark.layao.helper
+package com.designbyark.layao.util
 
 import android.graphics.Rect
 import android.view.View

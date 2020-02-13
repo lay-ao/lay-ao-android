@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -14,10 +13,9 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.BRANDS_COLLECTION
-import com.designbyark.layao.common.CATEGORIES_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Brands
-import com.designbyark.layao.helper.MarginItemDecoration
+import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
