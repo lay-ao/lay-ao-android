@@ -2,15 +2,17 @@ package com.designbyark.layao.ui.orders
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
+import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.ORDERS_COLLECTION
-import com.designbyark.layao.common.setHorizontalListLayout
 import com.designbyark.layao.data.Order
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +21,7 @@ import com.google.firebase.firestore.Query
 
 class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
-    private var orderAdapter: OrderAdapter? = null
+    private var adapter: OrderAdapter? = null
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -27,9 +29,14 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
+        setHasOptionsMenu(true)
+
         val firebaseAuth = FirebaseAuth.getInstance()
-        val firebase = FirebaseFirestore.getInstance()
         val firebaseUser = firebaseAuth.currentUser
+        val firebase = FirebaseFirestore.getInstance()
 
         navController = Navigation.findNavController(
             requireActivity(),
@@ -52,17 +59,20 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         val orderCollection = firebase.collection(ORDERS_COLLECTION)
 
         val query = orderCollection.whereEqualTo("userId", firebaseUser.uid)
-            .orderBy("orderTime", Query.Direction.ASCENDING)
+            .whereLessThanOrEqualTo("orderStatus", 4)
+            .orderBy("orderStatus", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Order>()
             .setQuery(query, Order::class.java)
             .build()
 
-        orderAdapter = OrderAdapter(options, requireContext(), this)
+
+        adapter = OrderAdapter(options, requireContext(), this)
 
         val root = inflater.inflate(R.layout.fragment_orders, container, false)
 
-        val recyclerView: RecyclerView = root.findViewById(R.id.active_order_recycler_view)
-        recyclerView.adapter = orderAdapter
+        val recyclerView: RecyclerView =
+            root.findViewById(R.id.active_order_recycler_view)
+        recyclerView.adapter = adapter
 
         return root
 
@@ -70,15 +80,16 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
     override fun onStart() {
         super.onStart()
-        if (orderAdapter != null) {
-            orderAdapter!!.startListening()
+        if (adapter != null) {
+            adapter!!.startListening()
         }
+
     }
 
     override fun onStop() {
         super.onStop()
-        if (orderAdapter != null) {
-            orderAdapter!!.stopListening()
+        if (adapter != null) {
+            adapter!!.stopListening()
         }
     }
 
@@ -88,8 +99,19 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         navController.navigate(R.id.action_navigation_orders_to_orderDetailFragment, args)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.orders_history -> {
+                navController.navigate(R.id.action_navigation_orders_to_orderHistoryFragment)
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate()
+        menu.clear()
+        inflater.inflate(R.menu.orders_menu, menu)
     }
 
 }

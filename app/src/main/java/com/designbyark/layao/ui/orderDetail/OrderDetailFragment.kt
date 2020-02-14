@@ -99,7 +99,7 @@ class OrderDetailFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_order_detail, container, false)
         findingViews(root)
-        getOrderData()
+        getOrderData(requireContext())
         cancelOrder.setOnClickListener {
             orderId?.let {
                 showCancelAlert(requireContext())
@@ -109,7 +109,7 @@ class OrderDetailFragment : Fragment() {
         return root
     }
 
-    private fun getOrderData() {
+    private fun getOrderData(context: Context) {
         orderDocument?.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(LOG_TAG, "Listen failed.", e)
@@ -123,7 +123,7 @@ class OrderDetailFragment : Fragment() {
                         "Order ID: %s",
                         formatOrderId(model.orderId, model.contactNumber)
                     )
-                    setOrderStatus(model.orderStatus)
+                    setOrderStatus(model.orderStatus, context)
                     nameView.text = String.format("Order placed by %s", model.fullName)
                     addressView.text = String.format("Delivery at %s", model.completeAddress)
                     contactView.text = String.format("Contact: %s", model.contactNumber)
@@ -146,7 +146,7 @@ class OrderDetailFragment : Fragment() {
 
                     val orderCartAdapter =
                         OrderCartAdapter(
-                            requireContext(),
+                            context,
                             model.items
                         )
                     recyclerView.adapter = orderCartAdapter
@@ -181,50 +181,50 @@ class OrderDetailFragment : Fragment() {
         }
     }
 
-    private fun setOrderStatus(status: Int) {
+    private fun setOrderStatus(status: Int, context: Context) {
         statusView.text = getOrderStatus(status)
         when (status) {
             0 -> setTextColor(
                 android.R.color.holo_orange_dark,
                 cancelOrder,
                 View.VISIBLE,
-                requireContext()
+                context
             )
             1 -> setTextColor(
                 android.R.color.holo_green_dark,
                 cancelOrder,
                 View.VISIBLE,
-                requireContext()
+                context
             )
             2 -> setTextColor(
                 android.R.color.holo_blue_dark,
                 cancelOrder,
                 View.INVISIBLE,
-                requireContext()
+                context
             )
             3 -> setTextColor(
                 android.R.color.holo_purple,
                 cancelOrder,
                 View.INVISIBLE,
-                requireContext()
+                context
             )
             4 -> setTextColor(
                 android.R.color.holo_red_light,
                 cancelOrder,
                 View.VISIBLE,
-                requireContext()
+                context
             )
             5 -> setTextColor(
                 android.R.color.holo_green_dark,
                 cancelOrder,
                 View.INVISIBLE,
-                requireContext()
+                context
             )
             6 -> setTextColor(
                 android.R.color.holo_red_dark,
                 cancelOrder,
                 View.INVISIBLE,
-                requireContext()
+                context
             )
             else -> setTextColor(android.R.color.black, cancelOrder, View.VISIBLE, requireContext())
         }

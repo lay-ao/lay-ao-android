@@ -51,35 +51,6 @@ class OrderAdapter internal constructor(
         }
     }
 
-    private fun showCancelAlert(
-        context: Context,
-        orderCollection: CollectionReference,
-        documentId: String
-    ) {
-        AlertDialog.Builder(context)
-            .setTitle("Warning")
-            .setIcon(R.drawable.ic_warning_color_24dp)
-            .setMessage(
-                "Cancelling the order will charge you an amount of " +
-                        "Rs. 30 which will be added to your wallet"
-            )
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                orderCollection.document(documentId)
-                    .update("orderStatus", 6)
-                displayNotification(
-                    context,
-                    R.drawable.ic_favorite_color_24dp,
-                    "Order cancelled",
-                    "Your wallet has been charged with Rs. 30 for cancelling the order"
-                )
-                dialog.dismiss()
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
     interface OrderItemClickListener {
         fun orderItemClickListener(orderId: String)
     }

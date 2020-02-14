@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/general_favorites"
-        android:icon="@drawable/ic_heart_color_24dp"
-        android:title="@string/title_favorites"
+        android:id="@+id/orders_history"
+        android:icon="@drawable/ic_history_white_24dp"
+        android:title="@string/history"
         app:showAsAction="ifRoom"/>
 
 </menu>

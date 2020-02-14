@@ -53,7 +53,6 @@ class SignUpFragment : Fragment() {
     ): View? {
 
         val auth = FirebaseAuth.getInstance()
-        val firestore = FirebaseFirestore.getInstance()
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
