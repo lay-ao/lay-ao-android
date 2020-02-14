@@ -3,9 +3,10 @@ package com.designbyark.layao.data
 import com.designbyark.layao.data.favorite.Favorite
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
+import java.io.Serializable
 
 @IgnoreExtraProperties
-class User {
+class User : Serializable {
 
     @PropertyName("userId")
     var userId: String = ""
@@ -36,9 +37,5 @@ class User {
 
     @PropertyName("gender")
     var gender: Int = 0
-
-    @PropertyName("favoriteItems")
-    var favoriteItems: List<Favorite> = emptyList()
-
 
 }

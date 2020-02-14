@@ -22,14 +22,12 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpFragment : Fragment() {
 
     companion object {
-        const val GALLERY_INTENT = 101
-        const val IMAGE_SIZE = 2_000_000;
+        const val KEY = "USER_KEY"
     }
 
     private lateinit var navController: NavController
@@ -47,6 +45,7 @@ class SignUpFragment : Fragment() {
     private lateinit var termsAndCondition: CheckBox
     private lateinit var registerButton: Button
     private lateinit var termsAndConditionView: TextView
+    private lateinit var progressBarLayout: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +54,6 @@ class SignUpFragment : Fragment() {
 
         val auth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
-        val userCollection = firestore.collection(USERS_COLLECTION)
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -81,16 +79,41 @@ class SignUpFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            startRegistrationProcess(auth, userCollection)
+            disableInteraction(requireActivity(), progressBarLayout)
+
+            startRegistrationProcess(auth)
         }
 
         return root
     }
 
     private fun startRegistrationProcess(
-        auth: FirebaseAuth,
-        userCollection: CollectionReference
+        auth: FirebaseAuth
     ) {
+
+        val fullName = fullNameEditText.text.toString()
+        if (emptyValidation(fullName, fullNameInputLayout)) {
+            enableInteraction(requireActivity(), progressBarLayout)
+            return
+        }
+
+        val email = emailEditText.text.toString()
+        if (emailValidation(email, emailInputLayout)) {
+            enableInteraction(requireActivity(), progressBarLayout)
+            return
+        }
+
+        val password = passwordEditText.text.toString()
+        if (passwordValidation(password, passwordInputLayout)) {
+            enableInteraction(requireActivity(), progressBarLayout)
+            return
+        }
+
+        val confirmPassword = confirmPasswordEditText.text.toString()
+        if (confirmPasswordValidation(confirmPassword, password, confirmPasswordInputLayout)) {
+            enableInteraction(requireActivity(), progressBarLayout)
+            return
+        }
 
         if (!termsAndCondition.isChecked) {
             Toast.makeText(
@@ -103,6 +126,7 @@ class SignUpFragment : Fragment() {
                     android.R.color.holo_red_dark
                 )
             )
+            enableInteraction(requireActivity(), progressBarLayout)
             return
         } else {
             termsAndConditionView.setTextColor(
@@ -113,39 +137,67 @@ class SignUpFragment : Fragment() {
             )
         }
 
-        val fullName = fullNameEditText.text.toString()
-        if (emptyValidation(fullName, fullNameInputLayout)) return
-
-        val email = emailEditText.text.toString()
-        if (emailValidation(email, emailInputLayout)) return
-
-        val password = passwordEditText.text.toString()
-        if (passwordValidation(password, passwordInputLayout)) return
-
-        val confirmPassword = confirmPasswordEditText.text.toString()
-        if (confirmPasswordValidation(confirmPassword, password, confirmPasswordInputLayout)) return
-
         val userModel = User()
         userModel.fullName = fullName
         userModel.email = email
         userModel.password = confirmPassword
         userModel.wallet = 0.0
-        userModel.completeAddress = ""
-        userModel.houseNumber = ""
-        userModel.blockNumber = 0
-        userModel.contact = ""
-        userModel.gender = 0
-        userModel.favoriteItems = emptyList()
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isComplete && task.isSuccessful) {
                 val user = auth.currentUser
                 if (user != null) {
                     userModel.userId = user.uid
-                    updateAuthProfile(fullName, user, userCollection, userModel)
+                    Log.d(LOG_TAG, "createUserWithEmailAndPassword: Started!")
+                    updateAuthProfile(fullName, user, userModel)
+                } else {
+                    Log.e(
+                        LOG_TAG,
+                        "createUserWithEmailAndPassword -> addOnCompleteListener -> currentUser: user is null"
+                    )
+                    enableInteraction(requireActivity(), progressBarLayout)
+                    return@addOnCompleteListener
                 }
             }
         }
+    }
+
+    private fun updateAuthProfile(fullName: String, user: FirebaseUser, userModel: User) {
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(fullName)
+            .build()
+        user.updateProfile(profileUpdates)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful && task.isComplete) {
+
+                    Log.d(LOG_TAG, "updateProfile: Started!")
+                    val args = Bundle()
+                    args.putSerializable(KEY, userModel)
+                    enableInteraction(requireActivity(), progressBarLayout)
+                    navController.navigate(
+                        R.id.action_signUpFragment_to_signUpDetailsFragment,
+                        args
+                    )
+                } else {
+                    enableInteraction(requireActivity(), progressBarLayout)
+                    Log.e(
+                        LOG_TAG,
+                        "updateAuthProfile -> updateProfile -> addOnCompleteListener: " +
+                                "task is neither complete nor successful"
+                    )
+                    return@addOnCompleteListener
+                }
+            }
+            .addOnFailureListener {
+                enableInteraction(requireActivity(), progressBarLayout)
+                Log.d(
+                    LOG_TAG,
+                    "updateAuthProfile -> updateProfile -> addOnFailureListener: " +
+                            it.localizedMessage,
+                    it
+                )
+                return@addOnFailureListener
+            }
     }
 
     private fun findingViews(root: View) {
@@ -161,6 +213,7 @@ class SignUpFragment : Fragment() {
             termsAndCondition = findViewById(R.id.terms_and_condition)
             registerButton = findViewById(R.id.register_button)
             termsAndConditionView = findViewById(R.id.terms_and_condition_view)
+            progressBarLayout = findViewById(R.id.include_progress_bar)
         }
     }
 
@@ -173,56 +226,6 @@ class SignUpFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    private fun updateAuthProfile(
-        fullName: String,
-        user: FirebaseUser,
-        userCollection: CollectionReference,
-        userModel: User
-    ) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(fullName)
-            .build()
-        user.updateProfile(profileUpdates)
-            .addOnCompleteListener { updateTask ->
-                if (updateTask.isSuccessful && updateTask.isComplete) {
-                    saveUserToFirestore(userCollection, user, userModel)
-                }
-            }
-            .addOnFailureListener {
-                Log.d(
-                    LOG_TAG,
-                    it.localizedMessage,
-                    it
-                )
-            }
-    }
-
-    private fun saveUserToFirestore(
-        userCollection: CollectionReference,
-        user: FirebaseUser,
-        userModel: User
-    ) {
-        userCollection.document(user.uid)
-            .set(userModel)
-            .addOnCompleteListener { sTask ->
-                if (sTask.isComplete && sTask.isSuccessful) {
-                    navController.navigate(R.id.action_registerFragment_to_navigation_user)
-                } else {
-                    Log.d(
-                        LOG_TAG,
-                        "Saving user data failed"
-                    )
-                }
-            }
-            .addOnFailureListener {
-                Log.d(
-                    LOG_TAG,
-                    it.localizedMessage,
-                    it
-                )
-            }
     }
 
 }

@@ -12,10 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
-import com.designbyark.layao.common.LOG_TAG
-import com.designbyark.layao.common.emailValidation
-import com.designbyark.layao.common.isConnectedToInternet
-import com.designbyark.layao.common.passwordValidation
+import com.designbyark.layao.common.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -33,6 +30,8 @@ class SignInFragment : Fragment() {
 
     private lateinit var signInButton: Button
     private lateinit var forgotPassword: TextView
+
+    private lateinit var progressLayout: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,21 +70,23 @@ class SignInFragment : Fragment() {
             val password = passwordEditText.text.toString()
             if (passwordValidation(password, passwordInputLayout)) return@setOnClickListener
 
+            disableInteraction(requireActivity(), progressLayout)
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isComplete && task.isSuccessful) {
                         // TODO SAVE USER DATA TO LOCAL DB
+                        enableInteraction(requireActivity(), progressLayout)
                         navController.navigate(R.id.action_signInFragment_to_navigation_user)
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            task.exception?.localizedMessage,
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Log.e(LOG_TAG, "signInWithEmailAndPassword -> addOnCompleteListener: ${task.exception?.localizedMessage}")
+                        enableInteraction(requireActivity(), progressLayout)
+                        return@addOnCompleteListener
                     }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), e.localizedMessage, Toast.LENGTH_LONG).show()
+                .addOnFailureListener {
+                    Log.e(LOG_TAG, "signInWithEmailAndPassword -> addOnFailureListener: ${it.localizedMessage}")
+                    enableInteraction(requireActivity(), progressLayout)
+                    return@addOnFailureListener
                 }
         }
 
@@ -100,6 +101,7 @@ class SignInFragment : Fragment() {
             passwordEditText = findViewById(R.id.password_input_edit_text)
             signInButton = findViewById(R.id.sign_in_button)
             forgotPassword = findViewById(R.id.forgot_password)
+            progressLayout = findViewById(R.id.include_progress_bar)
         }
     }
 

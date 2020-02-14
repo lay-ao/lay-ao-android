@@ -20,7 +20,7 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.BANNER_COLLECTION
-import com.designbyark.layao.common.formatTimeDate
+import com.designbyark.layao.common.formatDate
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.ui.home.HomeFragment
 import com.google.firebase.firestore.DocumentReference
@@ -94,7 +94,7 @@ class BannerDetailFragment : Fragment() {
                 Glide.with(requireActivity()).load(model.image).into(mImage)
                 mTitle.text = model.title
                 mDescription.text = model.description
-                mValidity.text = model.validity?.let { "Valid till ${formatTimeDate(it)}" }
+                mValidity.text = model.validity?.let { "Valid till ${formatDate(it)}" }
                 mPromoCode.text = String.format("Promo Code: %s", model.code)
                 promoCode = model.code
 

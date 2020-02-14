@@ -2,9 +2,7 @@ package com.designbyark.layao.ui.orders
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -17,6 +15,7 @@ import com.designbyark.layao.data.Order
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
@@ -53,16 +52,16 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         val orderCollection = firebase.collection(ORDERS_COLLECTION)
 
         val query = orderCollection.whereEqualTo("userId", firebaseUser.uid)
+            .orderBy("orderTime", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Order>()
             .setQuery(query, Order::class.java)
             .build()
 
-        orderAdapter = OrderAdapter(options, requireContext(), orderCollection, this)
+        orderAdapter = OrderAdapter(options, requireContext(), this)
 
         val root = inflater.inflate(R.layout.fragment_orders, container, false)
 
         val recyclerView: RecyclerView = root.findViewById(R.id.active_order_recycler_view)
-        setHorizontalListLayout(recyclerView, requireContext())
         recyclerView.adapter = orderAdapter
 
         return root
@@ -87,6 +86,10 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         val args = Bundle()
         args.putString("orderId", orderId)
         navController.navigate(R.id.action_navigation_orders_to_orderDetailFragment, args)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate()
     }
 
 }

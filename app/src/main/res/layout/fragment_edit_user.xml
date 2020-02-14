@@ -150,7 +150,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/house_no_input_layout" />
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/contact_input_layout"
             android:layout_width="0dp"

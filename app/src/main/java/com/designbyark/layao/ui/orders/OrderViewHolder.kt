@@ -2,28 +2,24 @@ package com.designbyark.layao.ui.orders
 
 import android.content.Context
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
+import com.designbyark.layao.common.formatDate
 import com.designbyark.layao.common.formatOrderId
-import com.designbyark.layao.common.formatTimeDate
+import com.designbyark.layao.common.formatTime
 import com.designbyark.layao.common.getOrderStatus
 import com.google.firebase.Timestamp
 import java.util.*
 
 class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val cancelOrder: Button = itemView.findViewById(R.id.cancel_order)
-
-    internal fun setOrderStatus(status: Int, context: Context, @ColorRes color: Int, visibility: Int) {
+    internal fun setOrderStatus(status: Int, context: Context, @ColorRes color: Int) {
         val textView: TextView = itemView.findViewById(R.id.order_id)
         textView.text = getOrderStatus(status)
         textView.setTextColor(ContextCompat.getColor(context, color))
-        cancelOrder.visibility = visibility
     }
 
     internal fun setOrderId(orderId: String, phoneNumber: String) {
@@ -58,7 +54,11 @@ class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     internal fun setOrderTime(time: Timestamp) {
         val textView: TextView = itemView.findViewById(R.id.total_items)
-        textView.text = String.format("Order placed on %s", formatTimeDate(time.toDate()))
+        textView.text = String.format(
+            "Order placed on %s at %s",
+            formatDate(time.toDate()),
+            formatTime(time.toDate())
+        )
     }
 
 }

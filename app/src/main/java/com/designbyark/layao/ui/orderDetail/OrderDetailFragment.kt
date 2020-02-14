@@ -3,6 +3,7 @@ package com.designbyark.layao.ui.orderDetail
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,14 +22,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
+import com.designbyark.layao.data.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 class OrderDetailFragment : Fragment() {
 
+    private var firebaseUser: FirebaseUser? = null
     private var orderId: String? = null
     private var orderDocument: DocumentReference? = null
+
+    private lateinit var collectionUserReference: CollectionReference
     private lateinit var navController: NavController
 
     private lateinit var orderIdView: TextView
@@ -44,6 +52,8 @@ class OrderDetailFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 
+    private var walletAmount: Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,8 +61,22 @@ class OrderDetailFragment : Fragment() {
             orderId = it.getString("orderId")
         }
 
-        val firebase = FirebaseFirestore.getInstance()
-        val collectionReference = firebase.collection(ORDERS_COLLECTION)
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseUser = firebaseAuth.currentUser
+        val collectionReference = firebaseFirestore.collection(ORDERS_COLLECTION)
+        collectionUserReference = firebaseFirestore.collection(USERS_COLLECTION)
+
+        if (firebaseUser != null) {
+            collectionUserReference.document(firebaseUser!!.uid).get()
+                .addOnSuccessListener { documentSnapshot ->
+                    val user = documentSnapshot.toObject(User::class.java)
+                    if (user != null) {
+                        walletAmount = user.wallet
+                    }
+                }
+        }
+
         orderDocument = orderId?.let { collectionReference.document(it) }
         val title = orderId?.take(5)?.toUpperCase(Locale.getDefault())
 
@@ -117,7 +141,7 @@ class OrderDetailFragment : Fragment() {
                         )
                     timeView.text = String.format(
                         "Order placed on %s",
-                        formatTimeDate(model.orderTime.toDate())
+                        formatDate(model.orderTime.toDate())
                     )
 
                     val orderCartAdapter =
@@ -207,7 +231,8 @@ class OrderDetailFragment : Fragment() {
     }
 
     private fun setTextColor(
-        @ColorRes color: Int, button: Button,
+        @ColorRes color: Int,
+        button: Button,
         visibility: Int,
         context: Context
     ) {
@@ -229,19 +254,37 @@ class OrderDetailFragment : Fragment() {
                         "Rs. 30 which will be added to your wallet"
             )
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                orderDocument?.update("orderStatus", 6)
-                displayNotification(
-                    context,
-                    R.drawable.ic_favorite_color_24dp,
-                    "Order cancelled",
-                    "Your wallet has been charged with Rs. 30 for cancelling the order"
-                )
-                dialog.dismiss()
+                cancelOrder(context, dialog)
+
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
     }
+
+    private fun cancelOrder(context: Context, dialog: DialogInterface) {
+        collectionUserReference.document(firebaseUser!!.uid).update("wallet", walletAmount + 30)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful && task.isComplete) {
+                    orderDocument?.update("orderStatus", 6)
+                    displayNotification(
+                        context,
+                        R.drawable.ic_favorite_color_24dp,
+                        "Order cancelled",
+                        "Your wallet has been charged with Rs. 30 for cancelling the order"
+                    )
+                    dialog.dismiss()
+                } else {
+                    Log.e(LOG_TAG, "update wallet fine: ${task.exception?.localizedMessage}")
+                    return@addOnCompleteListener
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e(LOG_TAG, "update wallet fine: $exception", exception)
+                return@addOnFailureListener
+            }
+    }
+
 
 }

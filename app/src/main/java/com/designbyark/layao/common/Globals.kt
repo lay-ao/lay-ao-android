@@ -1,16 +1,15 @@
 package com.designbyark.layao.common
 
-import android.annotation.TargetApi
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
 import android.os.Build
-import android.util.Log
 import android.util.Patterns
-import androidx.annotation.RequiresApi
+import android.view.View
+import android.view.WindowManager
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +18,7 @@ import com.designbyark.layao.data.Product
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.Query
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,8 +66,13 @@ fun getProductOptions(query: Query): FirestoreRecyclerOptions<Product> {
     return options
 }
 
-fun formatTimeDate(timestamp: Date): String {
+fun formatDate(timestamp: Date): String {
     val formatter = SimpleDateFormat("EEEE, dd MMMM, yyyy", Locale.getDefault())
+    return formatter.format(timestamp)
+}
+
+fun formatTime(timestamp: Date): String {
+    val formatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
     return formatter.format(timestamp)
 }
 
@@ -274,17 +279,33 @@ fun circularProgressBar(context: Context): CircularProgressDrawable {
     return circularProgressBar
 }
 
-// TODO: Add solution for Android 10
 @Suppress("DEPRECATION")
 fun isConnectedToInternet(context: Context): Boolean {
     val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val info = connectivityManager.allNetworkInfo
-    for (networkInfo in info) {
-        if (networkInfo.state == NetworkInfo.State.CONNECTED) {
-            return true
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val nw = connectivityManager.activeNetwork ?: return false
+        val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+        return when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            else -> false
         }
+    } else {
+        val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+        return nwInfo.isConnected
     }
-    return false
 }
 
+fun disableInteraction(activity: Activity, layout: View) {
+    activity.window.setFlags(
+        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+    )
+    layout.visibility = View.VISIBLE
+}
+
+fun enableInteraction(activity: Activity, layout: View) {
+    activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    layout.visibility = View.GONE
+}

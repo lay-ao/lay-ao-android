@@ -119,23 +119,11 @@
             android:drawableEnd="@drawable/ic_arrow_right_color_24dp"
             android:drawableRight="@drawable/ic_arrow_right_color_24dp"
             android:gravity="center"
-            android:text="Detail"
+            android:text="Details"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintBottom_toBottomOf="@+id/cancel_order"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cancel_order" />
-
-        <Button
-            android:id="@+id/cancel_order"
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Cancel Order"
-            app:backgroundTint="@android:color/holo_red_dark"
-            app:elevation="0dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_timing" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
