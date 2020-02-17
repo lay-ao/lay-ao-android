@@ -305,7 +305,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderHistoryFragment"
-        android:name="com.designbyark.layao.OrderHistoryFragment"
+        android:name="com.designbyark.layao.ui.orders.OrderHistoryFragment"
         android:label="Order History"
         tools:layout="@layout/fragment_order_history" >
         <action

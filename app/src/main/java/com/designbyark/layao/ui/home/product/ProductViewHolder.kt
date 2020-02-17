@@ -1,6 +1,7 @@
 package com.designbyark.layao.ui.home.product
 
 import android.content.Context
+import android.graphics.Paint
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,6 +22,22 @@ class ProductViewHolder internal constructor(private val view: View) :
     internal fun setImage(image: String, context: Context) {
         val imageView: ImageView = view.findViewById(R.id.image)
         Glide.with(context).load(image).placeholder(circularProgressBar(context)).into(imageView)
+    }
+
+    internal fun setTitle(value: String) {
+        val textView: TextView = view.findViewById(R.id.title)
+        textView.text = value
+    }
+
+    internal fun setBeforePrice(beforePrice: Double) {
+        val textView: TextView = view.findViewById(R.id.before_price)
+        textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        textView.text = String.format("Rs. %.0f", beforePrice)
+    }
+
+    internal fun setLatestDiscountPrice(price: Double) {
+        val textView: TextView = view.findViewById(R.id.discount_price)
+        textView.text = String.format("Rs. %.0f", price)
     }
 
 }

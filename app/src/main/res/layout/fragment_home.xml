@@ -7,57 +7,76 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/banner_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginEnd="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginRight="@dimen/default_recycler_view_cell_margin"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="RtlSymmetry"
-            tools:listitem="@layout/body_banner" />
+            app:layout_constraintTop_toBottomOf="@+id/searchView">
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/banner_image_slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="1dp"
+                app:sliderIndicatorSelectedColor="#FFAA00"
+                app:sliderIndicatorUnselectedColor="#212121"
+                app:sliderScrollTimeInSec="5"
+                app:sliderStartAutoCycle="true" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/cabin"
             android:includeFontPadding="true"
-            android:padding="10dp"
-            android:text="Items on Discount"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@android:color/black"
+            android:text="Shop by Category"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorText"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/banner_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/discount_item_recycler_view"
             android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:itemCount="1"
             tools:listitem="@layout/body_discount_items" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
+            android:layout_marginTop="24dp"
+            android:drawableStart="@drawable/ic_new"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-black"
             android:includeFontPadding="true"
-            android:padding="10dp"
             android:text="New Arrival"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@android:color/black"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/discount_item_recycler_view" />
@@ -67,8 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
@@ -78,12 +96,15 @@
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
+            android:layout_marginTop="24dp"
+            android:drawableStart="@drawable/ic_brands"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-black"
             android:includeFontPadding="true"
-            android:padding="10dp"
             android:text="Brands"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@android:color/black"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/new_arrival_recycler_view" />
@@ -92,9 +113,7 @@
             android:id="@+id/brands_recycler_view"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_marginStart="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginLeft="@dimen/default_recycler_view_cell_margin"
-            android:layout_marginTop="@dimen/default_recycler_view_cell_margin"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
@@ -102,57 +121,102 @@
 
         <TextView
             android:id="@+id/more_discount_items"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
             android:clickable="true"
             android:drawableEnd="@drawable/ic_arrow_right_color_24dp"
             android:drawableRight="@drawable/ic_arrow_right_color_24dp"
             android:focusable="true"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="SEE ALL"
+            android:textAlignment="viewEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/discount_item_recycler_view"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/banner_recycler_view" />
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView" />
 
         <TextView
             android:id="@+id/more_new_arrival"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
             android:clickable="true"
             android:drawableEnd="@drawable/ic_arrow_right_color_24dp"
             android:drawableRight="@drawable/ic_arrow_right_color_24dp"
             android:focusable="true"
             android:gravity="center"
             android:text="SEE ALL"
+            android:textAlignment="viewEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/new_arrival_recycler_view"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/discount_item_recycler_view" />
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
 
         <TextView
             android:id="@+id/more_brands"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
             android:clickable="true"
             android:drawableEnd="@drawable/ic_arrow_right_color_24dp"
             android:drawableRight="@drawable/ic_arrow_right_color_24dp"
             android:focusable="true"
-            android:gravity="center"
+            android:gravity="end|center"
             android:text="SEE ALL"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/brands_recycler_view"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_arrival_recycler_view" />
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:drawableStart="@drawable/ic_location_color_24dp"
+            android:fontFamily="@font/cabin"
+            android:gravity="center|start"
+            android:text="Wapda Town, Lahore"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorText"
+            app:layout_constraintBottom_toBottomOf="@+id/favorites_button"
+            app:layout_constraintEnd_toStartOf="@+id/favorites_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/favorites_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Favorites Fragment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_favorite_clicked_color_24dp" />
+
+        <EditText
+            android:id="@+id/searchView"
+            style="@android:style/Widget.Material.Light.SearchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/search_layout"
+            android:drawableStart="@drawable/ic_search_color_24dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/cabin"
+            android:hint="Search Grocery Items"
+            android:padding="12dp"
+            android:singleLine="true"
+            android:typeface="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/favorites_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

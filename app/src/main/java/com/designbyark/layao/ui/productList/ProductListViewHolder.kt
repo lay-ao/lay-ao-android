@@ -27,7 +27,7 @@ class ProductListViewHolder internal constructor(private val view: View) :
         textView.text = title
     }
 
-    internal fun setPrice(price: Long, unit: String, discount: Long) {
+    internal fun setPrice(price: Double, unit: String, discount: Double) {
         val priceView: TextView = view.findViewById(R.id.price)
         if (discount > 0) {
             priceView.text = String.format(
@@ -40,7 +40,7 @@ class ProductListViewHolder internal constructor(private val view: View) :
         }
     }
 
-    internal fun setDiscount(discount: Long) {
+    internal fun setDiscount(discount: Double) {
         val discountView: TextView = view.findViewById(R.id.discount)
         if (discount > 0) {
             discountView.text = String.format(Locale.getDefault(), "%d%% off", discount)

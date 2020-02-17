@@ -1,6 +1,7 @@
 package com.designbyark.layao.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Category
 import com.designbyark.layao.ui.home.banners.BannerAdapter
+import com.designbyark.layao.ui.home.banners.BannerSliderAdapter
 import com.designbyark.layao.ui.home.brands.BrandsAdapter
 import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
 import com.designbyark.layao.ui.home.newArrival.NewArrivalAdapter
@@ -21,12 +23,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.smarteist.autoimageslider.IndicatorAnimations
+import com.smarteist.autoimageslider.SliderAnimations
+import com.smarteist.autoimageslider.SliderView
 
 class HomeFragment : Fragment(),
-    BannerAdapter.BannerItemClickListener,
     DiscountItemsAdapter.DiscountItemClickListener,
     NewArrivalAdapter.NewArrivalClickListener,
-    BrandsAdapter.BrandItemClickListener {
+    BrandsAdapter.BrandItemClickListener, BannerSliderAdapter.BannerItemClickListener {
 
     companion object {
         const val BANNER_ID = "bannerId"
@@ -97,8 +101,8 @@ class HomeFragment : Fragment(),
 
     private fun getBannerData(root: View, firestore: FirebaseFirestore) {
 
-        // Getting recycler view
-        val recyclerView: RecyclerView = root.findViewById(R.id.banner_recycler_view)
+        // Getting SliderView
+        val sliderView: SliderView = root.findViewById(R.id.banner_image_slider)
 
         // Getting collection reference from firestore
         val collection = firestore.collection(BANNER_COLLECTION)
@@ -108,16 +112,19 @@ class HomeFragment : Fragment(),
             .whereEqualTo(ACTIVE, true)
             .orderBy("validity", Query.Direction.ASCENDING)
 
-        // Setting query with model class
-        val options = FirestoreRecyclerOptions.Builder<Banner>()
-            .setQuery(query, Banner::class.java)
-            .build()
+        query.get().addOnSuccessListener { documents ->
+            val bannerList: ArrayList<Banner> = arrayListOf()
+            for (document in documents) {
+                val banner = document.toObject(Banner::class.java)
+                bannerList.add(banner)
+            }
+            sliderView.sliderAdapter = BannerSliderAdapter(requireContext(), bannerList, this)
+            Log.d(LOG_TAG, "Banner List Size: ${bannerList.size}")
+        }
 
-        mBannerAdapter = BannerAdapter(options, this, requireActivity())
-        // Assigning adapter to Recycler View
-        setHorizontalListLayout(recyclerView, requireContext())
-        recyclerView.adapter = mBannerAdapter
-
+        sliderView.startAutoCycle()
+        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM)
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
     }
 
     private fun getDiscountItemsData(root: View, collection: CollectionReference) {
@@ -193,10 +200,6 @@ class HomeFragment : Fragment(),
     override fun onStop() {
         super.onStop()
 
-        if (mBannerAdapter != null) {
-            mBannerAdapter?.stopListening()
-        }
-
         if (mDiscountItemsAdapter != null) {
             mDiscountItemsAdapter?.stopListening()
         }
@@ -209,12 +212,6 @@ class HomeFragment : Fragment(),
             mBrandsAdapter?.stopListening()
         }
 
-    }
-
-    override fun onBannerItemClickListener(bannerId: String) {
-        val args = Bundle()
-        args.putString(BANNER_ID, bannerId)
-        navController.navigate(R.id.action_nav_bannerDetailFragment, args)
     }
 
     override fun onDiscountItemClickListener(productId: String) {
@@ -251,6 +248,12 @@ class HomeFragment : Fragment(),
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun mBannerItemClickListener(bannerId: String?) {
+        val args = Bundle()
+        args.putString(BANNER_ID, bannerId)
+        navController.navigate(R.id.action_nav_bannerDetailFragment, args)
     }
 
 }

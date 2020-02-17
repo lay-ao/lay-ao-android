@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.designbyark.layao.R
+import com.designbyark.layao.common.setDiscountPrice
 import com.designbyark.layao.data.Product
 import com.designbyark.layao.ui.home.product.ProductViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -24,8 +25,10 @@ class DiscountItemsAdapter internal constructor(
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int, model: Product) {
         holder.run {
-            setDiscount(model.discount)
             setImage(model.image, context)
+            setTitle(model.title)
+            setBeforePrice(model.price)
+            setLatestDiscountPrice(setDiscountPrice(model.price, model.discount))
         }
 
         holder.itemView.setOnClickListener {
