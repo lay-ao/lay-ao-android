@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.designbyark.layao.R
+import com.designbyark.layao.common.getSavingPrice
 import com.designbyark.layao.common.setDiscountPrice
 import com.designbyark.layao.data.Product
 import com.designbyark.layao.ui.home.product.ProductViewHolder
@@ -27,13 +28,20 @@ class DiscountItemsAdapter internal constructor(
         holder.run {
             setImage(model.image, context)
             setTitle(model.title)
-            setBeforePrice(model.price)
-            setLatestDiscountPrice(setDiscountPrice(model.price, model.discount))
+            setDiscount(model.discount)
+            setSavingPrice(
+                getSavingPrice(
+                    setDiscountPrice(model.price, model.discount),
+                    model.price
+                )
+            )
         }
 
         holder.itemView.setOnClickListener {
-            itemClickListener.onDiscountItemClickListener(snapshots
-                .getSnapshot(holder.adapterPosition).id)
+            itemClickListener.onDiscountItemClickListener(
+                snapshots
+                    .getSnapshot(holder.adapterPosition).id
+            )
         }
     }
 

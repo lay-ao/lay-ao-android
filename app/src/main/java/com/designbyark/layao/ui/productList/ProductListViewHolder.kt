@@ -32,18 +32,18 @@ class ProductListViewHolder internal constructor(private val view: View) :
         if (discount > 0) {
             priceView.text = String.format(
                 "Rs. %.0f/%s",
-                setDiscountPrice(price.toDouble(), discount.toDouble()),
+                setDiscountPrice(price, discount),
                 unit
             )
         } else {
-            priceView.text = String.format("Rs. %d/%s", price, unit)
+            priceView.text = String.format("Rs. %.0f/%s", price, unit)
         }
     }
 
     internal fun setDiscount(discount: Double) {
         val discountView: TextView = view.findViewById(R.id.discount)
         if (discount > 0) {
-            discountView.text = String.format(Locale.getDefault(), "%d%% off", discount)
+            discountView.text = String.format(Locale.getDefault(), "%.0f%% off", discount)
         } else {
             discountView.visibility = View.GONE
         }

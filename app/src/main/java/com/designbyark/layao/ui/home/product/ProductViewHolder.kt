@@ -14,9 +14,9 @@ import java.util.*
 class ProductViewHolder internal constructor(private val view: View) :
     RecyclerView.ViewHolder(view) {
 
-    internal fun setDiscount(discount: Long) {
+    internal fun setDiscount(discount: Double) {
         val textView: TextView = view.findViewById(R.id.discount)
-        textView.text = String.format(Locale.getDefault(), "%d%%", discount)
+        textView.text = String.format(Locale.getDefault(), "%.0f%% off", discount)
     }
 
     internal fun setImage(image: String, context: Context) {
@@ -29,15 +29,13 @@ class ProductViewHolder internal constructor(private val view: View) :
         textView.text = value
     }
 
-    internal fun setBeforePrice(beforePrice: Double) {
-        val textView: TextView = view.findViewById(R.id.before_price)
-        textView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-        textView.text = String.format("Rs. %.0f", beforePrice)
+    internal fun setSavingPrice(saving: Double) {
+        val textView: TextView = view.findViewById(R.id.saving_price)
+        textView.text = String.format(Locale.getDefault(), "Save Rs. %.0f", saving)
     }
 
-    internal fun setLatestDiscountPrice(price: Double) {
-        val textView: TextView = view.findViewById(R.id.discount_price)
-        textView.text = String.format("Rs. %.0f", price)
+    internal fun setPrice(price: Double, unit: String) {
+        val textView: TextView = view.findViewById(R.id.price)
+        textView.text = String.format(Locale.getDefault(), "Rs. %.0f/%s", price, unit)
     }
-
 }

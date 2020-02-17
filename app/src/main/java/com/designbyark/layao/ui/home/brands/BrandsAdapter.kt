@@ -13,17 +13,18 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 class BrandsAdapter internal constructor(
     options: FirestoreRecyclerOptions<Category>,
     val context: Context,
-    val itemClickListener: BrandItemClickListener
+    private val itemClickListener: BrandItemClickListener
 ) : FirestoreRecyclerAdapter<Category, ProductViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.body_new_arrival, parent, false)
+            .inflate(R.layout.body_brands, parent, false)
         return ProductViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int, model: Category) {
         holder.setImage(model.image, context)
+        holder.setTitle(model.title)
         holder.itemView.setOnClickListener {
             itemClickListener.mBrandItemClickListener(snapshots
                 .getSnapshot(holder.adapterPosition).id)

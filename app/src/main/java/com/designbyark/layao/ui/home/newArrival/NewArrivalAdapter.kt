@@ -30,9 +30,13 @@ class NewArrivalAdapter internal constructor(
         model: Product
     ) {
         holder.setImage(model.image, context)
+        holder.setTitle(model.title)
+        holder.setPrice(model.price, model.unit)
         holder.itemView.setOnClickListener {
-            itemClickListener.mNewArrivalClickListener(snapshots
-                .getSnapshot(holder.adapterPosition).id)
+            itemClickListener.mNewArrivalClickListener(
+                snapshots
+                    .getSnapshot(holder.adapterPosition).id
+            )
         }
     }
 

@@ -102,6 +102,10 @@ fun setDiscountPrice(price: Double, discount: Double): Double {
     return price - salePrice
 }
 
+fun getSavingPrice(discountPrice: Double, beforePrice: Double): Double {
+    return beforePrice - discountPrice
+}
+
 // region VALIDATIONS
 
 fun emptyValidation(
