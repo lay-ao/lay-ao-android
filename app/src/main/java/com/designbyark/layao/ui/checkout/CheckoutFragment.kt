@@ -283,10 +283,10 @@ class CheckoutFragment : Fragment() {
             .setTitle("Login")
             .setIcon(R.drawable.ic_delivery)
             .setMessage("Sign up or Login to place order.")
-            .setPositiveButton("Sign Up") { dialog, _ ->
+            .setPositiveButton("Sign Up") { _, _ ->
                 navController.navigate(R.id.action_checkoutFragment_to_signUpFragment)
             }
-            .setNegativeButton("Login") { dialog, _ ->
+            .setNegativeButton("Login") { _, _ ->
                 navController.navigate(R.id.action_checkoutFragment_to_signInFragment)
             }
             .setNeutralButton("Cancel") { dialog, _ ->

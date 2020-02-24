@@ -330,5 +330,30 @@
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
     </fragment>
+    <fragment
+        android:id="@+id/facetFragment"
+        android:name="com.designbyark.layao.search.FacetFragment"
+        android:label="Filter your Search"
+        tools:layout="@layout/fragment_facet" />
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.designbyark.layao.search.SearchFragment"
+        android:label="Search Products"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_facetFragment"
+            app:destination="@id/facetFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_navigation_search_to_productDetailFragment"
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
 
 </navigation>

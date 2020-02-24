@@ -296,7 +296,7 @@ class HomeFragment : Fragment(),
 
     override fun onHomeCategoryItemClickListener(categoryId: String) {
         val args = Bundle()
-        args.putString(HomeFragment.CATEGORY_ID, categoryId)
+        args.putString(CATEGORY_ID, categoryId)
         navController.navigate(R.id.action_navigation_home_to_CPListFragment, args)
     }
 

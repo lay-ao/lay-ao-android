@@ -19,7 +19,7 @@
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView">
+            app:layout_constraintTop_toBottomOf="@+id/textView23">
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/banner_image_slider"
@@ -168,25 +168,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-        <EditText
-            android:id="@+id/searchView"
-            style="@android:style/Widget.Material.Light.SearchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/search_layout"
-            android:drawableStart="@drawable/ic_search_color_24dp"
-            android:drawablePadding="12dp"
-            android:fontFamily="@font/cabin"
-            android:hint="Search Grocery Items"
-            android:padding="12dp"
-            android:singleLine="true"
-            android:typeface="normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
         <ImageButton
             android:id="@+id/favorites_button"

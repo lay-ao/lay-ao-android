@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Icon">
+        <item name="android:padding">4dp</item>
+        <item name="android:tint">#4e5561</item>
+    </style>
+
+    <style name="Icon.Clickable">
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
 </resources>
