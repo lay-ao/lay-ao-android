@@ -1,7 +1,6 @@
 package com.designbyark.layao.data.cart
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 @Dao
@@ -19,10 +18,13 @@ interface CartDao {
     @Delete
     suspend fun deleteItemFromCart(cart: Cart)
 
+    @Update
+    suspend fun updateCart(cart: Cart)
+
     @Query("SELECT COUNT(*) FROM cart_table")
     suspend fun itemCount(): Int
 
     @Query("SELECT SUM(total) FROM cart_table")
-    fun getTotal(): LiveData<Double>
+    fun getGrandTotal(): LiveData<Double>
 
 }

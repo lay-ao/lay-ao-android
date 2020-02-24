@@ -33,7 +33,7 @@ class OrderCartAdapter internal constructor(
             setQuantity(model.price, model.unit, model.quantity, model.discount)
             setBrand(model.brand)
             setDiscount(model.discount)
-            setTotal(model.total)
+            setTotal(model.discount, model.price, model.quantity)
             deleteItem.visibility = View.GONE
         }
     }

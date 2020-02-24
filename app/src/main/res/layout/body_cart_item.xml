@@ -8,15 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="120dp"
             android:layout_height="0dp"
             android:scaleType="centerInside"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
@@ -26,8 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
@@ -98,12 +96,13 @@
 
         <TextView
             android:id="@+id/per_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintBottom_toBottomOf="@+id/per_unit_label"
+            app:layout_constraintEnd_toStartOf="@+id/discount_price"
             app:layout_constraintStart_toEndOf="@+id/per_unit_label"
             app:layout_constraintTop_toTopOf="@+id/per_unit_label"
             tools:text="Rs. 100/kg" />
@@ -112,14 +111,13 @@
             android:id="@+id/discount_price"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="bottom"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/holo_green_dark"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/per_price"
-            app:layout_constraintStart_toEndOf="@+id/per_price"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/per_price"
             tools:text="Rs. 100/kg" />
 
@@ -150,12 +148,14 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/delete_item"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:padding="15dp"
             app:backgroundTint="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/decrease_quantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image"
             app:srcCompat="@drawable/ic_delete_color_24dp" />
 
         <TextView
@@ -163,12 +163,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
             android:text="Total:"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/discount_label" />
 
@@ -177,14 +174,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/textView4"
-            app:layout_constraintVertical_bias="1.0"
-            android:layout_marginBottom="8dp"
             tools:text="Rs. 1000" />
+
+        <ImageButton
+            android:id="@+id/increase_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            app:srcCompat="@drawable/ic_add_color_24dp" />
+
+        <ImageButton
+            android:id="@+id/decrease_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            app:srcCompat="@drawable/ic_subtract_color_24dp" />
+
+        <TextView
+            android:id="@+id/changing_quantity"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/increase_quantity"
+            app:layout_constraintStart_toEndOf="@+id/decrease_quantity"
+            app:layout_constraintTop_toBottomOf="@+id/total_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

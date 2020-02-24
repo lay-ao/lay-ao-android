@@ -49,7 +49,7 @@ class ProductDetailFragment : Fragment() {
 
     private var price: Double = 0.0
     private var discount: Double = 0.0
-    private var stock: Double = 0.0
+    private var stock: Long = 0
 
     private var brand: String = ""
     private var unit: String = ""
@@ -65,6 +65,7 @@ class ProductDetailFragment : Fragment() {
             productId = it.getString(HomeFragment.PRODUCT_ID)
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,12 +96,16 @@ class ProductDetailFragment : Fragment() {
         getData(document)
 
         mAdd.setOnClickListener {
-            quantity += 1
-            mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
+            if (quantity != stock) {
+                quantity++
+                mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
+            } else {
+                Toast.makeText(requireContext(), "Max Stock Reached!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         mSubtract.setOnClickListener {
-            quantity -= 1
+            quantity--
             if (quantity <= 1) {
                 quantity = 1
             }
@@ -118,6 +123,7 @@ class ProductDetailFragment : Fragment() {
             cart.title = title
             cart.unit = unit
             cart.quantity = quantity
+            cart.stock = stock
             if (discount > 0) {
                 cart.total = setDiscountPrice(price, discount) * quantity
             } else {
@@ -138,13 +144,13 @@ class ProductDetailFragment : Fragment() {
             if (model != null) {
 
                 brand = model.brand
-                discount = model.discount.toDouble()
+                discount = model.discount
                 image = model.image
-                price = model.price.toDouble()
+                price = model.price
                 mTag = model.tag
                 title = model.title
                 unit = model.unit
-                stock = model.stock.toDouble()
+                stock = model.stock
 
                 Glide.with(requireContext()).load(model.image)
                     .placeholder(circularProgressBar(requireContext())).into(mImage)

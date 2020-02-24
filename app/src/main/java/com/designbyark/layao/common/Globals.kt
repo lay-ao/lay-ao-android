@@ -18,7 +18,6 @@ import com.designbyark.layao.data.Product
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.Query
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -100,6 +99,8 @@ fun setDiscountPrice(price: Double, discount: Double): Double {
     val formula = discount / 100
     val salePrice = price * formula
     return price - salePrice
+    // TODO: Change formula
+    // (price - (price * (discount / 100.0))) * quantity
 }
 
 fun getSavingPrice(discountPrice: Double, beforePrice: Double): Double {

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 class Cart() {
 
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: Int = 0
 
     @ColumnInfo(name = "brand")
     var brand: String = ""
@@ -36,5 +36,9 @@ class Cart() {
 
     @ColumnInfo(name = "total")
     var total: Double = 0.0
+
+    @ColumnInfo(name = "stock")
+    var stock: Long = 0
+
 
 }

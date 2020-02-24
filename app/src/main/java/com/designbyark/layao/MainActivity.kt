@@ -1,13 +1,10 @@
 package com.designbyark.layao
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -32,8 +29,7 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_category,
-                R.id.navigation_cart, R.id.navigation_user,
-                R.id.navigation_orders
+                R.id.navigation_user, R.id.navigation_orders
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

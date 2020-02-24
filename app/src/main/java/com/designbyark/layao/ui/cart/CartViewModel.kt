@@ -7,21 +7,23 @@ import androidx.lifecycle.viewModelScope
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.data.cart.CartRepository
 import com.designbyark.layao.db.LayAoRoomDatabase
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class CartViewModel(application: Application): AndroidViewModel(application) {
+class CartViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: CartRepository
 
     val allCartItems: LiveData<List<Cart>>
-    val total: LiveData<Double>
 
     init {
         val cartDao = LayAoRoomDatabase.getDatabase(application).cartDao()
         repository = CartRepository(cartDao)
         allCartItems = repository.allCartItems
-        total = repository.total
+    }
+
+    fun getGrandTotal(): LiveData<Double> = runBlocking {
+        repository.getGrandTotal()
     }
 
     fun insert(cart: Cart) = viewModelScope.launch {
@@ -36,9 +38,12 @@ class CartViewModel(application: Application): AndroidViewModel(application) {
         repository.deleteCartItem(cart)
     }
 
+    fun updateCart(cart: Cart) = viewModelScope.launch {
+        repository.updateCart(cart)
+    }
+
     fun itemCount(): Int = runBlocking {
         repository.itemCount()
     }
-
 
 }

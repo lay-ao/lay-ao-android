@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 class CartRepository(private val cartDao: CartDao) {
 
     val allCartItems: LiveData<List<Cart>> = cartDao.getAllItemsFromCart()
-    val total: LiveData<Double> = cartDao.getTotal()
+
+    fun getGrandTotal(): LiveData<Double> {
+        return cartDao.getGrandTotal()
+    }
 
     suspend fun insert(cart: Cart) {
         cartDao.insert(cart)
@@ -17,6 +20,10 @@ class CartRepository(private val cartDao: CartDao) {
 
     suspend fun deleteCartItem(cart: Cart) {
         cartDao.deleteItemFromCart(cart)
+    }
+
+    suspend fun updateCart(cart: Cart) {
+        cartDao.updateCart(cart)
     }
 
     suspend fun itemCount(): Int {

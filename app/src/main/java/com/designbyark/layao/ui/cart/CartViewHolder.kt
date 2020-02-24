@@ -15,23 +15,32 @@ import java.util.*
 
 class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    private val perPrice: TextView = itemView.findViewById(R.id.per_price)
+    private val discountPrice: TextView = itemView.findViewById(R.id.discount_price)
+    private val totalPlaceHolder: TextView = itemView.findViewById(R.id.total_label)
+    private val discountPlaceHolder: TextView = itemView.findViewById(R.id.discount)
+    private val discountLabel: TextView = itemView.findViewById(R.id.discount_label)
+    private val imagePlaceHolder: ImageView = itemView.findViewById(R.id.image)
+    private val titleTextView: TextView = itemView.findViewById(R.id.title)
+    private val perUnitLabel: TextView = itemView.findViewById(R.id.per_unit_label)
+    private val quantityPlaceHolder: TextView = itemView.findViewById(R.id.quantity)
+    private val changingQuantity: TextView = itemView.findViewById(R.id.changing_quantity)
+    private val brandPlaceHolder: TextView = itemView.findViewById(R.id.brand)
     val deleteItem: ImageButton = itemView.findViewById(R.id.delete_item)
-    val perPrice: TextView = itemView.findViewById(R.id.per_price)
-    val discountPrice: TextView = itemView.findViewById(R.id.discount_price)
+    val decreaseQuantity: ImageButton = itemView.findViewById(R.id.decrease_quantity)
+    val increaseQuantity: ImageButton = itemView.findViewById(R.id.increase_quantity)
 
 
     internal fun setImage(image: String, context: Context) {
-        val imagePlaceHolder: ImageView = itemView.findViewById(R.id.image)
-        Glide.with(context).load(image).placeholder(circularProgressBar(context)).into(imagePlaceHolder)
+        Glide.with(context).load(image).placeholder(circularProgressBar(context))
+            .into(imagePlaceHolder)
     }
 
     internal fun setTitle(title: String) {
-        val textView: TextView = itemView.findViewById(R.id.title)
-        textView.text = title
+        titleTextView.text = title
     }
 
     internal fun setUnitLabel(unit: String) {
-        val perUnitLabel: TextView = itemView.findViewById(R.id.per_unit_label)
         perUnitLabel.text = String.format(
             Locale.getDefault(),
             "Per %s", unit
@@ -60,7 +69,6 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     internal fun setQuantity(price: Double, unit: String, quantity: Long, discount: Double) {
-        val quantityPlaceHolder: TextView = itemView.findViewById(R.id.quantity)
         if (discount > 0) {
             quantityPlaceHolder.text = String.format(
                 Locale.getDefault(),
@@ -74,14 +82,15 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
+    internal fun setChangingQuantity(unit: String, quantity: Long) {
+        changingQuantity.text = String.format(Locale.getDefault(), "%d/%s", quantity, unit)
+    }
+
     internal fun setBrand(brand: String) {
-        val brandPlaceHolder: TextView = itemView.findViewById(R.id.brand)
         brandPlaceHolder.text = brand
     }
 
     internal fun setDiscount(discount: Double) {
-        val discountPlaceHolder: TextView = itemView.findViewById(R.id.discount)
-        val discountLabel: TextView = itemView.findViewById(R.id.discount_label)
         if (discount > 0) {
             discountPlaceHolder.text = String.format(
                 Locale.getDefault(),
@@ -93,9 +102,17 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    internal fun setTotal(total: Double) {
-        val totalPlaceHolder: TextView = itemView.findViewById(R.id.total_label)
-        totalPlaceHolder.text = String.format(Locale.getDefault(),
-            "Rs. %.0f", total)
+    internal fun setTotal(discount: Double, price: Double, quantity: Long) {
+        if (discount > 0) {
+            totalPlaceHolder.text = String.format(
+                Locale.getDefault(),
+                "Rs. %.2f", setDiscountPrice(price, discount) * quantity
+            )
+        } else {
+            totalPlaceHolder.text = String.format(
+                Locale.getDefault(),
+                "Rs. %.2f", price * quantity
+            )
+        }
     }
 }
