@@ -131,9 +131,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="988" />
-                            <option name="y" value="1124" />
+                            <option name="x" value="253" />
+                            <option name="y" value="919" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_favoritesFragment_to_navigation_user">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

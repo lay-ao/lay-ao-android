@@ -8,16 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
-import com.designbyark.layao.data.Product
+import com.designbyark.layao.data.Products
 import com.designbyark.layao.util.MarginItemDecoration
-import com.designbyark.layao.ui.favorites.FavoriteViewModel
 import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,7 +29,6 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
     private var newArrivalId: String? = null
 
     private lateinit var navController: NavController
-    private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var mAdapter: ProductListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +46,6 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(PRODUCTS_COLLECTION)
-        favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoriteViewModel::class.java)
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -82,9 +78,6 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
             query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
         }
 
-//        val query = collection.whereEqualTo("brand", brandId)
-//            .orderBy(TITLE, Query.Direction.ASCENDING)
-
         getData(root, query)
 
         return root
@@ -96,11 +89,11 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
     ) {
         val recyclerView: RecyclerView = root.findViewById(R.id.product_list_recycler_view)
 
-        val options = FirestoreRecyclerOptions.Builder<Product>()
-            .setQuery(query, Product::class.java)
+        val options = FirestoreRecyclerOptions.Builder<Products>()
+            .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(options, requireActivity(), this, favoriteViewModel)
+        mAdapter = ProductListAdapter(options, requireActivity(), this)
 
         recyclerView.addItemDecoration(
             MarginItemDecoration(

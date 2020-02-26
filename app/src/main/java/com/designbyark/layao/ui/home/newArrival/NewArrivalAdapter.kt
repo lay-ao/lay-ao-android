@@ -4,16 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.designbyark.layao.R
-import com.designbyark.layao.data.Product
+import com.designbyark.layao.data.Products
 import com.designbyark.layao.ui.home.product.ProductViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class NewArrivalAdapter internal constructor(
-    options: FirestoreRecyclerOptions<Product>,
+    options: FirestoreRecyclerOptions<Products>,
     var context: Context,
     val itemClickListener: NewArrivalClickListener
-) : FirestoreRecyclerAdapter<Product, ProductViewHolder>(options) {
+) : FirestoreRecyclerAdapter<Products, ProductViewHolder>(options) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,7 +27,7 @@ class NewArrivalAdapter internal constructor(
     override fun onBindViewHolder(
         holder: ProductViewHolder,
         position: Int,
-        model: Product
+        model: Products
     ) {
         holder.setImage(model.image, context)
         holder.setTitle(model.title)

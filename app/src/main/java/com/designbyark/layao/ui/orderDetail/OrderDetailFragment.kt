@@ -270,7 +270,7 @@ class OrderDetailFragment : Fragment() {
                     orderDocument?.update("orderStatus", 6)
                     displayNotification(
                         context,
-                        R.drawable.ic_favorite_color_24dp,
+                        R.drawable.ic_favorite_red,
                         "Order cancelled",
                         "Your wallet has been charged with Rs. 30 for cancelling the order"
                     )

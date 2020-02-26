@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.designbyark.layao.data.Product
+import com.designbyark.layao.data.Products
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.Query
@@ -58,9 +58,9 @@ fun setHorizontalListLayout(recyclerView: RecyclerView, context: Context) {
 }
 
 // Firebase Helper Methods
-fun getProductOptions(query: Query): FirestoreRecyclerOptions<Product> {
-    val options = FirestoreRecyclerOptions.Builder<Product>()
-        .setQuery(query, Product::class.java)
+fun getProductOptions(query: Query): FirestoreRecyclerOptions<Products> {
+    val options = FirestoreRecyclerOptions.Builder<Products>()
+        .setQuery(query, Products::class.java)
         .build()
     return options
 }

@@ -1,43 +1,47 @@
 package com.designbyark.layao.ui.favorites
 
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
-import com.designbyark.layao.data.favorite.Favorite
+import com.designbyark.layao.common.LOG_TAG
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.CollectionReference
 
 class FavoriteAdapter internal constructor(
-    private val context: Context,
-    private val favoriteViewModel: FavoriteViewModel
-) : RecyclerView.Adapter<FavoriteViewHolder>() {
+    options: FirestoreRecyclerOptions<Favorites>,
+    private val collection: CollectionReference
+) : FirestoreRecyclerAdapter<Favorites, FavoritesViewHolder>(options) {
 
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var items = emptyList<Favorite>() // Cached copy of favorites
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val itemView = inflater.inflate(R.layout.body_favorite, parent, false)
-        return FavoriteViewHolder(itemView)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.body_favorite, parent, false)
+        return FavoritesViewHolder(view)
     }
 
-    override fun getItemCount() = items.size
+    @ExperimentalStdlibApi
+    override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int, model: Favorites) {
 
-    override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
-        val model = items[position]
         holder.run {
-            setImage(model.image, context)
+            setImage(model.image, holder.itemView.context)
             setTitle(model.title)
+            setBrand(model.brand)
+            setPrice(model.price, model.unit, model.discount)
+            favButton.isSelected = true
+
             favButton.setOnClickListener {
-                favoriteViewModel.deleteFavorite(model)
-                notifyDataSetChanged()
+                collection.document(snapshots.getSnapshot(position).id)
+                    .delete().addOnCompleteListener { task ->
+                        if (task.isSuccessful && task.isComplete) {
+                            notifyItemRemoved(position)
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e(LOG_TAG, exception.localizedMessage, exception)
+                    }
             }
-
         }
-    }
-
-    internal fun setItems(items: List<Favorite>) {
-        this.items = items
-        notifyDataSetChanged()
     }
 
 }

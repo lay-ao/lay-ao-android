@@ -4,7 +4,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 
 @IgnoreExtraProperties
-class Product {
+class Products {
 
     @PropertyName("available")
     var available: Boolean = false

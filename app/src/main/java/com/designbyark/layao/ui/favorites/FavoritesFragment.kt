@@ -2,77 +2,89 @@ package com.designbyark.layao.ui.favorites
 
 
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
+import com.designbyark.layao.common.LOG_TAG
+import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.util.MarginItemDecoration
-import java.util.*
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 class FavoritesFragment : Fragment() {
 
-    private lateinit var favoriteCount: TextView
-    private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var navController: NavController
+    private lateinit var favoritesCollection: CollectionReference
 
+    private var firebaseUser: FirebaseUser? = null
+    private var favoriteAdapter: FavoriteAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoriteViewModel::class.java)
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val firestore = FirebaseFirestore.getInstance()
+        firebaseUser = firebaseAuth.currentUser
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-        setHasOptionsMenu(true)
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
-        val root = inflater.inflate(R.layout.fragment_favorites, container, false)
+        if (firebaseUser == null) {
 
-        favoriteCount = root.findViewById(R.id.total_favorites)
+            val view = inflater.inflate(R.layout.fragment_no_favorites, container, false)
 
-        val recyclerView: RecyclerView = root.findViewById(R.id.favorites_recycler_view)
-        val favoriteAdapter = FavoriteAdapter(requireActivity(), favoriteViewModel)
-        recyclerView.addItemDecoration(
-            MarginItemDecoration(
-                resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt()
-            )
-        )
-        recyclerView.adapter = favoriteAdapter
-
-        favoriteViewModel.allFavorites.observe(requireActivity(), Observer {
-            it.let { favoriteAdapter.setItems(it) }
-            favoriteCount.text = String.format(Locale.getDefault(), "Total Favorites: %d", it.size)
-        })
-
-        return root
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            R.id.favorites_delete -> {
-                favoriteViewModel.deleteAllFavorite()
-                true
+            val userAuthIntent = view.findViewById<TextView>(R.id.login_sign_up_button)
+            userAuthIntent.setOnClickListener {
+                navController.navigate(R.id.action_favoritesFragment_to_navigation_user)
             }
-            else -> super.onOptionsItemSelected(item)
+
+            return view
         }
+
+        favoritesCollection = firestore.collection(USERS_COLLECTION).document(firebaseAuth.uid!!)
+            .collection("Favorites")
+
+        return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.favorites_menu, menu)
+        if (firebaseUser == null) return
+
+        val backNav = view.findViewById<ImageButton>(R.id.back_nav)
+        backNav.setOnClickListener { navController.navigateUp() }
+
+        val options = FirestoreRecyclerOptions.Builder<Favorites>()
+            .setQuery(favoritesCollection, Favorites::class.java)
+            .build()
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.favorites_recycler_view)
+        favoriteAdapter = FavoriteAdapter(options, favoritesCollection)
+        recyclerView.adapter = favoriteAdapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (favoriteAdapter != null)
+            favoriteAdapter?.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (favoriteAdapter != null)
+            favoriteAdapter?.stopListening()
     }
 }

@@ -185,7 +185,7 @@ class CheckoutFragment : Fragment() {
                         .update("orderId", documentReference.id)
                     displayNotification(
                         requireContext(),
-                        R.drawable.ic_favorite_color_24dp,
+                        R.drawable.ic_favorite_red,
                         "Order received",
                         "Thank you for placing your order. Your order id is ${formatOrderId(
                             documentReference.id,

@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import com.designbyark.layao.R
 import com.designbyark.layao.common.getSavingPrice
 import com.designbyark.layao.common.setDiscountPrice
-import com.designbyark.layao.data.Product
+import com.designbyark.layao.data.Products
 import com.designbyark.layao.ui.home.product.ProductViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class DiscountItemsAdapter internal constructor(
-    options: FirestoreRecyclerOptions<Product>,
+    options: FirestoreRecyclerOptions<Products>,
     var context: Context,
     val itemClickListener: DiscountItemClickListener
 ) :
-    FirestoreRecyclerAdapter<Product, ProductViewHolder>(options) {
+    FirestoreRecyclerAdapter<Products, ProductViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -24,7 +24,7 @@ class DiscountItemsAdapter internal constructor(
         return ProductViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int, model: Product) {
+    override fun onBindViewHolder(holder: ProductViewHolder, position: Int, model: Products) {
         holder.run {
             setImage(model.image, context)
             setTitle(model.title)
