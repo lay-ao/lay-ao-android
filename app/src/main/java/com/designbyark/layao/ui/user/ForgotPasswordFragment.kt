@@ -18,6 +18,15 @@ import kotlinx.android.synthetic.main.fragment_forgot_password.view.*
 
 class ForgotPasswordFragment : Fragment() {
 
+    private var title: Int? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments.let {
+            title = it?.getInt("change_pass")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +37,13 @@ class ForgotPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (title == 0) {
+            view.mTitle.text = "Change Password"
+            view.mResetPassword.text = "Change Password"
+        } else {
+            view.mTitle.text = "Forgot Password"
+        }
 
         val auth = FirebaseAuth.getInstance()
         val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)

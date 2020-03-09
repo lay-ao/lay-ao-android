@@ -68,6 +68,12 @@ class EditUserFragment : Fragment() {
         view.mEditButton.setOnClickListener {
             validateUserData(view)
         }
+
+        view.mChangePassword.setOnClickListener {
+            val args = Bundle()
+            args.putInt("change_pass", 0)
+            navController.navigate(R.id.action_editUserFragment_to_forgotPasswordFragment, args)
+        }
     }
 
     private fun validateUserData(view: View) {

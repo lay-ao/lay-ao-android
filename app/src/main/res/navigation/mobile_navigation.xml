@@ -202,6 +202,9 @@
         <action
             android:id="@+id/action_editUserFragment_to_navigation_user"
             app:destination="@id/navigation_user" />
+        <action
+            android:id="@+id/action_editUserFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/brandsListFragment"
