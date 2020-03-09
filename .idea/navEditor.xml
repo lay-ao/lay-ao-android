@@ -147,6 +147,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="forgotPasswordFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1060" />
+                            <option name="y" value="1244" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="mainActivity">
                     <value>
                       <LayoutPositions>

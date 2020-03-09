@@ -13,56 +13,25 @@
 
         <action
             android:id="@+id/action_nav_bannerDetailFragment"
-            app:destination="@id/bannerDetailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
-
+            app:destination="@id/bannerDetailFragment" />
         <action
             android:id="@+id/action_nav_productDetailFragment"
-            app:destination="@id/productDetailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
-
+            app:destination="@id/productDetailFragment" />
         <action
             android:id="@+id/action_nav_productListFragment"
-            app:destination="@id/productListFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
-
+            app:destination="@id/productListFragment" />
         <action
             android:id="@+id/action_navigation_home_to_favoritesFragment"
-            app:destination="@id/favoritesFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:destination="@id/favoritesFragment" />
         <action
             android:id="@+id/action_navigation_home_to_brandsListFragment"
-            app:destination="@id/brandsListFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/brandsListFragment" />
         <action
             android:id="@+id/action_navigation_home_to_CPListFragment"
-            app:destination="@id/CPListFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/CPListFragment" />
         <action
             android:id="@+id/action_navigation_home_to_navigation_category"
-            app:destination="@id/navigation_category"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/navigation_category" />
 
     </fragment>
 
@@ -74,11 +43,7 @@
 
         <action
             android:id="@+id/action_navigation_category_to_CPListFragment"
-            app:destination="@id/CPListFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/CPListFragment" />
 
     </fragment>
 
@@ -89,53 +54,29 @@
         tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_navigation_cart_to_checkoutFragment"
-            app:destination="@id/checkoutFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:destination="@id/checkoutFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_user"
         android:name="com.designbyark.layao.ui.user.UserFragment"
         android:label="@string/title_user"
-        tools:layout="@layout/fragment_active_user" >
+        tools:layout="@layout/fragment_active_user">
         <action
             android:id="@+id/action_navigation_user_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_navigation_user_to_registerFragment"
-            app:destination="@id/signUpFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_navigation_user_to_editUserFragment"
-            app:destination="@id/editUserFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/editUserFragment" />
         <action
             android:id="@+id/action_navigation_user_to_productDetailFragment"
-            app:destination="@id/productDetailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/productDetailFragment" />
         <action
             android:id="@+id/action_navigation_user_to_favoritesFragment"
-            app:destination="@id/favoritesFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/favoritesFragment" />
     </fragment>
 
     <fragment
@@ -157,11 +98,7 @@
         tools:layout="@layout/fragment_product_list">
         <action
             android:id="@+id/action_productListFragment_to_productDetailFragment"
-            app:destination="@id/productDetailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/productDetailFragment" />
     </fragment>
 
     <fragment
@@ -178,7 +115,7 @@
         android:id="@+id/favoritesFragment"
         android:name="com.designbyark.layao.ui.favorites.FavoritesFragment"
         android:label="Favorites"
-        tools:layout="@layout/fragment_favorites" >
+        tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_favoritesFragment_to_navigation_user"
             app:destination="@id/navigation_user"
@@ -201,53 +138,29 @@
         tools:layout="@layout/fragment_checkout">
         <action
             android:id="@+id/action_checkoutFragment_to_navigation_home"
-            app:destination="@id/navigation_home"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/navigation_home" />
         <action
             android:id="@+id/action_checkoutFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_checkoutFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/signInFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_orders"
         android:name="com.designbyark.layao.ui.orders.OrdersFragment"
         android:label="@string/title_order"
-        tools:layout="@layout/fragment_orders" >
+        tools:layout="@layout/fragment_orders">
         <action
             android:id="@+id/action_navigation_orders_to_orderDetailFragment"
-            app:destination="@id/orderDetailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/orderDetailFragment" />
         <action
             android:id="@+id/action_navigation_orders_to_navigation_user"
-            app:destination="@id/navigation_user"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/navigation_user" />
         <action
             android:id="@+id/action_navigation_orders_to_orderHistoryFragment"
-            app:destination="@id/orderHistoryFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/orderHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailFragment"
@@ -258,15 +171,11 @@
         android:id="@+id/signUpFragment"
         android:name="com.designbyark.layao.ui.user.SignUpFragment"
         android:label="@string/title_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_signUpDetailsFragment"
             app:destination="@id/signUpDetailsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
             app:launchSingleTop="true"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/navigation_user"
             app:popUpToInclusive="true" />
     </fragment>
@@ -274,69 +183,52 @@
         android:id="@+id/signInFragment"
         android:name="com.designbyark.layao.ui.user.SignInFragment"
         android:label="@string/common_signin_button_text"
-        tools:layout="@layout/fragment_sign_in" >
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_navigation_user"
             app:destination="@id/navigation_user"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
             app:launchSingleTop="true"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit"
             app:popUpTo="@+id/navigation_user"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/editUserFragment"
         android:name="com.designbyark.layao.ui.user.EditUserFragment"
         android:label="@string/title_edit_user"
-        tools:layout="@layout/fragment_edit_user" >
+        tools:layout="@layout/fragment_edit_user">
         <action
             android:id="@+id/action_editUserFragment_to_navigation_user"
-            app:destination="@id/navigation_user"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/navigation_user" />
     </fragment>
     <fragment
         android:id="@+id/brandsListFragment"
         android:name="com.designbyark.layao.ui.brands.BrandsListFragment"
         android:label="fragment_brands_list"
-        tools:layout="@layout/fragment_brands_list" >
+        tools:layout="@layout/fragment_brands_list">
         <action
             android:id="@+id/action_brandsListFragment_to_productListFragment"
-            app:destination="@id/productListFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/productListFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpDetailsFragment"
         android:name="com.designbyark.layao.ui.user.SignUpDetailsFragment"
         android:label="One more step left"
-        tools:layout="@layout/fragment_sign_up_details" >
+        tools:layout="@layout/fragment_sign_up_details">
         <action
             android:id="@+id/action_signUpDetailsFragment_to_navigation_user"
-            app:destination="@id/navigation_user"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/navigation_user" />
     </fragment>
     <fragment
         android:id="@+id/orderHistoryFragment"
         android:name="com.designbyark.layao.ui.orders.OrderHistoryFragment"
         android:label="Order History"
-        tools:layout="@layout/fragment_order_history" >
+        tools:layout="@layout/fragment_order_history">
         <action
             android:id="@+id/action_orderHistoryFragment_to_orderDetailFragment"
-            app:destination="@id/orderDetailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/orderDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/facetFragment"
@@ -347,21 +239,18 @@
         android:id="@+id/navigation_search"
         android:name="com.designbyark.layao.search.SearchFragment"
         android:label="Search Products"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_navigation_search_to_facetFragment"
-            app:destination="@id/facetFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/facetFragment" />
         <action
             android:id="@+id/action_navigation_search_to_productDetailFragment"
-            app:destination="@id/productDetailFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/productDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.designbyark.layao.ui.user.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" />
 
 </navigation>

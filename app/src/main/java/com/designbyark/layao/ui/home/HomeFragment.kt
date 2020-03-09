@@ -2,6 +2,7 @@ package com.designbyark.layao.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.designbyark.layao.ui.home.brands.BrandsAdapter
 import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
 import com.designbyark.layao.ui.home.newArrival.NewArrivalAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -60,6 +62,7 @@ class HomeFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
         view.mFavorites.setOnClickListener {
@@ -68,6 +71,15 @@ class HomeFragment : Fragment(),
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
+        val auth = FirebaseAuth.getInstance()
+        var user = auth.currentUser
+
+        user?.reload()?.addOnSuccessListener {
+            user = auth.currentUser
+            if (!user?.isEmailVerified!!) {
+                view.mEmailVerified.visibility = View.VISIBLE
+            }
+        }
 
         // Getting collection reference from firestore
         val productsCollection = firestore.collection(PRODUCTS_COLLECTION)

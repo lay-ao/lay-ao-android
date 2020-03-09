@@ -83,6 +83,10 @@ class SignInFragment : Fragment() {
                 }
         }
 
+        view.mForgotPassword.setOnClickListener {
+            navController.navigate(R.id.action_signInFragment_to_forgotPasswordFragment)
+        }
+
     }
 
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {

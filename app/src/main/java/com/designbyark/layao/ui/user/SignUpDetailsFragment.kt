@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_sign_up_details.view.*
 
 class SignUpDetailsFragment : Fragment() {
 
+    private lateinit var firebaseAuth: FirebaseAuth
     private var user: User? = null
 
     private lateinit var userCollection: CollectionReference
@@ -45,11 +46,12 @@ class SignUpDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
         userCollection = firestore.collection(USERS_COLLECTION)
 
-        navController = Navigation.findNavController(requireActivity(),
+        navController = Navigation.findNavController(
+            requireActivity(),
             R.id.nav_host_fragment
         )
 
@@ -113,23 +115,45 @@ class SignUpDetailsFragment : Fragment() {
         }
     }
 
-    private fun saveUserAtFirestore(view:View, firebaseUser: FirebaseUser) {
+    private fun saveUserAtFirestore(view: View, firebaseUser: FirebaseUser) {
         userCollection.document(firebaseUser.uid)
             .set(user!!)
             .addOnCompleteListener { task ->
                 if (task.isComplete && task.isSuccessful) {
-                    enableInteraction(requireActivity(), view.mIncludeProgressBar)
-                    navController.navigate(R.id.action_signUpDetailsFragment_to_navigation_user)
+                    sendVerificationEmail(view)
+
                 } else {
                     enableInteraction(requireActivity(), view.mIncludeProgressBar)
-                    Log.e(LOG_TAG, "saveUserAtFirestore -> addOnCompleteListener: task is neither complete nor successful")
+                    Log.e(
+                        LOG_TAG,
+                        "saveUserAtFirestore -> addOnCompleteListener: task is neither complete nor successful"
+                    )
                     return@addOnCompleteListener
                 }
             }
             .addOnFailureListener {
                 enableInteraction(requireActivity(), view.mIncludeProgressBar)
-                Log.e(LOG_TAG, "saveUserAtFirestore -> addOnFailureListener: ${it.localizedMessage}", it)
+                Log.e(
+                    LOG_TAG,
+                    "saveUserAtFirestore -> addOnFailureListener: ${it.localizedMessage}",
+                    it
+                )
                 return@addOnFailureListener
+            }
+    }
+
+    private fun sendVerificationEmail(view: View) {
+        val user = firebaseAuth.currentUser
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isComplete && task.isSuccessful) {
+                    Log.d(LOG_TAG, "Email Sent")
+                    enableInteraction(requireActivity(), view.mIncludeProgressBar)
+                    navController.navigate(R.id.action_signUpDetailsFragment_to_navigation_user)
+                }
+            }?.addOnFailureListener { exception ->
+                Log.e(LOG_TAG, exception.localizedMessage, exception)
+                enableInteraction(requireActivity(), view.mIncludeProgressBar)
             }
     }
 
