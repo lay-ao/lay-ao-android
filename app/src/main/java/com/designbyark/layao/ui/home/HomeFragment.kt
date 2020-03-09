@@ -2,17 +2,12 @@ package com.designbyark.layao.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
@@ -23,13 +18,12 @@ import com.designbyark.layao.ui.home.brands.BrandsAdapter
 import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
 import com.designbyark.layao.ui.home.newArrival.NewArrivalAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
-import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment(),
     DiscountItemsAdapter.DiscountItemClickListener,
@@ -44,6 +38,7 @@ class HomeFragment : Fragment(),
         const val BRAND_ID = "brandId"
         const val CATEGORY_ID = "categoryId"
         const val PASSED_ID = "passedId"
+        const val DISCOUNT_ID = "discountId"
     }
 
     private var mHomeCategoryAdapter: HomeCategoriesAdapter? = null
@@ -59,29 +54,17 @@ class HomeFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-        if (bottomMenu.visibility == View.GONE) {
-            bottomMenu.visibility = View.VISIBLE
-        }
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        }
-        setHasOptionsMenu(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-
-        val favoritesButton: ImageButton = root.findViewById(R.id.favorites_button)
-        favoritesButton.setOnClickListener {
+        view.mFavorites.setOnClickListener {
             navController.navigate(R.id.action_navigation_home_to_favoritesFragment)
         }
-
-        val viewAllCategories: TextView = root.findViewById(R.id.view_all_categories)
-        val moreDiscountItems: TextView = root.findViewById(R.id.more_discount_items)
-        val moreNewArrivals: TextView = root.findViewById(R.id.more_new_arrival)
-        val moreBrands: TextView = root.findViewById(R.id.more_brands)
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -89,37 +72,39 @@ class HomeFragment : Fragment(),
         // Getting collection reference from firestore
         val productsCollection = firestore.collection(PRODUCTS_COLLECTION)
 
-        getBannerData(root, firestore, requireContext())
-        getHomeCategoryData(root, firestore)
-        getDiscountItemsData(root, productsCollection)
-        getNewArrivalData(root, productsCollection)
-        getBrandsData(root, firestore)
+        getBannerData(view, firestore, requireContext())
+        getHomeCategoryData(view, firestore)
+        getDiscountItemsData(view, productsCollection)
+        getNewArrivalData(view, productsCollection)
+        getBrandsData(view, firestore)
 
-        moreDiscountItems.setOnClickListener {
-            navController.navigate(R.id.action_nav_productListFragment)
+        view.mAllDiscountItems.setOnClickListener {
+            val args = Bundle()
+            args.putString(DISCOUNT_ID, "discountId")
+            navController.navigate(R.id.action_nav_productListFragment, args)
         }
 
-        moreNewArrivals.setOnClickListener {
+        view.mAllNewArrival.setOnClickListener {
             val args = Bundle()
             args.putString(PASSED_ID, "newArrival")
             navController.navigate(R.id.action_nav_productListFragment, args)
         }
 
-        moreBrands.setOnClickListener {
+        view.mAllBrands.setOnClickListener {
             navController.navigate(R.id.action_navigation_home_to_brandsListFragment)
         }
 
-        viewAllCategories.setOnClickListener {
+        view.mAllCategories.setOnClickListener {
             navController.navigate(R.id.action_navigation_home_to_navigation_category)
         }
 
-        return root
     }
 
-    private fun getBannerData(root: View, firestore: FirebaseFirestore, context: Context) {
-
-        // Getting SliderView
-        val sliderView: SliderView = root.findViewById(R.id.banner_image_slider)
+    private fun getBannerData(
+        view: View,
+        firestore: FirebaseFirestore,
+        context: Context
+    ) {
 
         // Getting collection reference from firestore
         val collection = firestore.collection(BANNER_COLLECTION)
@@ -135,18 +120,15 @@ class HomeFragment : Fragment(),
                 val banner = document.toObject(Banner::class.java)
                 bannerList.add(banner)
             }
-            sliderView.sliderAdapter = BannerSliderAdapter(context, bannerList, this)
+            view.mBannerImageSlider.sliderAdapter = BannerSliderAdapter(context, bannerList, this)
         }
 
-        sliderView.startAutoCycle()
-        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM)
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+        view.mBannerImageSlider.startAutoCycle()
+        view.mBannerImageSlider.setIndicatorAnimation(IndicatorAnimations.WORM)
+        view.mBannerImageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
     }
 
-    private fun getHomeCategoryData(root: View, firestore: FirebaseFirestore) {
-
-        // Capturing recycler view
-        val recyclerView: RecyclerView = root.findViewById(R.id.home_categories_recycler_view)
+    private fun getHomeCategoryData(view: View, firestore: FirebaseFirestore) {
 
         // Get Banner Collection Reference from Firestore
         val collection = firestore.collection(CATEGORIES_COLLECTION)
@@ -162,15 +144,12 @@ class HomeFragment : Fragment(),
         mHomeCategoryAdapter = HomeCategoriesAdapter(options, this, requireContext())
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(recyclerView, requireContext())
-        recyclerView.adapter = mHomeCategoryAdapter
+        setHorizontalListLayout(view.mHomeCategoriesRV, requireContext())
+        view.mHomeCategoriesRV.adapter = mHomeCategoryAdapter
 
     }
 
-    private fun getDiscountItemsData(root: View, collection: CollectionReference) {
-
-        // Capturing recycler view
-        val recyclerView: RecyclerView = root.findViewById(R.id.discount_item_recycler_view)
+    private fun getDiscountItemsData(view: View, collection: CollectionReference) {
 
         // Applying query to collection reference
         val query = collection.whereGreaterThan(DISCOUNT, 0)
@@ -182,14 +161,11 @@ class HomeFragment : Fragment(),
         mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(recyclerView, requireContext())
-        recyclerView.adapter = mDiscountItemsAdapter
+        setHorizontalListLayout(view.mDiscountItemRV, requireContext())
+        view.mDiscountItemRV.adapter = mDiscountItemsAdapter
     }
 
-    private fun getNewArrivalData(root: View, collection: CollectionReference) {
-
-        // Capturing recycler view
-        val recyclerView: RecyclerView = root.findViewById(R.id.new_arrival_recycler_view)
+    private fun getNewArrivalData(view: View, collection: CollectionReference) {
 
         // Applying query to collection reference
         val query = collection.whereEqualTo(NEW_ARRIVAL, true)
@@ -201,14 +177,11 @@ class HomeFragment : Fragment(),
         mNewArrivalAdapter = NewArrivalAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(recyclerView, requireActivity())
-        recyclerView.adapter = mNewArrivalAdapter
+        setHorizontalListLayout(view.mNewArrivalRV, requireActivity())
+        view.mNewArrivalRV.adapter = mNewArrivalAdapter
     }
 
-    private fun getBrandsData(root: View, firestore: FirebaseFirestore) {
-
-        // Capturing recycler view
-        val recyclerView: RecyclerView = root.findViewById(R.id.brands_recycler_view)
+    private fun getBrandsData(view: View, firestore: FirebaseFirestore) {
 
         // Getting collection reference from firestore
         val collection = firestore.collection(BRANDS_COLLECTION)
@@ -224,8 +197,8 @@ class HomeFragment : Fragment(),
         mBrandsAdapter = BrandsAdapter(options, requireContext(), this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(recyclerView, requireContext())
-        recyclerView.adapter = mBrandsAdapter
+        setHorizontalListLayout(view.mBrandsRV, requireContext())
+        view.mBrandsRV.adapter = mBrandsAdapter
     }
 
     override fun onStart() {

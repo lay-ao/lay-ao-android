@@ -1,53 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="32dp">
+        android:padding="24dp">
 
         <Button
             android:id="@+id/sign_out_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="SIGN OUT"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableTop="@drawable/ic_log_out"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/sign_out"
+            android:textColor="@color/colorTextPrimary"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gender" />
 
         <TextView
             android:id="@+id/full_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="John Wick"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/edit_button"
+            android:layout_height="0dp"
+            android:fontFamily="@font/open_sans_extrabold"
+            android:gravity="center|start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextPrimary"
+            android:typeface="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/mEditButton"
+            app:layout_constraintEnd_toStartOf="@+id/mEditButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Arslan Mushtaq" />
 
         <TextView
             android:id="@+id/email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="johnwick@email.com"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_email_color"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView25"
-            app:layout_constraintTop_toBottomOf="@+id/textView25" />
+            app:layout_constraintTop_toBottomOf="@+id/textView25"
+            tools:text="johnwick@email.com" />
 
         <TextView
             android:id="@+id/address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="House #XX, Block XX, Wapda Town, Lahore, Punjab, Pakistan"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_location"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            tools:text="House #XX, Block XX, Wapda Town, Lahore, Punjab, Pakistan"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView26"
             app:layout_constraintTop_toBottomOf="@+id/textView26" />
@@ -57,8 +81,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="+92 XXX 1234567 "
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="+92 XXX 1234567 "
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_contact"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView27"
             app:layout_constraintTop_toBottomOf="@+id/textView27" />
@@ -68,10 +99,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="center|start"
-            android:text="Email"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
+            android:text="@string/email_address"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
             app:layout_constraintStart_toStartOf="@+id/wallet_amount"
             app:layout_constraintTop_toBottomOf="@+id/wallet_amount" />
 
@@ -80,10 +112,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="center"
-            android:text="Delivery Address"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
+            android:text="@string/delivery_address"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
             app:layout_constraintStart_toStartOf="@+id/email"
             app:layout_constraintTop_toBottomOf="@+id/email" />
 
@@ -92,10 +125,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="center"
-            android:text="Contact"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
+            android:text="@string/contact"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
             app:layout_constraintStart_toStartOf="@+id/address"
             app:layout_constraintTop_toBottomOf="@+id/address" />
 
@@ -104,10 +138,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="center"
-            android:text="Gender"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
+            android:text="@string/gender"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
             app:layout_constraintStart_toStartOf="@+id/contact"
             app:layout_constraintTop_toBottomOf="@+id/contact" />
 
@@ -116,8 +151,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Male/Female/SuperHuman"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="Male/Female/SuperHuman"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_gender"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView28"
             app:layout_constraintTop_toBottomOf="@+id/textView28" />
@@ -127,39 +169,45 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="center"
-            android:text="Wallet"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
+            android:text="@string/wallet_amount"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
+            android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/full_name" />
 
         <TextView
             android:id="@+id/wallet_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:text="Rs. 1000 "
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_wallet"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView31"
-            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+            app:layout_constraintTop_toBottomOf="@+id/textView31"
+            tools:text="Rs. 1000 " />
 
         <ImageButton
-            android:id="@+id/edit_button"
+            android:id="@+id/mEditButton"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/full_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_edit_color_24dp"
-            android:clickable="true"
-            android:focusable="true"/>
+            app:srcCompat="@drawable/ic_edit"
+            android:contentDescription="@null" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,7 +8,7 @@ import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.data.cart.CartDao
 
 
-@Database(entities = arrayOf(Cart::class), version = 11, exportSchema = false)
+@Database(entities = [Cart::class], version = 11, exportSchema = false)
 abstract class LayAoRoomDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao

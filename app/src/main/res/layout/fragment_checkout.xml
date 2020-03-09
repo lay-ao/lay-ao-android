@@ -9,24 +9,57 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="24dp">
+
+        <ImageButton
+            android:id="@+id/mBackNav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mLabel2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/hind_bold"
+            android:gravity="center|start"
+            android:includeFontPadding="true"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="Checkout"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/mBackNav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/mBackNav"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:text="Grand Total"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/mLabel2" />
 
         <TextView
-            android:id="@+id/grand_total"
+            android:id="@+id/mGrandTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mLabel2"
             tools:text="Rs. XXXX" />
 
         <TextView
@@ -34,19 +67,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:text="Total Items"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
-            android:id="@+id/total_items"
+            android:id="@+id/mTotalItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grand_total"
+            app:layout_constraintTop_toBottomOf="@+id/mGrandTotal"
             tools:text="x3" />
 
         <TextView
@@ -54,19 +90,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:text="Delivery Fee"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
         <TextView
-            android:id="@+id/delivery_fee"
+            android:id="@+id/mDeliveryFee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/total_items"
+            app:layout_constraintTop_toBottomOf="@+id/mTotalItems"
             tools:text="Rs. 0" />
 
         <TextView
@@ -74,6 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:text="Total"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,15 +124,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif-black"
+            android:fontFamily="@font/open_sans_extrabold"
             android:text="Delivery Information"
+            android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/full_name_input_layout"
+            android:id="@+id/mFullNameIL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -115,10 +156,11 @@
             app:startIconTint="@null">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/full_name_edit_text"
+                android:id="@+id/mFullNameET"
                 style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="textPersonName"
                 android:maxLength="33"
                 android:selectAllOnFocus="true"
@@ -130,7 +172,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/phone_number_input_layout"
+            android:id="@+id/mContactIL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Phone Number"
@@ -147,15 +189,16 @@
             app:hintEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/full_name_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/mFullNameIL"
             app:startIconDrawable="@drawable/ic_local_phone_color_24dp"
             app:startIconTint="@null">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phone_number_edit_text"
+                android:id="@+id/mContactET"
                 style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="phone"
                 android:maxLength="11"
                 android:selectAllOnFocus="true"
@@ -165,7 +208,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/house_no_input_layout"
+            android:id="@+id/mHouseNumIL"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -181,15 +224,16 @@
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/mContactIL"
             app:startIconDrawable="@drawable/ic_house_color_24dp"
             app:startIconTint="@null">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/house_no_edit_text"
+                android:id="@+id/mHouseNumET"
                 style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="textPostalAddress"
                 android:maxLength="8"
                 android:selectAllOnFocus="true"
@@ -200,39 +244,39 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
-            android:id="@+id/block_spinner"
+            android:id="@+id/mBlockSpinner"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:dropDownWidth="wrap_content"
             android:entries="@array/blocks"
             android:spinnerMode="dropdown"
-            app:layout_constraintBottom_toBottomOf="@+id/house_no_input_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/mHouseNumIL"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/house_no_input_layout"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number_input_layout" />
+            app:layout_constraintStart_toEndOf="@+id/mHouseNumIL"
+            app:layout_constraintTop_toBottomOf="@+id/mContactIL" />
 
         <TextView
-            android:id="@+id/address_help"
+            android:id="@+id/mAddressHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:drawableEnd="@drawable/ic_help_color_24dp"
-            android:drawableRight="@drawable/ic_help_color_24dp"
             android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="center"
             android:text="Wapda Town, Lahore, Punjab, Pakistan"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/darker_gray"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/house_no_input_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/mHouseNumIL" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/comments_text_input_layout"
+            android:id="@+id/mCommentsIL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -248,15 +292,16 @@
             app:hintEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/address_help"
+            app:layout_constraintTop_toBottomOf="@+id/mAddressHelp"
             app:startIconDrawable="@drawable/ic_comment_color_24dp"
             app:startIconTint="@null">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/comments_text_edit_text"
+                android:id="@+id/mCommentsET"
                 style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="textLongMessage"
                 android:maxLength="100"
                 android:selectAllOnFocus="true"
@@ -266,25 +311,28 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/place_order"
+            android:id="@+id/mPlaceOrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:text="Place Order"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/comments_text_input_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/mCommentsIL" />
 
         <TextView
-            android:id="@+id/total"
+            android:id="@+id/mTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delivery_fee"
+            app:layout_constraintTop_toBottomOf="@+id/mDeliveryFee"
             tools:text="Rs. XXXX" />
 
         <TextView
@@ -292,26 +340,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:text="GST is included within every product price"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/total_label" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/retrieve_data"
+            android:id="@+id/mRetrieveData"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:fontFamily="@font/open_sans"
             android:text="Retrieve Data"
-            app:backgroundTint="@android:color/holo_blue_dark"
             android:textColor="@android:color/white"
+            app:backgroundTint="@android:color/holo_blue_dark"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/comments_text_input_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/mCommentsIL" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

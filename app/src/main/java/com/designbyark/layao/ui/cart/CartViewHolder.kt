@@ -18,7 +18,7 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val perPrice: TextView = itemView.findViewById(R.id.per_price)
     private val discountPrice: TextView = itemView.findViewById(R.id.discount_price)
     private val totalPlaceHolder: TextView = itemView.findViewById(R.id.total_label)
-    private val discountPlaceHolder: TextView = itemView.findViewById(R.id.discount)
+    private val discountPlaceHolder: TextView = itemView.findViewById(R.id.mDiscount)
     private val discountLabel: TextView = itemView.findViewById(R.id.discount_label)
     private val imagePlaceHolder: ImageView = itemView.findViewById(R.id.image)
     private val titleTextView: TextView = itemView.findViewById(R.id.title)

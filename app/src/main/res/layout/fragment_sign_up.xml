@@ -15,7 +15,7 @@
         android:padding="16dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/full_name_input_layout"
+            android:id="@+id/mFullNameIL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -38,10 +38,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/full_name_edit_text"
+                android:id="@+id/mFullNameET"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="textPersonName"
                 android:maxLength="33"
                 android:singleLine="true"
@@ -50,7 +51,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_input_layout"
+            android:id="@+id/mEmailIL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -65,15 +66,16 @@
             app:errorEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
-            app:layout_constraintEnd_toEndOf="@+id/full_name_input_layout"
-            app:layout_constraintStart_toStartOf="@+id/full_name_input_layout"
-            app:layout_constraintTop_toBottomOf="@+id/full_name_input_layout">
+            app:layout_constraintEnd_toEndOf="@+id/mFullNameIL"
+            app:layout_constraintStart_toStartOf="@+id/mFullNameIL"
+            app:layout_constraintTop_toBottomOf="@+id/mFullNameIL">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email_input_edit_text"
+                android:id="@+id/mEmailET"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="textWebEmailAddress|textEmailAddress"
                 android:maxLength="50"
                 android:singleLine="true"
@@ -82,7 +84,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_input_layout"
+            android:id="@+id/mPasswordIL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -99,18 +101,19 @@
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintEnd_toEndOf="@+id/email_input_layout"
-            app:layout_constraintStart_toStartOf="@+id/email_input_layout"
-            app:layout_constraintTop_toBottomOf="@+id/email_input_layout"
+            app:layout_constraintEnd_toEndOf="@+id/mEmailIL"
+            app:layout_constraintStart_toStartOf="@+id/mEmailIL"
+            app:layout_constraintTop_toBottomOf="@+id/mEmailIL"
             app:passwordToggleContentDescription="Show Password"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_input_edit_text"
+                android:id="@+id/mPasswordET"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="textWebPassword"
                 android:maxLength="16"
                 android:selectAllOnFocus="true"
@@ -121,7 +124,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirm_password_input_layout"
+            android:id="@+id/mConfirmPassIL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -138,18 +141,19 @@
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintEnd_toEndOf="@+id/password_input_layout"
-            app:layout_constraintStart_toStartOf="@+id/password_input_layout"
-            app:layout_constraintTop_toBottomOf="@+id/password_input_layout"
+            app:layout_constraintEnd_toEndOf="@+id/mPasswordIL"
+            app:layout_constraintStart_toStartOf="@+id/mPasswordIL"
+            app:layout_constraintTop_toBottomOf="@+id/mPasswordIL"
             app:passwordToggleContentDescription="Show Password"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/confirm_password_input_edit_text"
+                android:id="@+id/mConfirmPassET"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
                 android:inputType="textWebPassword"
                 android:maxLength="16"
                 android:selectAllOnFocus="true"
@@ -159,20 +163,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/register_button"
+            android:id="@+id/mSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
             android:text="SIGN UP"
             app:backgroundTint="@android:color/holo_blue_dark"
             app:elevation="1dp"
-            app:layout_constraintEnd_toEndOf="@+id/confirm_password_input_layout"
-            app:layout_constraintTop_toBottomOf="@+id/confirm_password_input_layout"
+            app:layout_constraintEnd_toEndOf="@+id/mConfirmPassIL"
+            app:layout_constraintTop_toBottomOf="@+id/mConfirmPassIL"
             app:strokeColor="@android:color/holo_blue_light"
             app:strokeWidth="1dp" />
 
         <CheckBox
-            android:id="@+id/terms_and_condition"
+            android:id="@+id/mTerms"
             style="@style/Widget.AppCompat.CompoundButton.CheckBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -184,23 +189,23 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp"
             app:buttonTint="@android:color/holo_blue_dark"
-            app:layout_constraintStart_toStartOf="@+id/confirm_password_input_layout"
-            app:layout_constraintTop_toBottomOf="@+id/confirm_password_input_layout" />
+            app:layout_constraintStart_toStartOf="@+id/mConfirmPassIL"
+            app:layout_constraintTop_toBottomOf="@+id/mConfirmPassIL" />
 
         <TextView
-            android:id="@+id/terms_and_condition_view"
+            android:id="@+id/mTermsText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:fontFamily="@font/open_sans"
             android:text="Accept our terms and condition"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/terms_and_condition"
-            app:layout_constraintEnd_toStartOf="@+id/register_button"
-            app:layout_constraintStart_toEndOf="@+id/terms_and_condition"
-            app:layout_constraintTop_toTopOf="@+id/terms_and_condition" />
+            app:layout_constraintBottom_toBottomOf="@+id/mTerms"
+            app:layout_constraintEnd_toStartOf="@+id/mSignUp"
+            app:layout_constraintStart_toEndOf="@+id/mTerms"
+            app:layout_constraintTop_toTopOf="@+id/mTerms" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -209,7 +214,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="@font/open_sans_extrabold"
         android:text="@string/title_sign_up"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -219,7 +224,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <include
-        android:id="@+id/include_progress_bar"
+        android:id="@+id/mIncludeProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/progress_bar"

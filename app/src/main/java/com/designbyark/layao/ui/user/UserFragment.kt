@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -23,23 +21,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_active_user.view.*
 import java.util.*
 
 
 class UserFragment : Fragment() {
 
+    private lateinit var auth: FirebaseAuth
+    private var firebaseUser: FirebaseUser? = null
     private lateinit var navController: NavController
-
-    private lateinit var walletView: TextView
-    private lateinit var fullNameView: TextView
-    private lateinit var emailView: TextView
-    private lateinit var addressView: TextView
-    private lateinit var contactView: TextView
-    private lateinit var genderView: TextView
-
-    private lateinit var signOut: Button
-
-    private lateinit var edit: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,10 +37,8 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val auth = FirebaseAuth.getInstance()
-        val firebaseUser = auth.currentUser
-        val firestore = FirebaseFirestore.getInstance()
-        val userCollection = firestore.collection(USERS_COLLECTION)
+        auth = FirebaseAuth.getInstance()
+        firebaseUser = auth.currentUser
 
         val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         bottomMenu.visibility = View.VISIBLE
@@ -67,8 +55,8 @@ class UserFragment : Fragment() {
                 false
             )
 
-            val registerButton: Button = noUserView.findViewById(R.id.register_button)
-            val signInButton: Button = noUserView.findViewById(R.id.sign_in_button)
+            val registerButton: Button = noUserView.findViewById(R.id.mSignUp)
+            val signInButton: Button = noUserView.findViewById(R.id.mSignIn)
 
             registerButton.setOnClickListener {
                 navController.navigate(R.id.action_navigation_user_to_registerFragment)
@@ -81,16 +69,24 @@ class UserFragment : Fragment() {
             return noUserView
         }
 
-        val root = inflater.inflate(R.layout.fragment_active_user, container, false)
+        return inflater.inflate(R.layout.fragment_active_user, container, false)
+    }
 
-        findingViews(root)
-        getUserData(userCollection, firebaseUser)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        edit.setOnClickListener {
+        if (firebaseUser == null) return
+
+        val firestore = FirebaseFirestore.getInstance()
+        val userCollection = firestore.collection(USERS_COLLECTION)
+
+        getUserData(view, userCollection, firebaseUser!!)
+
+        view.mEditButton.setOnClickListener {
             navController.navigate(R.id.action_navigation_user_to_editUserFragment)
         }
 
-        signOut.setOnClickListener {
+        view.sign_out_button.setOnClickListener {
 
             if (!isConnectedToInternet(requireContext())) {
                 Log.e(LOG_TAG, "Not connected to the internet!")
@@ -100,11 +96,10 @@ class UserFragment : Fragment() {
             auth.signOut()
             navController.navigate(R.id.action_navigation_user_to_signInFragment)
         }
-
-        return root
     }
 
     private fun getUserData(
+        view: View,
         userCollection: CollectionReference,
         firebaseUser: FirebaseUser
     ) {
@@ -118,42 +113,27 @@ class UserFragment : Fragment() {
 
                         val emptyString = "Not specified"
 
-                        walletView.text = String.format(
+                        view.wallet_amount.text = String.format(
                             Locale.getDefault(),
                             "Rs. %.0f", model.wallet
                         )
-                        fullNameView.text = model.fullName
-                        emailView.text = model.email
+                        view.full_name.text = model.fullName
+                        view.email.text = model.email
 
                         if (model.completeAddress == "" || model.completeAddress.isEmpty()) {
-                            addressView.text = emptyString
+                            view.address.text = emptyString
                         } else {
-                            addressView.text = model.completeAddress
+                            view.address.text = model.completeAddress
                         }
 
                         if (model.contact == "" || model.contact.isEmpty()) {
-                            contactView.text = emptyString
+                            view.contact.text = emptyString
                         } else {
-                            contactView.text = model.contact
+                            view.contact.text = model.contact
                         }
-                        genderView.text = formatGender(model.gender)
+                        view.gender.text = formatGender(model.gender)
                     }
                 }
             }
     }
-
-    private fun findingViews(root: View) {
-        root.run {
-            walletView = findViewById(R.id.wallet_amount)
-            fullNameView = findViewById(R.id.full_name)
-            emailView = findViewById(R.id.email)
-            addressView = findViewById(R.id.address)
-            contactView = findViewById(R.id.contact)
-            genderView = findViewById(R.id.gender)
-            signOut = findViewById(R.id.sign_out_button)
-            edit = findViewById(R.id.edit_button)
-        }
-    }
-
-
 }

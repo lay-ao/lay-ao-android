@@ -7,18 +7,14 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
@@ -28,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_order_detail.view.*
 import java.util.*
 
 class OrderDetailFragment : Fragment() {
@@ -39,19 +36,6 @@ class OrderDetailFragment : Fragment() {
     private lateinit var collectionUserReference: CollectionReference
     private lateinit var navController: NavController
 
-    private lateinit var orderIdView: TextView
-    private lateinit var statusView: TextView
-    private lateinit var nameView: TextView
-    private lateinit var addressView: TextView
-    private lateinit var contactView: TextView
-    private lateinit var grandTotalView: TextView
-    private lateinit var totalItemsView: TextView
-    private lateinit var timeView: TextView
-
-    private lateinit var cancelOrder: Button
-
-    private lateinit var recyclerView: RecyclerView
-
     private var walletAmount: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +44,17 @@ class OrderDetailFragment : Fragment() {
         arguments?.let {
             orderId = it.getString("orderId")
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_order_detail, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -78,38 +73,24 @@ class OrderDetailFragment : Fragment() {
         }
 
         orderDocument = orderId?.let { collectionReference.document(it) }
-        val title = orderId?.take(5)?.toUpperCase(Locale.getDefault())
+        // val title = orderId?.take(5)?.toUpperCase(Locale.getDefault())
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setTitle("Order #$title")
-        }
-        setHasOptionsMenu(true)
 
         navController = Navigation.findNavController(
             requireActivity(),
             R.id.nav_host_fragment
         )
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        val root = inflater.inflate(R.layout.fragment_order_detail, container, false)
-        findingViews(root)
-        getOrderData(requireContext())
-        cancelOrder.setOnClickListener {
+        getOrderData(view, requireContext())
+        view.mCancelOrder.setOnClickListener {
             orderId?.let {
                 showCancelAlert(requireContext())
-                cancelOrder.visibility = View.INVISIBLE
+                view.mCancelOrder.visibility = View.INVISIBLE
             }
         }
-        return root
     }
 
-    private fun getOrderData(context: Context) {
+    private fun getOrderData(view: View, context: Context) {
         orderDocument?.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(LOG_TAG, "Listen failed.", e)
@@ -119,27 +100,27 @@ class OrderDetailFragment : Fragment() {
             if (snapshot != null && snapshot.exists()) {
                 val model = snapshot.toObject(Order::class.java)
                 if (model != null) {
-                    orderIdView.text = String.format(
+                    view.mOrderId.text = String.format(
                         "Order ID: %s",
                         formatOrderId(model.orderId, model.contactNumber)
                     )
-                    setOrderStatus(model.orderStatus, context)
-                    nameView.text = String.format("Order placed by %s", model.fullName)
-                    addressView.text = String.format("Delivery at %s", model.completeAddress)
-                    contactView.text = String.format("Contact: %s", model.contactNumber)
-                    grandTotalView.text =
+                    setOrderStatus(view, model.orderStatus, context)
+                    view.mCustomerName.text = String.format("Order placed by %s", model.fullName)
+                    view.mOrderAddress.text = String.format("Delivery at %s", model.completeAddress)
+                    view.mCustomerContact.text = String.format("Contact: %s", model.contactNumber)
+                    view.mGrandTotal.text =
                         String.format(
                             Locale.getDefault(),
                             "Grand Total: Rs. %.0f",
                             model.grandTotal
                         )
-                    totalItemsView.text =
+                    view.mTotalItems.text =
                         String.format(
                             Locale.getDefault(),
                             "Total items: %d items",
                             model.totalItems
                         )
-                    timeView.text = String.format(
+                    view.mOrderTiming.text = String.format(
                         "Order placed on %s",
                         formatDate(model.orderTime.toDate())
                     )
@@ -149,7 +130,7 @@ class OrderDetailFragment : Fragment() {
                             context,
                             model.items
                         )
-                    recyclerView.adapter = orderCartAdapter
+                    view.mOrderCartRV.adapter = orderCartAdapter
 
                 }
 
@@ -159,84 +140,76 @@ class OrderDetailFragment : Fragment() {
         }
     }
 
-    private fun findingViews(root: View) {
-        root.run {
-            orderIdView = findViewById(R.id.order_id)
-            statusView = findViewById(R.id.order_status)
-            nameView = findViewById(R.id.customer_name)
-            addressView = findViewById(R.id.order_address)
-            contactView = findViewById(R.id.customer_contact)
-            grandTotalView = findViewById(R.id.grand_total)
-            totalItemsView = findViewById(R.id.total_items)
-            timeView = findViewById(R.id.order_timing)
-            cancelOrder = findViewById(R.id.cancel_order)
-            recyclerView = findViewById(R.id.order_cart_recycler_view)
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun setOrderStatus(status: Int, context: Context) {
-        statusView.text = getOrderStatus(status)
+    private fun setOrderStatus(view: View, status: Int, context: Context) {
+        view.mOrderStatus.text = getOrderStatus(status)
         when (status) {
             0 -> setTextColor(
+                view,
                 android.R.color.holo_orange_dark,
-                cancelOrder,
+                view.mCancelOrder,
                 View.VISIBLE,
                 context
             )
             1 -> setTextColor(
+                view,
                 android.R.color.holo_green_dark,
-                cancelOrder,
+                view.mCancelOrder,
                 View.VISIBLE,
                 context
             )
             2 -> setTextColor(
+                view,
                 android.R.color.holo_blue_dark,
-                cancelOrder,
+                view.mCancelOrder,
                 View.INVISIBLE,
                 context
             )
             3 -> setTextColor(
+                view,
                 android.R.color.holo_purple,
-                cancelOrder,
+                view.mCancelOrder,
                 View.INVISIBLE,
                 context
             )
             4 -> setTextColor(
+                view,
                 android.R.color.holo_red_light,
-                cancelOrder,
+                view.mCancelOrder,
                 View.VISIBLE,
                 context
             )
             5 -> setTextColor(
+                view,
                 android.R.color.holo_green_dark,
-                cancelOrder,
+                view.mCancelOrder,
                 View.INVISIBLE,
                 context
             )
             6 -> setTextColor(
+                view,
                 android.R.color.holo_red_dark,
-                cancelOrder,
+                view.mCancelOrder,
                 View.INVISIBLE,
                 context
             )
-            else -> setTextColor(android.R.color.black, cancelOrder, View.VISIBLE, requireContext())
+            else -> setTextColor(
+                view,
+                android.R.color.black,
+                view.mCancelOrder,
+                View.VISIBLE,
+                requireContext()
+            )
         }
     }
 
     private fun setTextColor(
+        view: View,
         @ColorRes color: Int,
         button: Button,
         visibility: Int,
         context: Context
     ) {
-        statusView.setTextColor(
+        view.mOrderStatus.setTextColor(
             ContextCompat.getColor(
                 context,
                 color

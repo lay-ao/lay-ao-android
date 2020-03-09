@@ -71,13 +71,13 @@ class CPListFragment : Fragment(),
         root: View,
         query: Query
     ) {
-        val recyclerView: RecyclerView = root.findViewById(R.id.product_list_recycler_view)
+        val recyclerView: RecyclerView = root.findViewById(R.id.mProductListRV)
 
         val options = FirestoreRecyclerOptions.Builder<Products>()
             .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(options, requireActivity(), this)
+        mAdapter = ProductListAdapter(options, this)
 
         recyclerView.addItemDecoration(
             MarginItemDecoration(

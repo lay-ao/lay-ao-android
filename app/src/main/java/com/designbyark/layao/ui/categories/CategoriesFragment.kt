@@ -17,6 +17,7 @@ import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.fragment_categories.view.*
 
 class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
 
@@ -28,21 +29,16 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_categories, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(requireActivity(),
             R.id.nav_host_fragment)
 
-        val root = inflater.inflate(R.layout.fragment_categories, container, false)
-
-        getData(root)
-
-        return root
-    }
-
-    private fun getData(root: View) {
-
-        // Capturing recycler view
-        val recyclerView: RecyclerView = root.findViewById(R.id.category_recycler_view)
+        view.mBackNav.setOnClickListener { navController.navigateUp() }
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -62,14 +58,15 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
         mAdapter = CategoryAdapter(options, requireActivity(), this)
 
         // Applying item decoration to recycler view components
-        recyclerView.addItemDecoration(
+        view.mCategoryRV.addItemDecoration(
             MarginItemDecoration(
                 resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt()
             )
         )
 
         // Assigning adapter to Recycler View
-        recyclerView.adapter = mAdapter
+        view.mCategoryRV.adapter = mAdapter
+
     }
 
     override fun onStart() {

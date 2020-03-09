@@ -2,25 +2,25 @@ package com.designbyark.layao.ui.orders
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
-import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.fragment_orders.view.*
 
 class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
+    private lateinit var firebase: FirebaseFirestore
+    private var firebaseUser: FirebaseUser? = null
     private var adapter: OrderAdapter? = null
     private lateinit var navController: NavController
 
@@ -29,14 +29,9 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        }
-        setHasOptionsMenu(true)
-
         val firebaseAuth = FirebaseAuth.getInstance()
-        val firebaseUser = firebaseAuth.currentUser
-        val firebase = FirebaseFirestore.getInstance()
+        firebaseUser = firebaseAuth.currentUser
+        firebase = FirebaseFirestore.getInstance()
 
         navController = Navigation.findNavController(
             requireActivity(),
@@ -47,7 +42,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
             val emptyOrderView = inflater.inflate(R.layout.fragment_no_order, container, false)
 
-            val userNav: TextView = emptyOrderView.findViewById(R.id.login_sign_up_button)
+            val userNav: TextView = emptyOrderView.findViewById(R.id.mLoginAuth)
 
             userNav.setOnClickListener {
                 navController.navigate(R.id.action_navigation_orders_to_navigation_user)
@@ -55,26 +50,28 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
             return emptyOrderView
         }
+        return inflater.inflate(R.layout.fragment_orders, container, false)
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (firebaseUser == null) return
 
         val orderCollection = firebase.collection(ORDERS_COLLECTION)
 
-        val query = orderCollection.whereEqualTo("userId", firebaseUser.uid)
+        val query = orderCollection.whereEqualTo("userId", firebaseUser?.uid)
             .whereLessThanOrEqualTo("orderStatus", 4)
             .orderBy("orderStatus", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Order>()
             .setQuery(query, Order::class.java)
             .build()
 
-
         adapter = OrderAdapter(options, requireContext(), this)
 
-        val root = inflater.inflate(R.layout.fragment_orders, container, false)
-
-        val recyclerView: RecyclerView =
-            root.findViewById(R.id.active_order_recycler_view)
-        recyclerView.adapter = adapter
-
-        return root
+        view.mActiveOrdersRV.adapter = adapter
 
     }
 
@@ -99,15 +96,15 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         navController.navigate(R.id.action_navigation_orders_to_orderDetailFragment, args)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.orders_history -> {
-                navController.navigate(R.id.action_navigation_orders_to_orderHistoryFragment)
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.orders_history -> {
+//                navController.navigate(R.id.action_navigation_orders_to_orderHistoryFragment)
+//                return true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()

@@ -15,7 +15,7 @@ import java.util.*
 class FavoritesViewHolder internal constructor(private val view: View) :
     RecyclerView.ViewHolder(view) {
 
-    val favButton: ImageButton = view.findViewById(R.id.fav_button)
+    val favButton: ImageButton = view.findViewById(R.id.mFavorite)
 
     internal fun setImage(image: String, context: Context) {
         val imageView: ImageView = view.findViewById(R.id.image)

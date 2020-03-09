@@ -19,13 +19,13 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/mGrandTotalLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
                 android:layout_marginTop="16dp"
-                android:text="Grand Total"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/grand_total"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black"
                 app:layout_constraintBottom_toTopOf="@id/view"
@@ -37,24 +37,23 @@
                 android:layout_width="0dp"
                 android:layout_height="2dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:alpha="1"
                 android:background="#FBC02D"
-                app:layout_constraintBottom_toTopOf="@+id/textView7"
-                app:layout_constraintEnd_toStartOf="@+id/checkout"
+                app:layout_constraintBottom_toTopOf="@+id/mTotalItemsLabel"
+                app:layout_constraintEnd_toStartOf="@+id/mCheckout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/mGrandTotalLabel" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/mTotalItemsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
                 android:layout_marginBottom="16dp"
-                android:text="Total Items"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/total_items"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,11 +61,10 @@
                 app:layout_constraintTop_toBottomOf="@id/view" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/checkout"
+                android:id="@+id/mCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:backgroundTint="#FBC02D"
@@ -77,28 +75,28 @@
                 app:srcCompat="@drawable/ic_arrow_right_white_24dp" />
 
             <TextView
-                android:id="@+id/grand_total"
+                android:id="@+id/mGrandTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:fontFamily="@font/open_sans"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                app:layout_constraintBottom_toBottomOf="@+id/mGrandTotalLabel"
                 app:layout_constraintEnd_toEndOf="@+id/view"
                 tools:text="Rs. 1000" />
 
             <TextView
-                android:id="@+id/total_items"
+                android:id="@+id/mTotalItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:fontFamily="@font/open_sans"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/textView7"
+                app:layout_constraintBottom_toBottomOf="@+id/mTotalItemsLabel"
                 app:layout_constraintEnd_toEndOf="@+id/view"
                 tools:text="x23" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -106,48 +104,52 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cart_recycler_view"
+        android:id="@+id/mCartRV"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/colorDivider"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        tools:itemCount="4"
+        app:layout_constraintTop_toBottomOf="@+id/mCartItemsLabel"
         tools:listitem="@layout/body_cart_item" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/mCartItemsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
+        android:fontFamily="@font/hind_bold"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Items"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:text="@string/cart_items"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/black"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <TextView
-        android:id="@+id/delete_all"
+        android:id="@+id/mDeleteAll"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:drawableEnd="@drawable/ic_delete_cart_color_24dp"
-        android:drawableRight="@drawable/ic_delete_cart_color_24dp"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_delete_cart_color_24dp"
         android:drawablePadding="10dp"
+        android:focusable="true"
+        android:fontFamily="@font/open_sans"
         android:gravity="center"
         android:paddingStart="10dp"
         android:paddingLeft="10dp"
         android:paddingEnd="10dp"
         android:paddingRight="10dp"
-        android:text="Delete All"
+        android:text="@string/empty_cart"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@android:color/holo_red_dark"
-        app:layout_constraintBottom_toTopOf="@+id/cart_recycler_view"
+        app:layout_constraintBottom_toTopOf="@+id/mCartRV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 

@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/default_recycler_view_cell_margin">
+    android:layout_marginTop="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="120dp"
             android:layout_height="0dp"
+            android:contentDescription="@null"
+            android:padding="12dp"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
+            tools:srcCompat="@drawable/apple" />
 
         <TextView
             android:id="@+id/title"
@@ -26,23 +29,29 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans"
+            android:lines="1"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextPrimary"
             android:textStyle="bold"
+            android:typeface="normal"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Item Name" />
+            tools:text="Apples (Red)" />
 
         <TextView
             android:id="@+id/per_unit_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:text="Per kg:"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/per_kg"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -51,10 +60,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:text="Quantity:"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/quantity"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:typeface="normal"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/per_unit_label" />
 
@@ -62,23 +74,29 @@
             android:id="@+id/quantity"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView6"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView6"
-            tools:text="Rs. 400/4 kg (4)" />
+            tools:text="4 kg" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:text="Brand:"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/brand"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:typeface="normal"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -87,23 +105,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:text="Discount:"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/discount"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:typeface="normal"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
+
         <TextView
             android:id="@+id/per_price"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/per_unit_label"
-            app:layout_constraintEnd_toStartOf="@+id/discount_price"
-            app:layout_constraintStart_toEndOf="@+id/per_unit_label"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/per_unit_label"
             tools:text="Rs. 100/kg" />
 
@@ -112,39 +136,46 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
-            android:gravity="bottom"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|end"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/holo_green_dark"
             android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/per_price"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/per_price"
             app:layout_constraintTop_toTopOf="@+id/per_price"
             tools:text="Rs. 100/kg" />
-
 
         <TextView
             android:id="@+id/brand"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView8"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView8"
             tools:text="Pakistani" />
 
         <TextView
-            android:id="@+id/discount"
+            android:id="@+id/mDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/discount_label"
-            app:layout_constraintStart_toEndOf="@+id/discount_label"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/discount_label"
-            tools:text="10% applied" />
+            tools:text="10%" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/delete_item"
@@ -164,8 +195,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Total:"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/sub_total"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:typeface="normal"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/discount_label" />
 
@@ -173,9 +208,13 @@
             android:id="@+id/total_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView4"
             tools:text="Rs. 1000" />
 
@@ -188,7 +227,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4"
-            app:srcCompat="@drawable/ic_add_color_24dp" />
+            app:srcCompat="@drawable/ic_increase"
+            android:contentDescription="@null" />
 
         <ImageButton
             android:id="@+id/decrease_quantity"
@@ -199,19 +239,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/textView4"
-            app:srcCompat="@drawable/ic_subtract_color_24dp" />
+            app:srcCompat="@drawable/ic_decrease"
+            android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/changing_quantity"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:gravity="center"
-            android:text="TextView"
+            android:textAllCaps="true"
+            android:textColor="@color/colorTextPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/increase_quantity"
             app:layout_constraintStart_toEndOf="@+id/decrease_quantity"
-            app:layout_constraintTop_toBottomOf="@+id/total_label" />
+            app:layout_constraintTop_toBottomOf="@+id/total_label"
+            tools:text="Rs. 100 / KG" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

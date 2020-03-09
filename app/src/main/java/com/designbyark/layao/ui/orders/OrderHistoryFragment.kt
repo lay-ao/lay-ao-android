@@ -3,20 +3,18 @@ package com.designbyark.layao.ui.orders
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_order_history.view.*
 
 class OrderHistoryFragment : Fragment(),
     OrderAdapter.OrderItemClickListener {
@@ -30,10 +28,16 @@ class OrderHistoryFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-        setHasOptionsMenu(true)
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        }
+//        setHasOptionsMenu(true)
+
+        return inflater.inflate(R.layout.fragment_order_history, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
@@ -52,23 +56,17 @@ class OrderHistoryFragment : Fragment(),
             R.id.nav_host_fragment
         )
 
-        val view = inflater.inflate(R.layout.fragment_order_history, container, false)
-
         adapter = OrderAdapter(options, requireContext(), this)
 
-        val recyclerView: RecyclerView =
-            view.findViewById(R.id.history_order_recycler_view)
-        recyclerView.adapter = adapter
-
-        return view
+        view.mHistoryOrdersRV.adapter = adapter
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            android.R.id.home -> navController.navigateUp()
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
     override fun onStart() {
         super.onStart()

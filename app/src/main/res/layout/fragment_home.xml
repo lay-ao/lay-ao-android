@@ -19,10 +19,10 @@
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23">
+            app:layout_constraintTop_toBottomOf="@+id/mAppName">
 
             <com.smarteist.autoimageslider.SliderView
-                android:id="@+id/banner_image_slider"
+                android:id="@+id/mBannerImageSlider"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:sliderAutoCycleDirection="back_and_forth"
@@ -49,7 +49,7 @@
             android:text="Shop by Category"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,14 +65,14 @@
             android:text="Offer Zone"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/brands_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@+id/mBrandsRV" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/discount_item_recycler_view"
+            android:id="@+id/mDiscountItemRV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -93,14 +93,14 @@
             android:text="New Arrivals"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/discount_item_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@+id/mDiscountItemRV" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/new_arrival_recycler_view"
+            android:id="@+id/mNewArrivalRV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -122,14 +122,14 @@
             android:text="SHOP BY BRANDS"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_categories_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@+id/mHomeCategoriesRV" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/brands_recycler_view"
+            android:id="@+id/mBrandsRV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -140,7 +140,7 @@
             tools:listitem="@layout/body_home_categories" />
 
         <TextView
-            android:id="@+id/more_new_arrival"
+            android:id="@+id/mAllNewArrival"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
@@ -155,7 +155,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView2" />
 
         <TextView
-            android:id="@+id/more_brands"
+            android:id="@+id/mAllBrands"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
@@ -170,7 +170,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView3" />
 
         <ImageButton
-            android:id="@+id/favorites_button"
+            android:id="@+id/mFavorites"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
@@ -180,7 +180,7 @@
             app:srcCompat="@drawable/ic_favorites" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_categories_recycler_view"
+            android:id="@+id/mHomeCategoriesRV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -191,7 +191,7 @@
             tools:listitem="@layout/body_home_categories" />
 
         <TextView
-            android:id="@+id/view_all_categories"
+            android:id="@+id/mAllCategories"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
@@ -206,7 +206,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView" />
 
         <TextView
-            android:id="@+id/more_discount_items"
+            android:id="@+id/mAllDiscountItems"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
@@ -221,7 +221,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView24" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/mAppName"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fontFamily="@font/hind_bold"
@@ -231,8 +231,8 @@
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@+id/favorites_button"
-            app:layout_constraintEnd_toStartOf="@+id/favorites_button"
+            app:layout_constraintBottom_toBottomOf="@+id/mFavorites"
+            app:layout_constraintEnd_toStartOf="@+id/mFavorites"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

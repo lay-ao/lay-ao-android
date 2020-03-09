@@ -6,9 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -16,32 +13,18 @@ import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.User
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_sign_up_details.view.*
 
 class SignUpDetailsFragment : Fragment() {
-
-    private lateinit var houseNumberInput: TextInputLayout
-    private lateinit var houseNumberEditText: EditText
-
-    private lateinit var contactInput: TextInputLayout
-    private lateinit var contactEditText: EditText
-
-    private lateinit var blockSpinner: Spinner
-    private lateinit var genderSpinner: Spinner
-
-    private lateinit var skipButton: Button
-    private lateinit var doneButton: Button
 
     private var user: User? = null
 
     private lateinit var userCollection: CollectionReference
     private lateinit var navController: NavController
-
-    private lateinit var progressBarLayout: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +39,12 @@ class SignUpDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        return inflater.inflate(R.layout.fragment_sign_up_details, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val firebaseAuth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
         userCollection = firestore.collection(USERS_COLLECTION)
@@ -64,14 +53,10 @@ class SignUpDetailsFragment : Fragment() {
             R.id.nav_host_fragment
         )
 
-        val view = inflater.inflate(R.layout.fragment_sign_up_details, container, false)
-
-        setupViews(view)
-
-        skipButton.setOnClickListener {
+        view.mSkip.setOnClickListener {
 
             // Disable Interaction
-            disableInteraction(requireActivity(), progressBarLayout)
+            disableInteraction(requireActivity(), view.mIncludeProgressBar)
 
             // Set Default values
             user?.houseNumber = ""
@@ -82,83 +67,67 @@ class SignUpDetailsFragment : Fragment() {
 
             // Store user at Firestore
             Log.d(LOG_TAG, "saveUserAtFirestore (Skip): Started")
-            saveUserAtFirestore(firebaseAuth.currentUser!!)
+            saveUserAtFirestore(view, firebaseAuth.currentUser!!)
 
         }
 
-        doneButton.setOnClickListener {
+        view.mDone.setOnClickListener {
 
             // Disable Interaction
-            disableInteraction(requireActivity(), progressBarLayout)
+            disableInteraction(requireActivity(), view.mIncludeProgressBar)
 
             // Validate fields
-            val phoneNumber = contactEditText.text.toString().trim()
-            val houseNumber = houseNumberEditText.text.toString().trim()
+            val phoneNumber = view.mContactET.text.toString().trim()
+            val houseNumber = view.mHouseNumET.text.toString().trim()
 
-            if (phoneValidation(phoneNumber, contactInput)) {
-                enableInteraction(requireActivity(), progressBarLayout)
+            if (phoneValidation(phoneNumber, view.mContactIL)) {
+                enableInteraction(requireActivity(), view.mIncludeProgressBar)
                 return@setOnClickListener
             }
-            if (emptyValidation(houseNumber, houseNumberInput)) {
-                enableInteraction(requireActivity(), progressBarLayout)
+            if (emptyValidation(houseNumber, view.mHouseNumIL)) {
+                enableInteraction(requireActivity(), view.mIncludeProgressBar)
                 return@setOnClickListener
             }
 
-            if (blockSpinner.selectedItemPosition == 0) {
+            if (view.mBlockSpinner.selectedItemPosition == 0) {
                 Toast.makeText(requireContext(), "Invalid block selected", Toast.LENGTH_LONG)
                     .show()
-                enableInteraction(requireActivity(), progressBarLayout)
+                enableInteraction(requireActivity(), view.mIncludeProgressBar)
                 return@setOnClickListener
             }
 
             // Set values
             user?.houseNumber = houseNumber
-            user?.blockNumber = blockSpinner.selectedItemPosition
+            user?.blockNumber = view.mBlockSpinner.selectedItemPosition
             user?.completeAddress = String.format(
                 "House #%s, %s, Wapda Town, Lahore",
                 houseNumber,
-                blockSpinner.selectedItem.toString()
+                view.mBlockSpinner.selectedItem.toString()
             )
-            user?.gender = genderSpinner.selectedItemPosition
+            user?.gender = view.mGenderSpinner.selectedItemPosition
             user?.contact = phoneNumber
 
             // Start Registration Process
             Log.d(LOG_TAG, "saveUserAtFirestore (Done): Started")
-            saveUserAtFirestore(firebaseAuth.currentUser!!)
-        }
-
-        return view
-    }
-
-    private fun setupViews(view: View) {
-        view.apply {
-            houseNumberInput = findViewById(R.id.house_no_input_layout)
-            houseNumberEditText = findViewById(R.id.house_no_edit_text)
-            contactInput = findViewById(R.id.contact_input_layout)
-            contactEditText = findViewById(R.id.contact_edit_text)
-            blockSpinner = findViewById(R.id.block_spinner)
-            genderSpinner = findViewById(R.id.gender_spinner)
-            skipButton = findViewById(R.id.skip_button)
-            doneButton = findViewById(R.id.done_button)
-            progressBarLayout = findViewById(R.id.include_progress_bar)
+            saveUserAtFirestore(view, firebaseAuth.currentUser!!)
         }
     }
 
-    private fun saveUserAtFirestore(firebaseUser: FirebaseUser) {
+    private fun saveUserAtFirestore(view:View, firebaseUser: FirebaseUser) {
         userCollection.document(firebaseUser.uid)
             .set(user!!)
             .addOnCompleteListener { task ->
                 if (task.isComplete && task.isSuccessful) {
-                    enableInteraction(requireActivity(), progressBarLayout)
+                    enableInteraction(requireActivity(), view.mIncludeProgressBar)
                     navController.navigate(R.id.action_signUpDetailsFragment_to_navigation_user)
                 } else {
-                    enableInteraction(requireActivity(), progressBarLayout)
+                    enableInteraction(requireActivity(), view.mIncludeProgressBar)
                     Log.e(LOG_TAG, "saveUserAtFirestore -> addOnCompleteListener: task is neither complete nor successful")
                     return@addOnCompleteListener
                 }
             }
             .addOnFailureListener {
-                enableInteraction(requireActivity(), progressBarLayout)
+                enableInteraction(requireActivity(), view.mIncludeProgressBar)
                 Log.e(LOG_TAG, "saveUserAtFirestore -> addOnFailureListener: ${it.localizedMessage}", it)
                 return@addOnFailureListener
             }

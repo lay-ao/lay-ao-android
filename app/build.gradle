@@ -31,6 +31,9 @@ android {
         exclude 'META-INF/atomicfu.kotlin_module'
         exclude("META-INF/*.kotlin_module")
     }
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -74,16 +77,14 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
     // Lifecycle Components Dependencies
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
-    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
-    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.androidxArchVersion"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-
     // ViewModel Kotlin support
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
-
     // Coroutines
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.androidxArchVersion"
 
     // UI
     implementation "com.google.android.material:material:$rootProject.materialVersion"

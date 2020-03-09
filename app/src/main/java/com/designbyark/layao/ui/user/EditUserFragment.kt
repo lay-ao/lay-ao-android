@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -21,33 +18,14 @@ import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.common.duplicationValue
 import com.designbyark.layao.common.emptyValidation
 import com.designbyark.layao.data.User
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_edit_user.view.*
 
 class EditUserFragment : Fragment() {
 
     private lateinit var navController: NavController
-
-    private lateinit var fullNameInputLayout: TextInputLayout
-    private lateinit var fullNameEditText: TextInputEditText
-
-    private lateinit var emailInputLayout: TextInputLayout
-    private lateinit var emailEditText: TextInputEditText
-
-    private lateinit var homeNoInputLayout: TextInputLayout
-    private lateinit var homeNoEditText: TextInputEditText
-
-    private lateinit var contactInputLayout: TextInputLayout
-    private lateinit var contactEditText: TextInputEditText
-
-    private lateinit var genderSpinner: Spinner
-    private lateinit var blockSpinner: Spinner
-
-    private lateinit var deleteButton: Button
-    private lateinit var editButton: Button
 
     private lateinit var userDoc: DocumentReference
 
@@ -58,15 +36,21 @@ class EditUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        return inflater.inflate(R.layout.fragment_edit_user, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val userCollection = firebaseFirestore.collection(USERS_COLLECTION)
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setTitle("Edit User")
-        }
-        setHasOptionsMenu(true)
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setTitle("Edit User")
+//        }
+//        setHasOptionsMenu(true)
 
         navController = Navigation.findNavController(
             requireActivity(),
@@ -79,30 +63,25 @@ class EditUserFragment : Fragment() {
             Toast.makeText(requireContext(), "No user found!", Toast.LENGTH_SHORT).show()
         }
 
-        val root = inflater.inflate(R.layout.fragment_edit_user, container, false)
+        findUserData(view)
 
-        findingViews(root)
-        findUserData()
-
-        editButton.setOnClickListener {
-            validateUserData()
+        view.mEditButton.setOnClickListener {
+            validateUserData(view)
         }
-
-        return root
     }
 
-    private fun validateUserData() {
+    private fun validateUserData(view: View) {
 
-        val fullName = fullNameEditText.text.toString().trim()
-        if (emptyValidation(fullName, fullNameInputLayout)) return
+        val fullName = view.mFullNameET.text.toString().trim()
+        if (emptyValidation(fullName, view.mFullNameIL)) return
 
-        val houseNumber = homeNoEditText.text.toString().trim()
-        if (emptyValidation(houseNumber, homeNoInputLayout)) return
+        val houseNumber = view.mHouseNumET.text.toString().trim()
+        if (emptyValidation(houseNumber, view.mHouseNumIL)) return
 
-        val contact = contactEditText.text.toString().trim()
-        if (emptyValidation(contact, contactInputLayout)) return
+        val contact = view.mContactET.text.toString().trim()
+        if (emptyValidation(contact, view.mContactIL)) return
 
-        if (blockSpinner.selectedItemPosition == 0) {
+        if (view.mBlockSpinner.selectedItemPosition == 0) {
             Toast.makeText(requireContext(), "Kindly select block number", Toast.LENGTH_SHORT)
                 .show()
             return
@@ -124,19 +103,19 @@ class EditUserFragment : Fragment() {
             Toast.makeText(requireContext(), "Contact updated", Toast.LENGTH_SHORT).show()
         }
 
-        if (blockSpinner.selectedItemPosition != 0) {
-            userDoc.update("blockNumber", blockSpinner.selectedItemPosition)
+        if (view.mBlockSpinner.selectedItemPosition != 0) {
+            userDoc.update("blockNumber", view.mBlockSpinner.selectedItemPosition)
             userDoc.update(
                 "completeAddress",
-                "House #$houseNumber, ${blockSpinner.selectedItem}, Wapda Town, " +
+                "House #$houseNumber, ${view.mBlockSpinner.selectedItem}, Wapda Town, " +
                         "Lahore, Punjab, Pakistan"
             )
             Toast.makeText(requireContext(), "Block Number updated", Toast.LENGTH_SHORT).show()
         }
 
 
-        if (genderSpinner.selectedItemPosition != user!!.gender) {
-            userDoc.update("gender", genderSpinner.selectedItemPosition)
+        if (view.mGenderSpinner.selectedItemPosition != user!!.gender) {
+            userDoc.update("gender", view.mGenderSpinner.selectedItemPosition)
             Toast.makeText(requireContext(), "Gender updated", Toast.LENGTH_SHORT).show()
         }
 
@@ -144,7 +123,7 @@ class EditUserFragment : Fragment() {
 
     }
 
-    private fun findUserData() {
+    private fun findUserData(view: View) {
 
         userDoc.addSnapshotListener { snapshot, e ->
 
@@ -156,35 +135,18 @@ class EditUserFragment : Fragment() {
             if (snapshot != null && snapshot.exists()) {
                 user = snapshot.toObject(User::class.java)
                 if (user != null) {
-                    fullNameEditText.setText(user!!.fullName, TextView.BufferType.EDITABLE)
-                    emailEditText.setText(user!!.email, TextView.BufferType.EDITABLE)
-                    homeNoEditText.setText(user!!.houseNumber, TextView.BufferType.EDITABLE)
-                    contactEditText.setText(user!!.contact, TextView.BufferType.EDITABLE)
-                    genderSpinner.setSelection(user!!.gender)
+                    view.mFullNameET.setText(user!!.fullName, TextView.BufferType.EDITABLE)
+                    view.mEmailET.setText(user!!.email, TextView.BufferType.EDITABLE)
+                    view.mHouseNumET.setText(user!!.houseNumber, TextView.BufferType.EDITABLE)
+                    view.mContactET.setText(user!!.contact, TextView.BufferType.EDITABLE)
+                    view.mGenderSpinner.setSelection(user!!.gender)
                     if (user!!.blockNumber != 0) {
-                        blockSpinner.setSelection(user!!.blockNumber)
+                        view.mBlockSpinner.setSelection(user!!.blockNumber)
                     }
                 }
             }
         }
 
-    }
-
-    private fun findingViews(root: View) {
-        root.run {
-            fullNameInputLayout = findViewById(R.id.full_name_input_layout)
-            fullNameEditText = findViewById(R.id.full_name_edit_text)
-            emailInputLayout = findViewById(R.id.email_input_layout)
-            emailEditText = findViewById(R.id.email_input_edit_text)
-            homeNoInputLayout = findViewById(R.id.house_no_input_layout)
-            homeNoEditText = findViewById(R.id.house_no_edit_text)
-            contactInputLayout = findViewById(R.id.contact_input_layout)
-            contactEditText = findViewById(R.id.contact_edit_text)
-            genderSpinner = findViewById(R.id.gender_spinner)
-            deleteButton = findViewById(R.id.delete_button)
-            editButton = findViewById(R.id.edit_button)
-            blockSpinner = findViewById(R.id.block_spinner)
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

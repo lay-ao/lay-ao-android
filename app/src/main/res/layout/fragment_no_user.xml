@@ -6,14 +6,14 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/register_button"
+        android:id="@+id/mSignUp"
         style="@android:style/Widget.Holo.Light.ActionButton.CloseMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="SIGN UP USING EMAIL"
         app:elevation="0.5dp"
-        app:icon="@drawable/ic_email"
+        app:icon="@drawable/ic_email_white"
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -28,12 +28,12 @@
         android:layout_marginRight="32dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/register_button"
-        app:layout_constraintStart_toStartOf="@+id/register_button"
+        app:layout_constraintEnd_toEndOf="@+id/mSignUp"
+        app:layout_constraintStart_toStartOf="@+id/mSignUp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/sign_in_button"
+        android:id="@+id/mSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SIGN IN"

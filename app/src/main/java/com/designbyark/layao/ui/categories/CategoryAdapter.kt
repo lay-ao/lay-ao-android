@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
@@ -28,6 +29,7 @@ class CategoryAdapter internal constructor(
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int, model: Category) {
         holder.run {
             setImage(context, model.image)
+            setTitle(model.title)
             itemView.setOnClickListener {
                 itemClickListener.mCategoryClickListener(snapshots
                     .getSnapshot(holder.adapterPosition).id)
@@ -42,6 +44,11 @@ class CategoryAdapter internal constructor(
         internal fun setImage(context: Context, image: String) {
             val imageView: ImageView = view.findViewById(R.id.image)
             Glide.with(context).load(image).placeholder(circularProgressBar(context)).into(imageView)
+        }
+
+        internal fun setTitle(title: String) {
+            val textView: TextView = view.findViewById(R.id.title)
+            textView.text = title
         }
 
     }

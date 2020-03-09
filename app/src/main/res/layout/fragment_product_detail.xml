@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:layout_margin="24dp"
     tools:context=".ui.home.product.ProductDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/mImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="fitCenter"
@@ -22,116 +23,8 @@
             tools:src="@tools:sample/backgrounds/scenic"
             tools:srcCompat="@drawable/apple" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
-            tools:text="Title" />
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:gravity="bottom"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:text="Rs. 100/kg" />
-
-        <TextView
-            android:id="@+id/discount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="end"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/holo_green_dark"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:text="10% off" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/subtract"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            app:backgroundTint="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="@+id/quantity"
-            app:layout_constraintEnd_toStartOf="@+id/quantity"
-            app:layout_constraintTop_toTopOf="@+id/quantity"
-            app:srcCompat="@drawable/ic_subtract_color_24dp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            app:backgroundTint="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="@+id/quantity"
-            app:layout_constraintStart_toEndOf="@+id/quantity"
-            app:layout_constraintTop_toTopOf="@+id/quantity"
-            app:srcCompat="@drawable/ic_add_color_24dp" />
-
-        <TextView
-            android:id="@+id/quantity"
-            android:layout_width="155dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/brand"
-            tools:text="Rs. 100 / 1 kg" />
-
-        <TextView
-            android:id="@+id/brand"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price"
-            tools:text="Brand" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/add_to_cart"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            android:text="Add to cart"
-            app:backgroundTint="#0D47A1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/add"
-            app:layout_constraintStart_toStartOf="@+id/subtract"
-            app:layout_constraintTop_toBottomOf="@+id/quantity" />
-
-        <TextView
-            android:id="@+id/original_price"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center|start"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintBottom_toBottomOf="@+id/price"
-            app:layout_constraintStart_toEndOf="@+id/price"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:text="Original Price" />
-
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/mBackNav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
@@ -140,13 +33,154 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/fav_button"
+            android:id="@+id/mFavorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_favorite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:gravity="end"
+            android:textAlignment="viewEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/mImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="10% off" />
+
+        <TextView
+            android:id="@+id/mTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mDivider"
+            tools:text="Apples (Red)" />
+
+        <TextView
+            android:id="@+id/mPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/open_sans_extrabold"
+            android:gravity="bottom"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mBrand"
+            tools:text="Rs. 100 / kg" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/mSubtract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mOriginalPrice"
+            app:srcCompat="@drawable/ic_decrease" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/mAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="64dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mOriginalPrice"
+            app:srcCompat="@drawable/ic_increase" />
+
+        <TextView
+            android:id="@+id/mQuantity"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/mSubtract"
+            app:layout_constraintEnd_toStartOf="@+id/mAdd"
+            app:layout_constraintStart_toEndOf="@+id/mSubtract"
+            app:layout_constraintTop_toTopOf="@+id/mSubtract"
+            tools:text="Rs. 100 / 1 kg" />
+
+        <TextView
+            android:id="@+id/mBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/open_sans"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mTitle"
+            tools:text="Pakistani" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/mAddToCart"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/open_sans"
+            android:text="Add to cart"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/mAdd"
+            app:layout_constraintStart_toStartOf="@+id/mSubtract"
+            app:layout_constraintTop_toBottomOf="@+id/mQuantity"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/mOriginalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/mPrice"
+            app:layout_constraintStart_toStartOf="@+id/mPrice"
+            app:layout_constraintTop_toBottomOf="@+id/mPrice"
+            tools:text="Rs. 110 / kg" />
+
+        <View
+            android:id="@+id/mDivider"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:alpha="0.1"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mImage" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

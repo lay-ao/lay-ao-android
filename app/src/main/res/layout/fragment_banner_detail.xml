@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="24dp"
     tools:context=".ui.home.banners.detail.BannerDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,74 +12,116 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/mImage"
             android:layout_width="0dp"
             android:layout_height="200dp"
+            android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic[19]" />
+            app:layout_constraintTop_toBottomOf="@+id/mTitle"
+            tools:src="@tools:sample/backgrounds/scenic[3]"
+            android:contentDescription="@null" />
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif-medium"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:id="@+id/mTitle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:typeface="normal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
-            tools:text="Title" />
+            app:layout_constraintBottom_toBottomOf="@+id/mBackNav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/mBackNav"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="30% Off on Fruits" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/mDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:text="Description" />
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            tools:text="@tools:sample/lorem[50]" />
 
         <TextView
-            android:id="@+id/validity"
-            android:layout_width="wrap_content"
+            android:id="@+id/mValidity"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_time"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description"
-            tools:text="Validity" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mDescription"
+            tools:text="Ends on 25 April, 2020" />
 
         <TextView
-            android:id="@+id/promo_code"
+            android:id="@+id/mPromoCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/open_sans"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/validity"
+            app:layout_constraintTop_toBottomOf="@+id/mValidity"
             tools:text="Promo Code: 123XXX" />
 
         <TextView
-            android:id="@+id/copy_code"
+            android:id="@+id/mCopyCode"
             style="@style/Widget.AppCompat.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/ic_content_copy_color_24dp"
+            android:drawableStart="@drawable/ic_content_copy_color_24dp"
             android:drawablePadding="10dp"
-            android:text="Copy Code"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/copy_promo_code"
+            android:textAllCaps="true"
             app:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/promo_code"
+            app:layout_constraintTop_toBottomOf="@+id/mPromoCode"
             app:srcCompat="@drawable/ic_content_copy_color_24dp" />
+
+        <ImageButton
+            android:id="@+id/mBackNav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans_extrabold"
+            android:text="@string/description"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mImage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

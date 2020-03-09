@@ -8,9 +8,10 @@
     tools:context=".ui.orderDetail.OrderDetailFragment">
 
     <TextView
-        android:id="@+id/order_id"
+        android:id="@+id/mOrderId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/hind_bold"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@android:color/black"
@@ -20,113 +21,122 @@
         tools:text="Order ID" />
 
     <TextView
-        android:id="@+id/order_status"
+        android:id="@+id/mOrderStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/open_sans_extrabold"
+        android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_id"
+        app:layout_constraintTop_toBottomOf="@+id/mOrderId"
         tools:text="Order Status" />
 
     <TextView
-        android:id="@+id/customer_name"
+        android:id="@+id/mCustomerName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/order_status"
-        app:layout_constraintTop_toBottomOf="@+id/order_status"
+        app:layout_constraintStart_toStartOf="@+id/mOrderStatus"
+        app:layout_constraintTop_toBottomOf="@+id/mOrderStatus"
         tools:text="Placed by Arslan Mushtaq" />
 
     <TextView
-        android:id="@+id/order_address"
+        android:id="@+id/mOrderAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/customer_name"
-        app:layout_constraintTop_toBottomOf="@+id/customer_name"
+        app:layout_constraintStart_toStartOf="@+id/mCustomerName"
+        app:layout_constraintTop_toBottomOf="@+id/mCustomerName"
         tools:text="Delivery at House #91, Block F1, Wapda Town" />
 
     <TextView
-        android:id="@+id/customer_contact"
+        android:id="@+id/mCustomerContact"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans"
         android:lines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_address"
+        app:layout_constraintTop_toBottomOf="@+id/mOrderAddress"
         tools:text="Contact Number: +923038359906" />
 
     <TextView
-        android:id="@+id/grand_total"
+        android:id="@+id/mGrandTotal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customer_contact"
+        app:layout_constraintTop_toBottomOf="@+id/mCustomerContact"
         tools:text="Grand Total: Rs. 1000" />
 
     <TextView
-        android:id="@+id/total_items"
+        android:id="@+id/mTotalItems"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grand_total"
+        app:layout_constraintTop_toBottomOf="@+id/mGrandTotal"
         tools:text="Total items: 25" />
 
     <TextView
-        android:id="@+id/order_timing"
+        android:id="@+id/mOrderTiming"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_items"
+        app:layout_constraintTop_toBottomOf="@+id/mTotalItems"
         tools:text="Order placed today at 12:23 PM" />
 
     <Button
-        android:id="@+id/cancel_order"
+        android:id="@+id/mCancelOrder"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/open_sans"
         android:text="Cancel Order"
         app:backgroundTint="@android:color/holo_red_dark"
         app:elevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_timing" />
+        app:layout_constraintTop_toBottomOf="@+id/mOrderTiming" />
 
     <TextView
         android:id="@+id/textView17"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:fontFamily="cursive"
+        android:fontFamily="@font/open_sans_extrabold"
         android:gravity="center|start"
         android:text="Items"
+        android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/cancel_order"
-        app:layout_constraintEnd_toStartOf="@+id/cancel_order"
+        app:layout_constraintBottom_toBottomOf="@+id/mCancelOrder"
+        app:layout_constraintEnd_toStartOf="@+id/mCancelOrder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cancel_order" />
+        app:layout_constraintTop_toTopOf="@+id/mCancelOrder" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/order_cart_recycler_view"
+        android:id="@+id/mOrderCartRV"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

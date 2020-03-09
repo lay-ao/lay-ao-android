@@ -17,7 +17,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class BrandsListAdapter internal constructor(
     options: FirestoreRecyclerOptions<Brands>,
-    private val context: Context,
     private val itemClickListener: BrandsItemClickListener
 ) : FirestoreRecyclerAdapter<Brands, BrandsListAdapter.BrandsItemViewHolder>(options) {
 
@@ -29,7 +28,7 @@ class BrandsListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: BrandsItemViewHolder, position: Int, model: Brands) {
         holder.run {
-            setImage(context, model.image)
+            setImage(holder.itemView.context, model.image)
             setTitle(model.title)
             itemView.setOnClickListener {
                 itemClickListener.mBrandsItemClickListener(snapshots
@@ -50,8 +49,6 @@ class BrandsListAdapter internal constructor(
             val imageView: ImageView = view.findViewById(R.id.image)
             Glide.with(context).load(image).placeholder(circularProgressBar(context)).into(imageView)
         }
-
-
     }
 
     interface BrandsItemClickListener {

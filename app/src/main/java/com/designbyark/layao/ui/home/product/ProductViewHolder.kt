@@ -1,7 +1,6 @@
 package com.designbyark.layao.ui.home.product
 
 import android.content.Context
-import android.graphics.Paint
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,7 +14,7 @@ class ProductViewHolder internal constructor(private val view: View) :
     RecyclerView.ViewHolder(view) {
 
     internal fun setDiscount(discount: Double) {
-        val textView: TextView = view.findViewById(R.id.discount)
+        val textView: TextView = view.findViewById(R.id.mDiscount)
         textView.text = String.format(Locale.getDefault(), "%.0f%% off", discount)
     }
 
