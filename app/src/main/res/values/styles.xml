@@ -6,6 +6,23 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="toolbarStyle">@style/CustomToolBarStyle</item>
+        <item name="actionBarStyle">@style/CustomActionBarStyle</item>
+    </style>
+
+    <style name="CustomToolBarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="CustomActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@android:color/transparent</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
+        <item name="fontFamily">@font/hind_bold</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">36sp</item>
     </style>
 
     <style name="Icon">

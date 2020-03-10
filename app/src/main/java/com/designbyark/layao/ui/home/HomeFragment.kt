@@ -2,10 +2,7 @@ package com.designbyark.layao.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -61,13 +58,9 @@ class HomeFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setHasOptionsMenu(true)
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-
-        view.mFavorites.setOnClickListener {
-            navController.navigate(R.id.action_navigation_home_to_favoritesFragment)
-        }
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -283,6 +276,16 @@ class HomeFragment : Fragment(),
         val args = Bundle()
         args.putString(CATEGORY_ID, categoryId)
         navController.navigate(R.id.action_navigation_home_to_CPListFragment, args)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.general_favorites -> {
+                navController.navigate(R.id.action_navigation_home_to_favoritesFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }

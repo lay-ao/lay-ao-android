@@ -1,30 +1,28 @@
 package com.designbyark.layao
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.designbyark.layao.databinding.ActivityMainBinding
 import com.designbyark.layao.ui.cart.CartViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var cartViewModel: CartViewModel
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        supportActionBar?.hide()
-        actionBar?.hide()
+        setContentView(R.layout.activity_main)
 
-        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -34,10 +32,10 @@ class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
+        nav_view.setupWithNavController(navController)
 
         cartViewModel = ViewModelProvider(this).get(CartViewModel::class.java)
-        val badgeCount = binding.navView.getOrCreateBadge(R.id.navigation_cart)
+        val badgeCount = nav_view.getOrCreateBadge(R.id.navigation_cart)
 
         cartViewModel.allCartItems.observe(this, Observer {
             if (it.isEmpty()) {
@@ -47,5 +45,10 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.isVisible = true
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.general_menu, menu)
+        return true
     }
 }

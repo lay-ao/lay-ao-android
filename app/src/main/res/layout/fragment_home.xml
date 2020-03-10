@@ -14,7 +14,6 @@
             android:id="@+id/cardView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -169,16 +168,6 @@
             app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toTopOf="@+id/textView3" />
 
-        <ImageButton
-            android:id="@+id/mFavorites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="Favorites Fragment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_favorites" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mHomeCategoriesRV"
             android:layout_width="0dp"
@@ -220,42 +209,26 @@
             app:layout_constraintStart_toEndOf="@+id/textView24"
             app:layout_constraintTop_toTopOf="@+id/textView24" />
 
-        <TextView
-            android:id="@+id/mAppName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:fontFamily="@font/hind_bold"
-            android:gravity="center|start"
-            android:includeFontPadding="false"
-            android:text="@string/app_name"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@+id/mFavorites"
-            app:layout_constraintEnd_toStartOf="@+id/mFavorites"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/mEmailVerified"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@drawable/error_background"
             android:fontFamily="@font/open_sans"
             android:gravity="center"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
             android:paddingStart="10dp"
+            android:paddingTop="3dp"
             android:paddingEnd="10dp"
-            android:textStyle="bold"
-            android:textAllCaps="true"
+            android:paddingBottom="3dp"
             android:text="Email is not Verified"
+            android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mAppName"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

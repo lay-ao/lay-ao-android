@@ -8,9 +8,8 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.designbyark.layao.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_home">
-
         <action
             android:id="@+id/action_nav_bannerDetailFragment"
             app:destination="@id/bannerDetailFragment" />
@@ -82,19 +81,19 @@
     <fragment
         android:id="@+id/bannerDetailFragment"
         android:name="com.designbyark.layao.ui.home.banners.detail.BannerDetailFragment"
-        android:label="fragment_banner_detail"
+        android:label="Promotion Detail"
         tools:layout="@layout/fragment_banner_detail" />
 
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.designbyark.layao.ui.home.product.ProductDetailFragment"
-        android:label="fragment_product_detail"
+        android:label="Product Detail"
         tools:layout="@layout/fragment_product_detail" />
 
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.designbyark.layao.ui.productList.ProductListFragment"
-        android:label="fragment_product"
+        android:label="Product List"
         tools:layout="@layout/fragment_product_list">
         <action
             android:id="@+id/action_productListFragment_to_productDetailFragment"
@@ -104,7 +103,7 @@
     <fragment
         android:id="@+id/CPListFragment"
         android:name="com.designbyark.layao.ui.categories.CPListFragment"
-        android:label="CPListFragment"
+        android:label="Product List"
         tools:layout="@layout/fragment_product_list">
         <action
             android:id="@+id/action_CPListFragment_to_productDetailFragment"
@@ -128,13 +127,13 @@
     <activity
         android:id="@+id/mainActivity"
         android:name="com.designbyark.layao.MainActivity"
-        android:label="MainActivity"
+        android:label="@string/app_name"
         tools:layout="@layout/activity_main" />
 
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.designbyark.layao.ui.checkout.CheckoutFragment"
-        android:label="fragment_checkout"
+        android:label="Checkout"
         tools:layout="@layout/fragment_checkout">
         <action
             android:id="@+id/action_checkoutFragment_to_navigation_home"
@@ -165,7 +164,7 @@
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.designbyark.layao.ui.orderDetail.OrderDetailFragment"
-        android:label="fragment_order_detail"
+        android:label="Order Detail"
         tools:layout="@layout/fragment_order_detail" />
     <fragment
         android:id="@+id/signUpFragment"
@@ -197,7 +196,7 @@
     <fragment
         android:id="@+id/editUserFragment"
         android:name="com.designbyark.layao.ui.user.EditUserFragment"
-        android:label="@string/title_edit_user"
+        android:label="@string/title_user_information"
         tools:layout="@layout/fragment_edit_user">
         <action
             android:id="@+id/action_editUserFragment_to_navigation_user"
@@ -209,7 +208,7 @@
     <fragment
         android:id="@+id/brandsListFragment"
         android:name="com.designbyark.layao.ui.brands.BrandsListFragment"
-        android:label="fragment_brands_list"
+        android:label="Brands"
         tools:layout="@layout/fragment_brands_list">
         <action
             android:id="@+id/action_brandsListFragment_to_productListFragment"
@@ -253,7 +252,7 @@
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.designbyark.layao.ui.user.ForgotPasswordFragment"
-        android:label="fragment_forgot_password"
+        android:label="Forgot Password"
         tools:layout="@layout/fragment_forgot_password" />
 
 </navigation>
