@@ -3,6 +3,7 @@ package com.designbyark.layao.ui.home
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -16,6 +17,7 @@ import com.designbyark.layao.ui.home.brands.BrandsAdapter
 import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
 import com.designbyark.layao.ui.home.newArrival.NewArrivalAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -34,6 +36,7 @@ class HomeFragment : Fragment(),
     companion object {
         const val BANNER_ID = "bannerId"
         const val PRODUCT_ID = "productId"
+        const val PRODUCT_TAG = "productTag"
         const val BRAND_ID = "brandId"
         const val CATEGORY_ID = "categoryId"
         const val PASSED_ID = "passedId"
@@ -59,6 +62,15 @@ class HomeFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        if (bottomMenu.visibility == View.GONE) {
+            bottomMenu.visibility = View.VISIBLE
+        }
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setSubtitle(getString(R.string.app_slogan))
+        }
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
@@ -230,6 +242,10 @@ class HomeFragment : Fragment(),
     override fun onStop() {
         super.onStop()
 
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setSubtitle(null)
+        }
+
         if (mHomeCategoryAdapter != null) {
             mHomeCategoryAdapter?.stopListening()
         }
@@ -248,9 +264,10 @@ class HomeFragment : Fragment(),
 
     }
 
-    override fun onDiscountItemClickListener(productId: String) {
+    override fun onDiscountItemClickListener(productData: MutableMap<String, String>) {
         val args = Bundle()
-        args.putString(PRODUCT_ID, productId)
+        args.putString(PRODUCT_ID, productData["id"])
+        args.putString(PRODUCT_TAG, productData["tag"])
         navController.navigate(R.id.action_nav_productDetailFragment, args)
     }
 

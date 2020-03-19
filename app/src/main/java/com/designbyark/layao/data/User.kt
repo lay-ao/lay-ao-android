@@ -37,4 +37,7 @@ class User : Serializable {
     @PropertyName("gender")
     var gender: Int = 0
 
+    @PropertyName("fineCount")
+    var fineCount: Int = 0
+
 }

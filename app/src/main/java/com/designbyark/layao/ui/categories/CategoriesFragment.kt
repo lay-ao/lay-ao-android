@@ -1,9 +1,8 @@
 package com.designbyark.layao.ui.categories
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -35,10 +34,14 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeButtonEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
+        setHasOptionsMenu(true)
+
         navController = Navigation.findNavController(requireActivity(),
             R.id.nav_host_fragment)
-
-        view.mBackNav.setOnClickListener { navController.navigateUp() }
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -57,16 +60,23 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
         // Assigning adapter class
         mAdapter = CategoryAdapter(options, requireActivity(), this)
 
-        // Applying item decoration to recycler view components
-        view.mCategoryRV.addItemDecoration(
-            MarginItemDecoration(
-                resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt()
-            )
-        )
-
         // Assigning adapter to Recycler View
         view.mCategoryRV.adapter = mAdapter
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                navController.navigateUp()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {

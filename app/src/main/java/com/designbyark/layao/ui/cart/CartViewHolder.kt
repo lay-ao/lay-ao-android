@@ -70,20 +70,51 @@ class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     internal fun setQuantity(price: Double, unit: String, quantity: Long, discount: Double) {
         if (discount > 0) {
-            quantityPlaceHolder.text = String.format(
-                Locale.getDefault(),
-                "Rs. %.0f per %d %s", (setDiscountPrice(price, discount) * quantity), quantity, unit
-            )
+            if (quantity > 1) {
+                quantityPlaceHolder.text = String.format(
+                    Locale.getDefault(),
+                    "Rs. %.0f / %d %ss", (setDiscountPrice(price, discount) * quantity), quantity, unit
+                )
+            } else {
+                quantityPlaceHolder.text = String.format(
+                    Locale.getDefault(),
+                    "Rs. %.0f / %s", (setDiscountPrice(price, discount) * quantity), unit
+                )
+            }
+
         } else {
-            quantityPlaceHolder.text = String.format(
-                Locale.getDefault(),
-                "Rs. %.0f per %d %s", (price * quantity), quantity, unit
-            )
+            if (quantity > 1) {
+                quantityPlaceHolder.text = String.format(
+                    Locale.getDefault(),
+                    "Rs. %.0f / %d %ss", (price * quantity), quantity, unit
+                )
+            } else {
+                quantityPlaceHolder.text = String.format(
+                    Locale.getDefault(),
+                    "Rs. %.0f / %s", (price * quantity), unit
+                )
+            }
         }
     }
 
+    @ExperimentalStdlibApi
     internal fun setChangingQuantity(unit: String, quantity: Long) {
-        changingQuantity.text = String.format(Locale.getDefault(), "%d/%s", quantity, unit)
+        if (quantity > 1) {
+            changingQuantity.text = String.format(
+                Locale.getDefault(),
+                "%d %ss",
+                quantity,
+                unit.capitalize(Locale.getDefault())
+            )
+        } else {
+            changingQuantity.text = String.format(
+                Locale.getDefault(),
+                "%d %s",
+                quantity,
+                unit.capitalize(Locale.getDefault())
+            )
+        }
+
     }
 
     internal fun setBrand(brand: String) {

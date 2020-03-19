@@ -2,10 +2,10 @@ package com.designbyark.layao.ui.user
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
@@ -20,6 +20,8 @@ class ForgotPasswordFragment : Fragment() {
 
     private var title: Int? = null
 
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments.let {
@@ -31,18 +33,30 @@ class ForgotPasswordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_forgot_password, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
+        val changePassword = view.context.resources.getString(R.string.change_password)
 
         if (title == 0) {
-            view.mTitle.text = "Change Password"
-            view.mResetPassword.text = "Change Password"
+            (requireActivity() as AppCompatActivity).run {
+                supportActionBar?.setTitle(changePassword)
+            }
+            view.mTitle.text = changePassword
+            view.mResetPassword.text = changePassword
         } else {
-            view.mTitle.text = "Forgot Password"
+            view.mTitle.text = view.context.resources.getString(R.string.forgot_password)
         }
 
         val auth = FirebaseAuth.getInstance()
@@ -67,10 +81,18 @@ class ForgotPasswordFragment : Fragment() {
                     Log.e(LOG_TAG, exception.localizedMessage, exception)
                     enableInteraction(requireActivity(), view.mIncludeProgressBar)
                 }
-
         }
-
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> navController.navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
 }

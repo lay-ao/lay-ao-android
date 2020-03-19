@@ -2,9 +2,8 @@ package com.designbyark.layao.ui.brands
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,14 +12,13 @@ import com.designbyark.layao.common.BRANDS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Brands
 import com.designbyark.layao.ui.home.HomeFragment
-import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_brands_list.view.*
 
 class BrandsListFragment : Fragment(),
-BrandsListAdapter.BrandsItemClickListener {
+    BrandsListAdapter.BrandsItemClickListener {
 
     private var mBrandsListAdapter: BrandsListAdapter? = null
 
@@ -36,12 +34,16 @@ BrandsListAdapter.BrandsItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+            supportActionBar?.setHomeButtonEnabled(true)
+        }
+        setHasOptionsMenu(true)
+
         navController = Navigation.findNavController(
             requireActivity(),
             R.id.nav_host_fragment
         )
-
-        view.mBackNav.setOnClickListener { navController.navigateUp() }
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -60,13 +62,6 @@ BrandsListAdapter.BrandsItemClickListener {
         // Assigning adapter class
         mBrandsListAdapter = BrandsListAdapter(options, this)
 
-        // Applying item decoration to recycler view components
-        view.mBrandsRV.addItemDecoration(
-            MarginItemDecoration(
-                resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt()
-            )
-        )
-
         // Assigning adapter to Recycler View
         view.mBrandsRV.adapter = mBrandsListAdapter
     }
@@ -75,7 +70,6 @@ BrandsListAdapter.BrandsItemClickListener {
         val args = Bundle()
         args.putString(HomeFragment.BRAND_ID, brandId)
         navController.navigate(R.id.action_brandsListFragment_to_productListFragment, args)
-
     }
 
     override fun onStart() {
@@ -89,6 +83,20 @@ BrandsListAdapter.BrandsItemClickListener {
         super.onStop()
         if (mBrandsListAdapter != null) {
             mBrandsListAdapter?.stopListening()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                navController.navigateUp()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -4,44 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
     tools:context=".ui.home.banners.detail.BannerDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="24dp">
 
         <ImageView
             android:id="@+id/mImage"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
+            android:contentDescription="@null"
             android:cropToPadding="true"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mTitle"
-            tools:src="@tools:sample/backgrounds/scenic[3]"
-            android:contentDescription="@null" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic[3]" />
 
         <TextView
             android:id="@+id/mTitle"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:fontFamily="@font/open_sans"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans_extrabold"
             android:gravity="center|start"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/black"
             android:typeface="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/mBackNav"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/mBackNav"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mImage"
             tools:text="30% Off on Fruits" />
 
         <TextView
@@ -70,14 +67,12 @@
             app:layout_constraintTop_toBottomOf="@+id/mDescription"
             tools:text="Ends on 25 April, 2020" />
 
-        <TextView
+        <Button
             android:id="@+id/mPromoCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/open_sans"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans_extrabold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mValidity"
@@ -85,30 +80,18 @@
 
         <TextView
             android:id="@+id/mCopyCode"
-            style="@style/Widget.AppCompat.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:drawableStart="@drawable/ic_content_copy_color_24dp"
-            android:drawablePadding="10dp"
             android:fontFamily="@font/open_sans"
             android:text="@string/copy_promo_code"
             android:textAllCaps="true"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
             app:backgroundTint="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mPromoCode"
-            app:srcCompat="@drawable/ic_content_copy_color_24dp" />
-
-        <ImageButton
-            android:id="@+id/mBackNav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@null" />
+            app:layout_constraintTop_toBottomOf="@+id/mPromoCode" />
 
         <TextView
             android:id="@+id/textView12"
@@ -119,9 +102,9 @@
             android:text="@string/description"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="@android:color/darker_gray"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mImage" />
+            app:layout_constraintTop_toBottomOf="@+id/mTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

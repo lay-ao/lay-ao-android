@@ -50,4 +50,7 @@ class Order {
     @PropertyName("userId")
     var userId: String = ""
 
+    @PropertyName("cancelled")
+    var cancelled: Boolean = false
+
 }

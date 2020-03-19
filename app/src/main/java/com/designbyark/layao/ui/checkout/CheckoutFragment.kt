@@ -1,15 +1,15 @@
 package com.designbyark.layao.ui.checkout
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -19,6 +19,8 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.User
 import com.designbyark.layao.ui.cart.CartViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +30,6 @@ import kotlinx.android.synthetic.main.fragment_checkout.view.*
 import java.util.*
 
 class CheckoutFragment : Fragment() {
-
     private var grandTotal: Double = 0.0
     private var totalItems: Int = 0
 
@@ -36,7 +37,9 @@ class CheckoutFragment : Fragment() {
     private lateinit var cartViewModel: CartViewModel
     private lateinit var orderCollection: CollectionReference
     private lateinit var userCollection: CollectionReference
-    private lateinit var firebaseUser: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
+
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,42 +53,85 @@ class CheckoutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         return inflater.inflate(R.layout.fragment_checkout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+            supportActionBar?.setHomeButtonEnabled(true)
+        }
+        setHasOptionsMenu(true)
+
+
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         val firebase = FirebaseFirestore.getInstance()
-        firebaseUser = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         orderCollection = firebase.collection(ORDERS_COLLECTION)
+        userCollection = firebase.collection("Users")
 
         navController = Navigation.findNavController(
             requireActivity(),
             R.id.nav_host_fragment
         )
 
-        view.mBackNav.setOnClickListener { navController.navigateUp() }
-
         val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         bottomMenu.visibility = View.GONE
 
-        val blocksAdapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.blocks, android.R.layout.simple_spinner_dropdown_item
-        )
-        blocksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        view.mBlockSpinner.adapter = blocksAdapter
-
-        if (firebaseUser.currentUser == null) {
+        if (auth.currentUser == null) {
             view.mRetrieveData.visibility = View.GONE
         }
 
         val deliveryFee = 30.0
-        val totalAmount = grandTotal + deliveryFee
+        var totalAmount: Double?
 
-        view.mGrandTotal.text = String.format(
+        userCollection.document(auth.currentUser?.uid!!).get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot != null) {
+                    val fineCount = documentSnapshot.getLong("fineCount") ?: 0
+                    Log.d(LOG_TAG, fineCount.toString())
+                    when {
+                        fineCount in 1..2 -> {
+                            Log.d(LOG_TAG, "fineCount > 0")
+                            Log.d(LOG_TAG, "fineCount -> $fineCount")
+                            totalAmount = addFine(view, fineCount)
+                            view.mGrandTotalAmount.text = String.format(
+                                Locale.getDefault(),
+                                "Rs. %.0f", totalAmount
+                            )
+                        }
+                        fineCount >= 3 -> {
+                            Log.d(LOG_TAG, "fineCount >= 3")
+                            Log.d(LOG_TAG, "fineCount -> $fineCount")
+                            totalAmount = addFine(view, fineCount)
+                            view.mPlaceOrder.visibility = View.INVISIBLE
+                            view.mFineCountDesc.visibility = View.VISIBLE
+                            view.mGrandTotalAmount.text = String.format(
+                                Locale.getDefault(),
+                                "Rs. %.0f", totalAmount
+                            )
+                        }
+                        else -> {
+                            Log.d(LOG_TAG, "fineCount -> else")
+                            Log.d(LOG_TAG, "fineCount -> $fineCount")
+                            view.mFineCountDesc.visibility = View.GONE
+                            view.mPlaceOrder.visibility = View.VISIBLE
+                            view.mFineCountLabel.visibility = View.INVISIBLE
+                            view.mFineCount.visibility = View.INVISIBLE
+                            totalAmount = grandTotal + deliveryFee
+                            view.mGrandTotalAmount.text = String.format(
+                                Locale.getDefault(),
+                                "Rs. %.0f", totalAmount
+                            )
+                        }
+                    }
+                }
+            }
+
+        view.mCartTotal.text = String.format(
             Locale.getDefault(),
             "Rs. %.0f", grandTotal
         )
@@ -99,13 +145,22 @@ class CheckoutFragment : Fragment() {
             "Rs. %.0f", deliveryFee
         )
 
-        view.mTotal.text = String.format(
-            Locale.getDefault(),
-            "Rs. %.0f", totalAmount
-        )
-
-        view.mAddressHelp.setOnClickListener {
-            showAddressWarning()
+        view.mGoogleMaps.setOnClickListener {
+            if (isLocationPermissionAvailable(requireActivity())) {
+                if (isGPSEnabled(requireContext())) {
+                    navController.navigate(R.id.action_checkoutFragment_to_mapFragment)
+                } else {
+                    AlertDialog.Builder(requireContext())
+                        .setMessage("To continue, turn on device location, which Google's location service")
+                        .setPositiveButton(android.R.string.yes) { _, _ ->
+                            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                        }
+                        .setNegativeButton(android.R.string.no) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create().show()
+                }
+            }
         }
 
         view.mPlaceOrder.setOnClickListener {
@@ -115,31 +170,24 @@ class CheckoutFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if (firebaseUser.currentUser == null) {
+            if (auth.currentUser == null) {
                 showLoginInfo()
                 return@setOnClickListener
             }
 
             val fullName = view.mFullNameET.text.toString().trim()
             val phoneNumber = view.mContactET.text.toString().trim()
-            val houseNumber = view.mHouseNumET.text.toString().trim()
+            val address = view.mAddressET.text.toString().trim()
             val comment = view.mCommentsET.text.toString().trim()
 
             if (emptyValidation(fullName, view.mFullNameIL)) return@setOnClickListener
             if (phoneValidation(phoneNumber, view.mContactIL)) return@setOnClickListener
-            if (emptyValidation(houseNumber, view.mHouseNumIL)) return@setOnClickListener
-
-            if (view.mBlockSpinner.selectedItemPosition == 0) {
-                Toast.makeText(requireContext(), "Invalid block selected", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+            if (emptyValidation(address, view.mAddressIL)) return@setOnClickListener
 
             val order = Order()
             order.fullName = fullName.trim()
             order.contactNumber = phoneNumber.trim()
-            order.houseNumber = houseNumber.trim()
-            order.block = view.mBlockSpinner.selectedItemPosition
-            order.completeAddress = "House #$houseNumber, ${view.mBlockSpinner.selectedItem}, Wapda Town"
+            order.completeAddress = address
             if (comment.isBlank() || comment.isEmpty()) {
                 order.comment = "No comments added!"
             } else {
@@ -150,7 +198,8 @@ class CheckoutFragment : Fragment() {
             order.orderStatus = 0
             order.totalItems = totalItems
             order.grandTotal = grandTotal
-            order.userId = firebaseUser.uid!!
+            order.userId = auth.currentUser?.uid!!
+            order.cancelled = false
 
             orderCollection.add(order)
                 .addOnSuccessListener { documentReference ->
@@ -175,8 +224,7 @@ class CheckoutFragment : Fragment() {
         }
 
         view.mRetrieveData.setOnClickListener {
-            userCollection = firebase.collection("Users")
-            userCollection.document(firebaseUser.currentUser!!.uid).get()
+            userCollection.document(auth.currentUser!!.uid).get()
                 .addOnSuccessListener {
                     val model = it.toObject(User::class.java)
                     if (model != null) {
@@ -193,14 +241,10 @@ class CheckoutFragment : Fragment() {
                             view.mContactET.setText(model.contact, TextView.BufferType.EDITABLE)
                         }
 
-                        if (model.houseNumber.isEmpty()) {
-                            view.mHouseNumIL.error = "No house number found!"
+                        if (model.completeAddress.isEmpty()) {
+                            view.mAddressIL.error = "No Address found!"
                         } else {
-                            view.mHouseNumET.setText(model.houseNumber, TextView.BufferType.EDITABLE)
-                        }
-
-                        if (model.blockNumber != 0) {
-                            view.mBlockSpinner.setSelection(model.blockNumber)
+                            view.mAddressET.setText(model.houseNumber, TextView.BufferType.EDITABLE)
                         }
 
                     }
@@ -208,6 +252,17 @@ class CheckoutFragment : Fragment() {
         }
     }
 
+    private fun addFine(view: View, fineCount: Long): Double {
+        view.mFineCountLabel.visibility = View.VISIBLE
+        view.mFineCount.visibility = View.VISIBLE
+        view.mFineCountLabel.text = String.format(Locale.getDefault(), "FINE (x%d)", fineCount)
+        view.mFineCount.text = String.format(Locale.getDefault(), "Rs. %.2f", (30.0 * fineCount))
+        return grandTotal + 30.0 + (30.0 * fineCount)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -216,18 +271,26 @@ class CheckoutFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-
     }
 
-    private fun showAddressWarning() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Limited Service Area")
-            .setIcon(R.drawable.ic_delivery)
-            .setMessage("Our delivery service is limited to Wapda Town Phase 1 & 2 only.")
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                dialog.dismiss()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_CODE_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    navController.navigate(R.id.action_checkoutFragment_to_mapFragment)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "You did not give permissions to get location",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-            .show()
+        }
     }
 
     private fun showLoginInfo() {
@@ -246,5 +309,4 @@ class CheckoutFragment : Fragment() {
             }
             .show()
     }
-
 }

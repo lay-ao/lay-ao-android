@@ -4,35 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
-
-    <ImageButton
-        android:id="@+id/mBackNav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/transparent"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/mLabel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fontFamily="@font/hind_bold"
-        android:gravity="center|start"
-        android:includeFontPadding="true"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:text="@string/title_categories"
-        android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/mBackNav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/mBackNav"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:padding="12dp"
+    tools:context=".ui.categories.CategoriesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mCategoryRV"
@@ -43,8 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mLabel"
-        app:spanCount="2"
-        tools:listitem="@layout/body_category" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:spanCount="3"
+        tools:listitem="@layout/body_brand_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,22 +2,25 @@ package com.designbyark.layao.ui.favorites
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.USERS_COLLECTION
+import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_favorites.view.*
+import kotlinx.android.synthetic.main.fragment_no_favorites.view.*
 
 class FavoritesFragment : Fragment() {
 
@@ -33,44 +36,79 @@ class FavoritesFragment : Fragment() {
     ): View? {
 
         val firebaseAuth = FirebaseAuth.getInstance()
-        val firestore = FirebaseFirestore.getInstance()
         firebaseUser = firebaseAuth.currentUser
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
         if (firebaseUser == null) {
-
-            val view = inflater.inflate(R.layout.fragment_no_favorites, container, false)
-
-            val userAuthIntent = view.findViewById<TextView>(R.id.mLoginAuth)
-            userAuthIntent.setOnClickListener {
-                navController.navigate(R.id.action_favoritesFragment_to_navigation_user)
-            }
-
-            return view
+            return inflater.inflate(R.layout.fragment_no_favorites, container, false)
         }
-
-        favoritesCollection = firestore.collection(USERS_COLLECTION).document(firebaseAuth.uid!!)
-            .collection("Favorites")
 
         return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
-        if (firebaseUser == null) return
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setSubtitle("Prices may subject to change.")
+        }
 
-        val backNav = view.findViewById<ImageButton>(R.id.mBackNav)
-        backNav.setOnClickListener { navController.navigateUp() }
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        if (bottomMenu.visibility == View.GONE) {
+            bottomMenu.visibility = View.VISIBLE
+        }
+
+        if (firebaseUser == null) {
+            view.mLoginAuth.setOnClickListener {
+                navController.navigate(R.id.action_favoritesFragment_to_signInFragment)
+            }
+
+            view.mRegisterAuth.setOnClickListener {
+                navController.navigate(R.id.action_favoritesFragment_to_signUpFragment)
+            }
+
+            return
+        }
+
+        val firestore = FirebaseFirestore.getInstance()
+        favoritesCollection = firestore.collection(USERS_COLLECTION).document(firebaseUser?.uid!!)
+            .collection("Favorites")
 
         val options = FirestoreRecyclerOptions.Builder<Favorites>()
             .setQuery(favoritesCollection, Favorites::class.java)
             .build()
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.favorites_recycler_view)
         favoriteAdapter = FavoriteAdapter(options, favoritesCollection)
-        recyclerView.adapter = favoriteAdapter
+        view.mFavoritesRV.let {
+            it.adapter = favoriteAdapter
+            it.addItemDecoration(
+                MarginItemDecoration(
+                    resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt(), 2
+                )
+            )
+        }
+    }
+
+    override fun onDestroyView() {
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setSubtitle(null)
+        }
+        super.onDestroyView()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> navController.navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {

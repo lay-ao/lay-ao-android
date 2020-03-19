@@ -6,9 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -49,6 +47,12 @@ class BannerDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
+        setHasOptionsMenu(true)
+
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(BANNER_COLLECTION)
         val document = bannerId?.let { collection.document(it) }
@@ -58,11 +62,9 @@ class BannerDetailFragment : Fragment() {
             R.id.nav_host_fragment
         )
 
-        view.mBackNav.setOnClickListener { navController.navigateUp() }
-
         getData(view, document)
 
-        view.mCopyCode.setOnClickListener {
+        view.mPromoCode.setOnClickListener {
             val clipboard =
                 requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText("promo", promoCode))
@@ -74,19 +76,29 @@ class BannerDetailFragment : Fragment() {
         document?.get()?.addOnSuccessListener { documentSnapshot ->
             val model = documentSnapshot.toObject(Banner::class.java)
             if (model != null) {
-                (requireActivity() as AppCompatActivity).run {
-                    supportActionBar?.setTitle(model.title)
-                }
                 Glide.with(requireActivity()).load(model.image).into(view.mImage)
                 view.mTitle.text = model.title
                 view.mDescription.text = model.description
                 view.mValidity.text = model.validity?.let { "Valid till ${formatDate(it)}" }
                 view.mPromoCode.text = String.format("Promo Code: %s", model.code)
                 promoCode = model.code
-
             }
         }?.addOnFailureListener { exception ->
             Log.d("Banner Detail: ", "get failed with ", exception)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                navController.navigateUp()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -25,6 +25,7 @@ class CartAdapter internal constructor(
 
     override fun getItemCount() = items.size
 
+    @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val model = items[position]
         holder.run {

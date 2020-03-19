@@ -1,11 +1,10 @@
 package com.designbyark.layao.search
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.helper.android.list.autoScrollToStart
 import com.designbyark.layao.R
 import kotlinx.android.synthetic.main.fragment_facet.*
+import kotlinx.android.synthetic.main.fragment_facet.view.*
 
 class FacetFragment : Fragment() {
 
-    private lateinit var backNav: ImageButton
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -31,18 +30,30 @@ class FacetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
-        backNav = view.findViewById(R.id.mBackNav)
-        backNav.setOnClickListener {
-            navController.navigateUp()
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
         val viewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)
 
-        facetList.let {
+        view.facetList.let {
             it.adapter = viewModel.adapterFacet
             it.layoutManager = LinearLayoutManager(requireContext())
             it.autoScrollToStart(viewModel.adapterFacet)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> navController.navigateUp()
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

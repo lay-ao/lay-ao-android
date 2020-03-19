@@ -3,16 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.cart.CartFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         app:cardUseCompatPadding="true"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardBackgroundColor="#880E4F">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,10 +29,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/open_sans"
+                android:fontFamily="@font/cabin"
                 android:text="@string/grand_total"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 app:layout_constraintBottom_toTopOf="@id/view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -35,12 +40,12 @@
             <View
                 android:id="@+id/view"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="3dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:alpha="1"
-                android:background="#FBC02D"
+                android:background="#FFD600"
                 app:layout_constraintBottom_toTopOf="@+id/mTotalItemsLabel"
                 app:layout_constraintEnd_toStartOf="@+id/mCheckout"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,10 +57,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/open_sans"
+                android:fontFamily="@font/cabin"
                 android:text="@string/total_items"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view" />
@@ -67,21 +72,21 @@
                 android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:backgroundTint="#FBC02D"
+                app:backgroundTint="#FFD600"
                 app:elevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_arrow_right_white_24dp" />
+                app:srcCompat="@drawable/ic_checkout"/>
 
             <TextView
-                android:id="@+id/mGrandTotal"
+                android:id="@+id/mCartTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/open_sans"
+                android:fontFamily="@font/cabin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/mGrandTotalLabel"
                 app:layout_constraintEnd_toEndOf="@+id/view"
@@ -92,9 +97,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/open_sans"
+                android:fontFamily="@font/cabin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/mTotalItemsLabel"
                 app:layout_constraintEnd_toEndOf="@+id/view"
@@ -107,50 +112,14 @@
         android:id="@+id/mCartRV"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorDivider"
+        android:layout_marginTop="10dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mCartItemsLabel"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="2"
         tools:listitem="@layout/body_cart_item" />
-
-    <TextView
-        android:id="@+id/mCartItemsLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hind_bold"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/cart_items"
-        android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
-    <TextView
-        android:id="@+id/mDeleteAll"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:clickable="true"
-        android:drawableStart="@drawable/ic_delete_cart_color_24dp"
-        android:drawablePadding="10dp"
-        android:focusable="true"
-        android:fontFamily="@font/open_sans"
-        android:gravity="center"
-        android:paddingStart="10dp"
-        android:paddingLeft="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:text="@string/empty_cart"
-        android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@android:color/holo_red_dark"
-        app:layout_constraintBottom_toTopOf="@+id/mCartRV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

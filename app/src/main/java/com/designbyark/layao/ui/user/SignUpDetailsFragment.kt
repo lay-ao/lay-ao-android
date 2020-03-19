@@ -66,6 +66,7 @@ class SignUpDetailsFragment : Fragment() {
             user?.completeAddress = ""
             user?.gender = 0
             user?.contact = ""
+            user?.fineCount = 0
 
             // Store user at Firestore
             Log.d(LOG_TAG, "saveUserAtFirestore (Skip): Started")
@@ -108,6 +109,7 @@ class SignUpDetailsFragment : Fragment() {
             )
             user?.gender = view.mGenderSpinner.selectedItemPosition
             user?.contact = phoneNumber
+            user?.fineCount = 0
 
             // Start Registration Process
             Log.d(LOG_TAG, "saveUserAtFirestore (Done): Started")

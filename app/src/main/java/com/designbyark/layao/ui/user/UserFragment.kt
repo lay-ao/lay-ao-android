@@ -3,10 +3,9 @@ package com.designbyark.layao.ui.user
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -41,7 +40,9 @@ class UserFragment : Fragment() {
         firebaseUser = auth.currentUser
 
         val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
-        bottomMenu.visibility = View.VISIBLE
+        if (bottomMenu.visibility != View.VISIBLE) {
+            bottomMenu.visibility = View.VISIBLE
+        }
 
         navController = Navigation.findNavController(
             requireActivity(),
@@ -49,6 +50,7 @@ class UserFragment : Fragment() {
         )
 
         if (firebaseUser == null) {
+
             val noUserView = inflater.inflate(
                 R.layout.fragment_no_user,
                 container,
@@ -75,18 +77,20 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (firebaseUser == null) return
+        if (firebaseUser == null) {
+            (requireActivity() as AppCompatActivity).run {
+                supportActionBar?.setTitle(R.string.title_user)
+            }
+            return
+        }
+        setHasOptionsMenu(true)
 
         val firestore = FirebaseFirestore.getInstance()
         val userCollection = firestore.collection(USERS_COLLECTION)
 
         getUserData(view, userCollection, firebaseUser!!)
 
-        view.mEditButton.setOnClickListener {
-            navController.navigate(R.id.action_navigation_user_to_editUserFragment)
-        }
-
-        view.sign_out_button.setOnClickListener {
+        view.mSignOut.setOnClickListener {
 
             if (!isConnectedToInternet(requireContext())) {
                 Log.e(LOG_TAG, "Not connected to the internet!")
@@ -113,27 +117,46 @@ class UserFragment : Fragment() {
 
                         val emptyString = "Not specified"
 
-                        view.wallet_amount.text = String.format(
+                        view.mWalletAmount.text = String.format(
                             Locale.getDefault(),
                             "Rs. %.0f", model.wallet
                         )
-                        view.full_name.text = model.fullName
-                        view.email.text = model.email
+                        view.mFullName.text = model.fullName
+                        view.mEmail.text = model.email
 
                         if (model.completeAddress == "" || model.completeAddress.isEmpty()) {
-                            view.address.text = emptyString
+                            view.mAddress.text = emptyString
                         } else {
-                            view.address.text = model.completeAddress
+                            view.mAddress.text = model.completeAddress
                         }
 
                         if (model.contact == "" || model.contact.isEmpty()) {
-                            view.contact.text = emptyString
+                            view.mContact.text = emptyString
                         } else {
-                            view.contact.text = model.contact
+                            view.mContact.text = model.contact
                         }
-                        view.gender.text = formatGender(model.gender)
+                        view.mGender.text = formatGender(model.gender)
                     }
                 }
             }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        if (firebaseUser != null) {
+            menu.clear()
+            inflater.inflate(R.menu.user_menu, menu)
+        } else {
+            super.onCreateOptionsMenu(menu, inflater)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.user_edit -> {
+                navController.navigate(R.id.action_navigation_user_to_editUserFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

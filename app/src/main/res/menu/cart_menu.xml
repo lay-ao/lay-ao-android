@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/product_favorite"
-        android:icon="@drawable/ic_favorite_clicked_menu_24dp"
-        android:title="@string/title_favorites"
+        android:id="@+id/cart_delete_all"
+        android:icon="@drawable/ic_delete_cart_color_24dp"
+        android:title="@string/title_delete"
         app:showAsAction="always"/>
 
 </menu>

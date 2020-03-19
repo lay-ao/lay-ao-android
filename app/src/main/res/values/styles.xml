@@ -11,18 +11,25 @@
     </style>
 
     <style name="CustomToolBarStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="titleTextColor">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorTextPrimary</item>
+        <item name="subtitleTextColor">@color/colorSecondaryText</item>
     </style>
 
     <style name="CustomActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="background">@android:color/transparent</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
-        <item name="fontFamily">@font/hind_bold</item>
+        <item name="fontFamily">@font/cabin</item>
         <item name="textAllCaps">true</item>
-        <item name="android:textSize">36sp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Subtitle" parent="@android:style/TextAppearance">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="Icon">

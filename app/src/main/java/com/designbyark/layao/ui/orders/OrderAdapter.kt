@@ -13,9 +13,12 @@ import com.google.firebase.firestore.CollectionReference
 
 class OrderAdapter internal constructor(
     options: FirestoreRecyclerOptions<Order>,
-    private val context: Context,
     private val itemClickListener: OrderItemClickListener
 ) : FirestoreRecyclerAdapter<Order, OrderViewHolder>(options) {
+
+    override fun getItemCount(): Int {
+        return super.getItemCount()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -25,17 +28,18 @@ class OrderAdapter internal constructor(
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int, model: Order) {
         val id = snapshots.getSnapshot(holder.adapterPosition).id
-
+        val status = model.orderStatus
+        val context = holder.itemView.context
         holder.run {
-            when (model.orderStatus) {
-                0 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_orange_dark)
-                1 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_green_dark)
-                2 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_blue_dark)
-                3 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_purple)
-                4 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_red_light)
-                5 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_green_dark)
-                6 -> setOrderStatus(model.orderStatus, context, android.R.color.holo_red_dark)
-                else -> setOrderStatus(model.orderStatus, context, android.R.color.black)
+            when (status) {
+                0 -> setOrderStatus(status, context, android.R.color.holo_orange_dark)
+                1 -> setOrderStatus(status, context, android.R.color.holo_green_dark)
+                2 -> setOrderStatus(status, context, android.R.color.holo_blue_dark)
+                3 -> setOrderStatus(status, context, android.R.color.holo_purple)
+                4 -> setOrderStatus(status, context, android.R.color.holo_red_light)
+                5 -> setOrderStatus(status, context, android.R.color.holo_green_dark)
+                6 -> setOrderStatus(status, context, android.R.color.holo_red_dark)
+                else -> setOrderStatus(status, context, android.R.color.black)
             }
             setOrderId(model.orderId, model.contactNumber)
             setCustomerName(model.fullName)

@@ -98,7 +98,7 @@
             tools:text="Contact Number: [Contact Number]" />
 
         <TextView
-            android:id="@+id/mGrandTotal"
+            android:id="@+id/mCartTotal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -126,7 +126,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mGrandTotal"
+            app:layout_constraintTop_toBottomOf="@+id/mCartTotal"
             tools:text="Total items: [Total Item Count]" />
 
         <TextView

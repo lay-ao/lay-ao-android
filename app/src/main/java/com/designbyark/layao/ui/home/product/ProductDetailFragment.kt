@@ -3,10 +3,8 @@ package com.designbyark.layao.ui.home.product
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,17 +19,23 @@ import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.ui.cart.CartViewModel
 import com.designbyark.layao.ui.favorites.Favorites
 import com.designbyark.layao.ui.home.HomeFragment
+import com.designbyark.layao.ui.productList.SimilarProductListAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_product_detail.view.*
 import java.util.*
 
-class ProductDetailFragment : Fragment() {
+class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListItemClickListener {
 
+    private var mAdapter: SimilarProductListAdapter? = null
     private var firebaseUser: FirebaseUser? = null
-    private var productId: String? = null
     private lateinit var navController: NavController
+
+    private var productId: String? = null
+    private var productTag: String? = null
 
     private var documentExists: Boolean = false
 
@@ -50,7 +54,8 @@ class ProductDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            productId = it.getString(HomeFragment.PRODUCT_ID)
+            productId = it.getString(HomeFragment.PRODUCT_ID) ?: ""
+            productTag = it.getString(HomeFragment.PRODUCT_TAG) ?: ""
         }
     }
 
@@ -73,13 +78,16 @@ class ProductDetailFragment : Fragment() {
     @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
 
         val cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
-
         val firestore = FirebaseFirestore.getInstance()
-
-        view.mBackNav.setOnClickListener { navController.navigateUp() }
-
+        val productCollection = firestore.collection(PRODUCTS_COLLECTION)
         if (firebaseUser != null) {
             firestore.collection(USERS_COLLECTION).document(firebaseUser!!.uid)
                 .collection("Favorites").document(productId!!)
@@ -91,6 +99,7 @@ class ProductDetailFragment : Fragment() {
                 }
         }
 
+        Log.d(LOG_TAG, "Value ${productTag!!}")
         getData(view, firestore)
 
         view.mAdd.setOnClickListener {
@@ -131,8 +140,34 @@ class ProductDetailFragment : Fragment() {
             Toast.makeText(requireActivity(), "Added to cart!", Toast.LENGTH_LONG).show()
 
         }
+
+
+        val query = productCollection.whereEqualTo("tag", productTag!!)
+            .orderBy("title", Query.Direction.ASCENDING)
+
+        val options = FirestoreRecyclerOptions.Builder<Products>()
+            .setQuery(query, Products::class.java)
+            .build()
+
+        mAdapter = SimilarProductListAdapter(options, this, productId!!)
+        setHorizontalListLayout(view.mSimilarProductsRV, requireContext())
+        view.mSimilarProductsRV.adapter = mAdapter
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        if (mAdapter != null) {
+            mAdapter?.startListening()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mAdapter != null) {
+            mAdapter?.stopListening()
+        }
+    }
 
     @ExperimentalStdlibApi
     private fun getData(view: View, firestore: FirebaseFirestore) {
@@ -150,9 +185,9 @@ class ProductDetailFragment : Fragment() {
                     unit = model.unit
                     stock = model.stock
 
-                    Glide.with(requireContext()).load(model.image)
+                    Glide.with(view.context).load(image)
                         .placeholder(circularProgressBar(requireContext())).into(view.mImage)
-                    view.mTitle.text = model.title
+                    view.mTitle.text = title
                     (requireActivity() as AppCompatActivity).run {
                         supportActionBar?.setTitle(model.title)
                     }
@@ -184,13 +219,12 @@ class ProductDetailFragment : Fragment() {
                     if (discount > 0) {
                         view.mDiscount.text = String.format(
                             Locale.getDefault(),
-                            "%.0f%% off", discount
+                            "%.0f%% off ", discount
                         )
                     }
                     view.mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
 
                     view.mFavorite.setOnClickListener {
-
 
                         if (firebaseUser == null) {
                             Log.d(LOG_TAG, "Adding to Favorite: firebaseUser == null.")
@@ -235,6 +269,24 @@ class ProductDetailFragment : Fragment() {
                     }
                 }
             }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> navController.navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
+        val args = Bundle()
+        args.putString(HomeFragment.PRODUCT_ID, productData["id"])
+        args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
+        navController.navigate(R.id.action_productDetailFragment_self, args)
     }
 
 

@@ -1,15 +1,20 @@
 package com.designbyark.layao.common
 
+import android.Manifest
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,10 +48,8 @@ const val CHANNEL_ID = "default"
 const val CHANNEL_NAME = "Default"
 const val CHANNEL_DESC = "Default channels is for testing"
 
-const val DEFAULT_NETWORK_STATE = "Default"
-const val ON_LOST = "onLost"
-const val ON_UNAVAILABLE = "onUnavailable"
-const val ON_AVAILABLE = "onAvailable"
+// Location
+const val REQUEST_CODE_LOCATION = 100
 
 // RecyclerView Helper Methods
 fun setHorizontalListLayout(recyclerView: RecyclerView, context: Context) {
@@ -250,13 +253,13 @@ fun displayNotification(context: Context, icon: Int, title: String, content: Str
 
 fun getOrderStatus(status: Int): String {
     return when (status) {
-        0 -> "Processing Order"
-        1 -> "Order Active"
-        2 -> "Order on the way"
-        3 -> "Order Arrived"
-        4 -> "Order Delayed"
-        5 -> "Order Received"
-        6 -> "Order Cancelled"
+        0 -> "Processing Order" // Orange
+        1 -> "Order Active"     // Blue
+        2 -> "Order on the way" // Green
+        3 -> "Order Arrived"    // Purple
+        4 -> "Order Delayed"    // Red
+        5 -> "Order Received"   // Green
+        6 -> "Order Cancelled"  // Red
         else -> return "Status Unknown"
     }
 }
@@ -314,3 +317,59 @@ fun enableInteraction(activity: Activity, layout: View) {
     activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     layout.visibility = View.GONE
 }
+
+// region LOCATION HELPER FUNCTIONS
+
+fun isLocationPermissionAvailable(activity: Activity): Boolean {
+    if (initializePermission(activity)) {
+        return true
+    } else {
+        requestPermissions(activity)
+    }
+    return false
+}
+
+private fun initializePermission(activity: Activity): Boolean {
+    val fineLocationAvailable = ActivityCompat.checkSelfPermission(
+        activity.applicationContext,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+    val coarseLocationAvailable = ActivityCompat.checkSelfPermission(
+        activity.applicationContext,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+
+    return fineLocationAvailable && coarseLocationAvailable
+}
+
+private fun requestPermissions(activity: Activity) {
+    val contextProvider =
+        ActivityCompat.shouldShowRequestPermissionRationale(
+            activity,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+    if (contextProvider) {
+        Toast.makeText(
+            activity.applicationContext,
+            "Permission is required to obtain location",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    ActivityCompat.requestPermissions(
+        activity,
+        arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ),
+        REQUEST_CODE_LOCATION
+    )
+}
+
+fun isGPSEnabled(context: Context): Boolean {
+    val manager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+}
+
+// endregion

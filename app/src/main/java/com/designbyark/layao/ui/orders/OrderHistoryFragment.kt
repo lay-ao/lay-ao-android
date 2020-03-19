@@ -2,9 +2,8 @@ package com.designbyark.layao.ui.orders
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -27,17 +26,18 @@ class OrderHistoryFragment : Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-//        (requireActivity() as AppCompatActivity).run {
-//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        }
-//        setHasOptionsMenu(true)
-
         return inflater.inflate(R.layout.fragment_order_history, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
+        setHasOptionsMenu(true)
 
         val firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
@@ -56,17 +56,21 @@ class OrderHistoryFragment : Fragment(),
             R.id.nav_host_fragment
         )
 
-        adapter = OrderAdapter(options, requireContext(), this)
+        adapter = OrderAdapter(options, this)
 
         view.mHistoryOrdersRV.adapter = adapter
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            android.R.id.home -> navController.navigateUp()
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> navController.navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onStart() {
         super.onStart()

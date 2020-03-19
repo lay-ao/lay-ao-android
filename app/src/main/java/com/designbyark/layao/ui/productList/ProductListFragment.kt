@@ -102,11 +102,11 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
             .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(options, this)
+        mAdapter = ProductListAdapter(options, R.layout.body_product_list,this)
 
         view.mProductListRV.addItemDecoration(
             MarginItemDecoration(
-                resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt()
+                resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt(), 2
             )
         )
 
@@ -126,9 +126,10 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         }
     }
 
-    override fun mProductListItemClickListener(productId: String) {
+    override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
         val args = Bundle()
-        args.putString(HomeFragment.PRODUCT_ID, productId)
+        args.putString(HomeFragment.PRODUCT_ID, productData["id"])
+        args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
         navController.navigate(R.id.action_productListFragment_to_productDetailFragment, args)
     }
 

@@ -9,6 +9,7 @@
         android:id="@+id/mActiveOrdersRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,16 +17,45 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/body_active_order" />
 
-    <TextView
-        android:id="@+id/no_order_active"
+    <LinearLayout
+        android:id="@+id/mNoOrdersLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Orders Active Yet!"
-        android:visibility="gone"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:contentDescription="@string/no_orders_placed_yet"
+            android:src="@drawable/ic_empty_order" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/hind_bold"
+            android:text="@string/no_orders_placed_yet"
+            android:textAllCaps="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Button
+            android:id="@+id/mBuySomething"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/empty_order_attraction"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

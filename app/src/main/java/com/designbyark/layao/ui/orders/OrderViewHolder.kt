@@ -43,7 +43,7 @@ class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     internal fun setGrandTotal(grandTotal: Double) {
-        val textView: TextView = itemView.findViewById(R.id.mGrandTotal)
+        val textView: TextView = itemView.findViewById(R.id.mCartTotal)
         textView.text = String.format(Locale.getDefault(), "Rs. %.0f", grandTotal)
     }
 

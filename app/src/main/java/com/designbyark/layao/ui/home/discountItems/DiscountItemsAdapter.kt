@@ -38,15 +38,15 @@ class DiscountItemsAdapter internal constructor(
         }
 
         holder.itemView.setOnClickListener {
-            itemClickListener.onDiscountItemClickListener(
-                snapshots
-                    .getSnapshot(holder.adapterPosition).id
-            )
+            val data = mutableMapOf<String, String>()
+            data["id"] = snapshots.getSnapshot(holder.adapterPosition).id
+            data["tag"] = model.tag
+            itemClickListener.onDiscountItemClickListener(data)
         }
     }
 
     interface DiscountItemClickListener {
-        fun onDiscountItemClickListener(productId: String)
+        fun onDiscountItemClickListener(productData: MutableMap<String, String>)
     }
 
 }

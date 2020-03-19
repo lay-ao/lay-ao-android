@@ -3,8 +3,10 @@ package com.designbyark.layao.ui.favorites
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
+import com.designbyark.layao.common.isConnectedToInternet
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
@@ -31,15 +33,26 @@ class FavoriteAdapter internal constructor(
             favButton.isSelected = true
 
             favButton.setOnClickListener {
-                collection.document(snapshots.getSnapshot(position).id)
-                    .delete().addOnCompleteListener { task ->
-                        if (task.isSuccessful && task.isComplete) {
-                            notifyItemRemoved(position)
+                if (isConnectedToInternet(holder.itemView.context)) {
+                    collection.document(snapshots.getSnapshot(position).id)
+                        .delete().addOnCompleteListener { task ->
+                            if (task.isSuccessful && task.isComplete) {
+                                Toast.makeText(
+                                    holder.itemView.context,
+                                    "Item removed from Favorites!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.e(LOG_TAG, exception.localizedMessage, exception)
-                    }
+                        .addOnFailureListener { exception ->
+                            Log.e(LOG_TAG, exception.localizedMessage, exception)
+                        }
+                } else {
+                    Toast.makeText(holder.itemView.context,
+                        "No network found!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }

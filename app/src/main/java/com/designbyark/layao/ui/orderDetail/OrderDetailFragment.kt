@@ -4,21 +4,21 @@ package com.designbyark.layao.ui.orderDetail
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
-import com.designbyark.layao.data.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -36,7 +36,9 @@ class OrderDetailFragment : Fragment() {
     private lateinit var collectionUserReference: CollectionReference
     private lateinit var navController: NavController
 
-    private var walletAmount: Double = 0.0
+    private var walletAmount: Double = 0.00
+    private var fineCount: Long = 0
+    private var orderStatus: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +57,14 @@ class OrderDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
+
+        setCancellingDesc(view)
 
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -65,16 +75,12 @@ class OrderDetailFragment : Fragment() {
         if (firebaseUser != null) {
             collectionUserReference.document(firebaseUser!!.uid).get()
                 .addOnSuccessListener { documentSnapshot ->
-                    val user = documentSnapshot.toObject(User::class.java)
-                    if (user != null) {
-                        walletAmount = user.wallet
-                    }
+                    walletAmount = documentSnapshot.getDouble("wallet") ?: -1.00
+                    fineCount = documentSnapshot.getLong("fineCount") ?: -1
                 }
         }
 
         orderDocument = orderId?.let { collectionReference.document(it) }
-        // val title = orderId?.take(5)?.toUpperCase(Locale.getDefault())
-
 
         navController = Navigation.findNavController(
             requireActivity(),
@@ -90,16 +96,25 @@ class OrderDetailFragment : Fragment() {
         }
     }
 
+    private fun setCancellingDesc(view: View) {
+        val cancellingOrder = requireActivity().resources.getString(R.string.order_cancelling_desc)
+        val spannableString = SpannableString(cancellingOrder)
+        val red = ForegroundColorSpan(Color.RED)
+        spannableString.setSpan(red, 32, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        view.mCancelOrderLabel.text = spannableString
+    }
+
     private fun getOrderData(view: View, context: Context) {
-        orderDocument?.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w(LOG_TAG, "Listen failed.", e)
+        orderDocument?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                Log.w(LOG_TAG, "Listen failed.", exception)
                 return@addSnapshotListener
             }
 
             if (snapshot != null && snapshot.exists()) {
                 val model = snapshot.toObject(Order::class.java)
                 if (model != null) {
+                    orderStatus = model.orderStatus
                     view.mOrderId.text = String.format(
                         "Order ID: %s",
                         formatOrderId(model.orderId, model.contactNumber)
@@ -108,7 +123,7 @@ class OrderDetailFragment : Fragment() {
                     view.mCustomerName.text = String.format("Order placed by %s", model.fullName)
                     view.mOrderAddress.text = String.format("Delivery at %s", model.completeAddress)
                     view.mCustomerContact.text = String.format("Contact: %s", model.contactNumber)
-                    view.mGrandTotal.text =
+                    view.mCartTotal.text =
                         String.format(
                             Locale.getDefault(),
                             "Grand Total: Rs. %.0f",
@@ -143,79 +158,39 @@ class OrderDetailFragment : Fragment() {
     private fun setOrderStatus(view: View, status: Int, context: Context) {
         view.mOrderStatus.text = getOrderStatus(status)
         when (status) {
-            0 -> setTextColor(
-                view,
-                android.R.color.holo_orange_dark,
-                view.mCancelOrder,
-                View.VISIBLE,
-                context
-            )
-            1 -> setTextColor(
-                view,
-                android.R.color.holo_green_dark,
-                view.mCancelOrder,
-                View.VISIBLE,
-                context
-            )
-            2 -> setTextColor(
-                view,
-                android.R.color.holo_blue_dark,
-                view.mCancelOrder,
-                View.INVISIBLE,
-                context
-            )
-            3 -> setTextColor(
-                view,
-                android.R.color.holo_purple,
-                view.mCancelOrder,
-                View.INVISIBLE,
-                context
-            )
-            4 -> setTextColor(
-                view,
-                android.R.color.holo_red_light,
-                view.mCancelOrder,
-                View.VISIBLE,
-                context
-            )
-            5 -> setTextColor(
-                view,
-                android.R.color.holo_green_dark,
-                view.mCancelOrder,
-                View.INVISIBLE,
-                context
-            )
-            6 -> setTextColor(
-                view,
-                android.R.color.holo_red_dark,
-                view.mCancelOrder,
-                View.INVISIBLE,
-                context
-            )
-            else -> setTextColor(
-                view,
-                android.R.color.black,
-                view.mCancelOrder,
-                View.VISIBLE,
-                requireContext()
-            )
+            0 -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.holo_orange_dark))
+                view.mCancelOrder.visibility = View.VISIBLE
+            }
+            1 -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.holo_blue_dark))
+                view.mCancelOrder.visibility = View.VISIBLE
+            }
+            2 -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.holo_green_dark))
+                view.mCancelOrder.visibility = View.VISIBLE
+            }
+            3 -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.holo_purple))
+                view.mCancelOrder.visibility = View.INVISIBLE
+            }
+            4 -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.holo_red_dark))
+                view.mCancelOrder.visibility = View.VISIBLE
+            }
+            5 -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.holo_green_dark))
+                view.mCancelOrder.visibility = View.INVISIBLE
+            }
+            6 -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.holo_red_dark))
+                view.mCancelOrder.visibility = View.INVISIBLE
+            }
+            else -> {
+                view.mOrderStatus.setTextColor(getColor(context, android.R.color.black))
+                view.mCancelOrder.visibility = View.VISIBLE
+            }
         }
-    }
-
-    private fun setTextColor(
-        view: View,
-        @ColorRes color: Int,
-        button: Button,
-        visibility: Int,
-        context: Context
-    ) {
-        view.mOrderStatus.setTextColor(
-            ContextCompat.getColor(
-                context,
-                color
-            )
-        )
-        button.visibility = visibility
     }
 
     private fun showCancelAlert(context: Context) {
@@ -224,11 +199,10 @@ class OrderDetailFragment : Fragment() {
             .setIcon(R.drawable.ic_warning_color_24dp)
             .setMessage(
                 "Cancelling the order will charge you an amount of " +
-                        "Rs. 30 which will be added to your wallet"
+                        "Rs. 30 if the driver is on the way"
             )
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
                 cancelOrder(context, dialog)
-
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
@@ -237,27 +211,50 @@ class OrderDetailFragment : Fragment() {
     }
 
     private fun cancelOrder(context: Context, dialog: DialogInterface) {
-        collectionUserReference.document(firebaseUser!!.uid).update("wallet", walletAmount + 30)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful && task.isComplete) {
-                    orderDocument?.update("orderStatus", 6)
-                    displayNotification(
-                        context,
-                        R.drawable.ic_favorite_red,
-                        "Order cancelled",
-                        "Your wallet has been charged with Rs. 30 for cancelling the order"
-                    )
-                    dialog.dismiss()
-                } else {
-                    Log.e(LOG_TAG, "update wallet fine: ${task.exception?.localizedMessage}")
-                    return@addOnCompleteListener
-                }
+
+        if (walletAmount == -1.00) {
+            Log.d(LOG_TAG, "Wallet Amount Error")
+            return
+        }
+
+        if (orderStatus < 2) {
+            orderDocument?.update("orderStatus", 6)
+            orderDocument?.update("cancelled", true)
+            displayNotification(
+                context, R.drawable.ic_favorite_red, "Order cancelled",
+                "We are sad to see you cancel, we hope you use our services again."
+            )
+            dialog.dismiss()
+            return
+        }
+
+        if (orderStatus >= 2) {
+            val totalWallet = walletAmount - 30.00
+            fineCount++
+            firebaseUser?.uid?.let { userId ->
+                collectionUserReference.document(userId).update("wallet", totalWallet)
+                collectionUserReference.document(userId).update("fineCount", fineCount)
             }
-            .addOnFailureListener { exception ->
-                Log.e(LOG_TAG, "update wallet fine: $exception", exception)
-                return@addOnFailureListener
-            }
+            orderDocument?.update("orderStatus", 6)
+            orderDocument?.update("cancelled", true)
+            displayNotification(
+                context, R.drawable.ic_favorite_red, "Order cancelled",
+                "Your wallet has been charged with Rs. 30 for cancelling the order"
+            )
+            dialog.dismiss()
+            return
+        }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> navController.navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
 }
