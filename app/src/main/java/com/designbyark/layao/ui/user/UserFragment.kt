@@ -39,7 +39,7 @@ class UserFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         firebaseUser = auth.currentUser
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
         if (bottomMenu.visibility != View.VISIBLE) {
             bottomMenu.visibility = View.VISIBLE
         }

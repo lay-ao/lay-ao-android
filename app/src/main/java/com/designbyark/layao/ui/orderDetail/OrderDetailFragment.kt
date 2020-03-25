@@ -34,7 +34,6 @@ class OrderDetailFragment : Fragment() {
     private var orderDocument: DocumentReference? = null
 
     private lateinit var collectionUserReference: CollectionReference
-    private lateinit var navController: NavController
 
     private var walletAmount: Double = 0.00
     private var fineCount: Long = 0
@@ -81,11 +80,6 @@ class OrderDetailFragment : Fragment() {
         }
 
         orderDocument = orderId?.let { collectionReference.document(it) }
-
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
 
         getOrderData(view, requireContext())
         view.mCancelOrder.setOnClickListener {
@@ -248,13 +242,6 @@ class OrderDetailFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
 }

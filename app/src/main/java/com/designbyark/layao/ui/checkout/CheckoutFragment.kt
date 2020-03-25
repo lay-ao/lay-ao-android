@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
@@ -30,10 +29,10 @@ import kotlinx.android.synthetic.main.fragment_checkout.view.*
 import java.util.*
 
 class CheckoutFragment : Fragment() {
+
     private var grandTotal: Double = 0.0
     private var totalItems: Int = 0
 
-    private lateinit var navController: NavController
     private lateinit var cartViewModel: CartViewModel
     private lateinit var orderCollection: CollectionReference
     private lateinit var userCollection: CollectionReference
@@ -53,6 +52,7 @@ class CheckoutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         return inflater.inflate(R.layout.fragment_checkout, container, false)
     }
@@ -60,12 +60,10 @@ class CheckoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-            supportActionBar?.setHomeButtonEnabled(true)
-        }
-        setHasOptionsMenu(true)
-
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+//            supportActionBar?.setHomeButtonEnabled(true)
+//        }
 
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         val firebase = FirebaseFirestore.getInstance()
@@ -73,12 +71,7 @@ class CheckoutFragment : Fragment() {
         orderCollection = firebase.collection(ORDERS_COLLECTION)
         userCollection = firebase.collection("Users")
 
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
-
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
         bottomMenu.visibility = View.GONE
 
         if (auth.currentUser == null) {
@@ -148,7 +141,7 @@ class CheckoutFragment : Fragment() {
         view.mGoogleMaps.setOnClickListener {
             if (isLocationPermissionAvailable(requireActivity())) {
                 if (isGPSEnabled(requireContext())) {
-                    navController.navigate(R.id.action_checkoutFragment_to_mapFragment)
+                    Navigation.createNavigateOnClickListener(R.id.action_checkoutFragment_to_mapFragment)
                 } else {
                     AlertDialog.Builder(requireContext())
                         .setMessage("To continue, turn on device location, which Google's location service")
@@ -216,7 +209,7 @@ class CheckoutFragment : Fragment() {
                         )}. Kindly, contact on our helpline for any further assistance. Thank you."
                     )
                     cartViewModel.deleteCart()
-                    navController.navigate(R.id.action_checkoutFragment_to_navigation_home)
+                    Navigation.createNavigateOnClickListener(R.id.action_checkoutFragment_to_navigation_home)
                 }
                 .addOnFailureListener { e ->
                     Log.e(LOG_TAG, "Error adding document", e)
@@ -264,15 +257,6 @@ class CheckoutFragment : Fragment() {
         menu.clear()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -281,7 +265,7 @@ class CheckoutFragment : Fragment() {
         when (requestCode) {
             REQUEST_CODE_LOCATION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    navController.navigate(R.id.action_checkoutFragment_to_mapFragment)
+                    Navigation.createNavigateOnClickListener(R.id.action_checkoutFragment_to_mapFragment)
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -299,10 +283,10 @@ class CheckoutFragment : Fragment() {
             .setIcon(R.drawable.ic_delivery)
             .setMessage("Sign up or Login to place order.")
             .setPositiveButton("Sign Up") { _, _ ->
-                navController.navigate(R.id.action_checkoutFragment_to_signUpFragment)
+                Navigation.createNavigateOnClickListener(R.id.action_checkoutFragment_to_signUpFragment)
             }
             .setNegativeButton("Login") { _, _ ->
-                navController.navigate(R.id.action_checkoutFragment_to_signInFragment)
+                Navigation.createNavigateOnClickListener(R.id.action_checkoutFragment_to_signInFragment)
             }
             .setNeutralButton("Cancel") { dialog, _ ->
                 dialog.dismiss()

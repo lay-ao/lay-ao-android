@@ -59,7 +59,7 @@ public class BannerSliderAdapter extends SliderViewAdapter<BannerSliderAdapter.B
 
     }
 
-    class BannerSliderAdapterVH extends SliderViewAdapter.ViewHolder {
+     static class BannerSliderAdapterVH extends SliderViewAdapter.ViewHolder {
 
         private View itemView;
         private ImageView imageView;

@@ -76,7 +76,6 @@ class LocationHelper(var activity: Activity, CustomLocationListener: CustomLocat
 
     fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
         grantResults: IntArray
     ) {
         when (requestCode) {

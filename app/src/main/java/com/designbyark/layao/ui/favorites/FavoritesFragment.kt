@@ -3,13 +3,9 @@ package com.designbyark.layao.ui.favorites
 
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.util.MarginItemDecoration
@@ -24,7 +20,6 @@ import kotlinx.android.synthetic.main.fragment_no_favorites.view.*
 
 class FavoritesFragment : Fragment() {
 
-    private lateinit var navController: NavController
     private lateinit var favoritesCollection: CollectionReference
 
     private var firebaseUser: FirebaseUser? = null
@@ -38,8 +33,6 @@ class FavoritesFragment : Fragment() {
         val firebaseAuth = FirebaseAuth.getInstance()
         firebaseUser = firebaseAuth.currentUser
 
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-
         if (firebaseUser == null) {
             return inflater.inflate(R.layout.fragment_no_favorites, container, false)
         }
@@ -51,24 +44,24 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setSubtitle("Prices may subject to change.")
-        }
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//            supportActionBar?.setSubtitle("Prices may subject to change.")
+//        }
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
         if (bottomMenu.visibility == View.GONE) {
             bottomMenu.visibility = View.VISIBLE
         }
 
         if (firebaseUser == null) {
             view.mLoginAuth.setOnClickListener {
-                navController.navigate(R.id.action_favoritesFragment_to_signInFragment)
+                Navigation.createNavigateOnClickListener(R.id.action_favoritesFragment_to_signInFragment)
             }
 
             view.mRegisterAuth.setOnClickListener {
-                navController.navigate(R.id.action_favoritesFragment_to_signUpFragment)
+                Navigation.createNavigateOnClickListener(R.id.action_favoritesFragment_to_signUpFragment)
             }
 
             return
@@ -94,21 +87,14 @@ class FavoritesFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setSubtitle(null)
-        }
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setSubtitle(null)
+//        }
         super.onDestroyView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onStart() {

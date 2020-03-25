@@ -19,7 +19,6 @@ import java.util.*
 class CartFragment : Fragment() {
 
     private lateinit var cartViewModel: CartViewModel
-    private lateinit var navController: NavController
 
     private var totalPrice: Double = 0.0
     private var totalItemCount: Int = 0
@@ -29,6 +28,7 @@ class CartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
 
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         if (cartViewModel.itemCount() == 0) {
@@ -42,15 +42,10 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
         if (bottomMenu.visibility == View.GONE) {
             bottomMenu.visibility = View.VISIBLE
         }
-
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
 
         if (cartViewModel.itemCount() == 0) {
             (requireActivity() as AppCompatActivity).run {
@@ -58,7 +53,7 @@ class CartFragment : Fragment() {
             }
 
             view.mAddItemsToCart.setOnClickListener {
-                navController.navigate(R.id.action_navigation_cart_to_navigation_home)
+                Navigation.createNavigateOnClickListener(R.id.action_navigation_cart_to_navigation_home, null)
             }
 
             return
@@ -100,7 +95,7 @@ class CartFragment : Fragment() {
                 val args = Bundle()
                 args.putDouble("grand_total", totalPrice)
                 args.putInt("total_items", totalItemCount)
-                navController.navigate(R.id.action_navigation_cart_to_checkoutFragment, args)
+                Navigation.createNavigateOnClickListener(R.id.action_navigation_cart_to_checkoutFragment, args)
             }
         }
     }

@@ -3,32 +3,29 @@ package com.designbyark.layao.ui.categories
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Products
-import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.ui.productList.ProductListAdapter
+import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import java.util.*
 
 class CPListFragment : Fragment(),
-    ProductListAdapter.ProductListItemClickListener{
+    ProductListAdapter.ProductListItemClickListener {
 
     private var categoryId: String? = null
 
-    private lateinit var navController: NavController
     private lateinit var mAdapter: ProductListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,20 +39,14 @@ class CPListFragment : Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
 
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(PRODUCTS_COLLECTION)
-
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setTitle(categoryId?.toUpperCase(Locale.ENGLISH))
-        }
-        setHasOptionsMenu(true)
-
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//            supportActionBar?.setTitle(categoryId?.toUpperCase(Locale.ENGLISH))
+//        }
 
         val root = inflater.inflate(R.layout.fragment_product_list, container, false)
 
@@ -88,13 +79,6 @@ class CPListFragment : Fragment(),
         recyclerView.adapter = mAdapter
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         mAdapter.startListening()
@@ -109,7 +93,10 @@ class CPListFragment : Fragment(),
         val args = Bundle()
         args.putString(HomeFragment.PRODUCT_ID, productData["id"])
         args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        navController.navigate(R.id.action_CPListFragment_to_productDetailFragment, args)
+        Navigation.createNavigateOnClickListener(
+            R.id.action_CPListFragment_to_productDetailFragment,
+            args
+        )
     }
 
 

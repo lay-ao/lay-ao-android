@@ -40,7 +40,7 @@ class ProductListViewHolder internal constructor(private val view: View) :
     internal fun setDiscount(discount: Double) {
         val discountView: TextView = view.findViewById(R.id.mDiscount)
         if (discount > 0) {
-            discountView.text = String.format(Locale.getDefault(), "%.0f%% off", discount)
+            discountView.text = String.format(Locale.getDefault(), "%.0f%% off ", discount)
         } else {
             discountView.visibility = View.GONE
         }

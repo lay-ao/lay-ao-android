@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.fragment_banner_detail.view.*
 class BannerDetailFragment : Fragment() {
 
     private var bannerId: String? = null
-    private lateinit var navController: NavController
 
     private lateinit var promoCode: String
 
@@ -41,26 +40,21 @@ class BannerDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_banner_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-        }
-        setHasOptionsMenu(true)
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+//        }
 
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(BANNER_COLLECTION)
         val document = bannerId?.let { collection.document(it) }
-
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
 
         getData(view, document)
 
@@ -90,16 +84,6 @@ class BannerDetailFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
 }

@@ -55,22 +55,21 @@ class HomeFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
         if (bottomMenu.visibility == View.GONE) {
             bottomMenu.visibility = View.VISIBLE
         }
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setSubtitle(getString(R.string.app_slogan))
-        }
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setSubtitle(getString(R.string.app_slogan))
+//        }
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
@@ -295,15 +294,15 @@ class HomeFragment : Fragment(),
         navController.navigate(R.id.action_navigation_home_to_CPListFragment, args)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.general_favorites -> {
-                navController.navigate(R.id.action_navigation_home_to_favoritesFragment)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.general_favorites -> {
+//                navController.navigate(R.id.home_to_favorites_dest)
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
 }
 

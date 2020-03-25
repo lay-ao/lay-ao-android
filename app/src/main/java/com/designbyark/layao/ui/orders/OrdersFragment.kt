@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
@@ -23,7 +22,6 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
     private var firebaseUser: FirebaseUser? = null
     private var adapter: OrderAdapter? = null
-    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,14 +42,12 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-
         if (firebaseUser == null) {
             view.mLoginAuth.setOnClickListener {
-                navController.navigate(R.id.action_navigation_orders_to_signInFragment)
+                Navigation.createNavigateOnClickListener(R.id.action_navigation_orders_to_signInFragment)
             }
             view.mRegisterAuth.setOnClickListener {
-                navController.navigate(R.id.action_navigation_orders_to_signUpFragment)
+                Navigation.createNavigateOnClickListener(R.id.action_navigation_orders_to_signUpFragment)
             }
             return
         }
@@ -79,7 +75,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
             } else {
                 view.mNoOrdersLayout.visibility = View.VISIBLE
                 view.mBuySomething.setOnClickListener {
-                    navController.navigate(R.id.action_navigation_orders_to_navigation_home)
+                    Navigation.createNavigateOnClickListener(R.id.action_navigation_orders_to_navigation_home)
                 }
             }
         }
@@ -109,17 +105,10 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
     override fun orderItemClickListener(orderId: String) {
         val args = Bundle()
         args.putString("orderId", orderId)
-        navController.navigate(R.id.action_navigation_orders_to_orderDetailFragment, args)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.orders_history -> {
-                navController.navigate(R.id.action_navigation_orders_to_orderHistoryFragment)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+        Navigation.createNavigateOnClickListener(
+            R.id.action_navigation_orders_to_orderDetailFragment,
+            args
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -20,7 +20,7 @@
             android:id="@+id/action_nav_productListFragment"
             app:destination="@id/productListFragment" />
         <action
-            android:id="@+id/action_navigation_home_to_favoritesFragment"
+            android:id="@+id/home_to_favorites_dest"
             app:destination="@id/favoritesFragment" />
         <action
             android:id="@+id/action_navigation_home_to_brandsListFragment"
@@ -168,7 +168,7 @@
             android:id="@+id/action_navigation_orders_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
         <action
-            android:id="@+id/action_navigation_orders_to_orderHistoryFragment"
+            android:id="@+id/orders_to_history_orders_dest"
             app:destination="@id/orderHistoryFragment" />
         <action
             android:id="@+id/action_navigation_orders_to_signUpFragment"

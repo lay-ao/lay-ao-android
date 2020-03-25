@@ -2,16 +2,12 @@ package com.designbyark.layao.ui.categories
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.common.CATEGORIES_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Category
-import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,28 +16,24 @@ import kotlinx.android.synthetic.main.fragment_categories.view.*
 
 class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
 
-    private lateinit var navController: NavController
-    private lateinit var mAdapter: CategoryAdapter
+    private var mAdapter: CategoryAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_categories, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setHomeButtonEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-        }
-        setHasOptionsMenu(true)
-
-        navController = Navigation.findNavController(requireActivity(),
-            R.id.nav_host_fragment)
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setHomeButtonEnabled(true)
+//            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+//        }
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -62,36 +54,32 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
 
         // Assigning adapter to Recycler View
         view.mCategoryRV.adapter = mAdapter
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onStart() {
         super.onStart()
-        mAdapter.startListening()
+        if (mAdapter != null) {
+            mAdapter?.startListening()
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        mAdapter.stopListening()
+        if (mAdapter != null) {
+            mAdapter?.stopListening()
+        }
     }
 
     override fun mCategoryClickListener(categoryId: String) {
         val args = Bundle()
         args.putString(HomeFragment.CATEGORY_ID, categoryId)
-        navController.navigate(R.id.action_navigation_category_to_CPListFragment, args)
+        Navigation.createNavigateOnClickListener(
+            R.id.action_navigation_category_to_CPListFragment,
+            args
+        )
     }
 }

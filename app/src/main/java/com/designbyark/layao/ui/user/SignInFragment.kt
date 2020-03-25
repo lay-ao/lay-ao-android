@@ -37,7 +37,7 @@ class SignInFragment : Fragment() {
 //        }
 //        setHasOptionsMenu(true)
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
         bottomMenu.visibility = View.GONE
 
         navController = Navigation.findNavController(

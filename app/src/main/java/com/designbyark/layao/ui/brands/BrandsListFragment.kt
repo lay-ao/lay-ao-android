@@ -3,9 +3,7 @@ package com.designbyark.layao.ui.brands
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.BRANDS_COLLECTION
@@ -22,28 +20,16 @@ class BrandsListFragment : Fragment(),
 
     private var mBrandsListAdapter: BrandsListAdapter? = null
 
-    private lateinit var navController: NavController
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_brands_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-            supportActionBar?.setHomeButtonEnabled(true)
-        }
-        setHasOptionsMenu(true)
-
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -69,7 +55,10 @@ class BrandsListFragment : Fragment(),
     override fun mBrandsItemClickListener(brandId: String) {
         val args = Bundle()
         args.putString(HomeFragment.BRAND_ID, brandId)
-        navController.navigate(R.id.action_brandsListFragment_to_productListFragment, args)
+        Navigation.createNavigateOnClickListener(
+            R.id.action_brandsListFragment_to_productListFragment,
+            args
+        )
     }
 
     override fun onStart() {
@@ -88,16 +77,6 @@ class BrandsListFragment : Fragment(),
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
 }

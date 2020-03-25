@@ -29,8 +29,6 @@ import java.util.*
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var currentLocation: LatLng? = null
-    private lateinit var navController: NavController
-
     private var location: LocationHelper? = null
     private var mMap: GoogleMap? = null
 
@@ -39,9 +37,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        navController = Navigation.findNavController(requireActivity(),
-            R.id.nav_host_fragment
-        )
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -61,11 +57,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     }
                 })
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setHomeButtonEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-        }
-        setHasOptionsMenu(true)
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setHomeButtonEnabled(true)
+//            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+//        }
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -136,7 +131,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         grantResults: IntArray
     ) {
 
-        location?.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        location?.onRequestPermissionsResult(requestCode, grantResults)
     }
 
     override fun onStart() {
@@ -151,16 +146,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-
     }
 
 

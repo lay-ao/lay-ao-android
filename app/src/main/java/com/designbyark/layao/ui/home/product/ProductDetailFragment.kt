@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
@@ -32,7 +31,6 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
 
     private var mAdapter: SimilarProductListAdapter? = null
     private var firebaseUser: FirebaseUser? = null
-    private lateinit var navController: NavController
 
     private var productId: String? = null
     private var productTag: String? = null
@@ -67,11 +65,6 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         val firebaseAuth = FirebaseAuth.getInstance()
         firebaseUser = firebaseAuth.currentUser
 
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
-
         return inflater.inflate(R.layout.fragment_product_detail, container, false)
     }
 
@@ -80,10 +73,10 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-        }
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+//        }
 
         val cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         val firestore = FirebaseFirestore.getInstance()
@@ -275,18 +268,11 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         menu.clear()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
         val args = Bundle()
         args.putString(HomeFragment.PRODUCT_ID, productData["id"])
         args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        navController.navigate(R.id.action_productDetailFragment_self, args)
+        Navigation.createNavigateOnClickListener(R.id.action_productDetailFragment_self, args)
     }
 
 

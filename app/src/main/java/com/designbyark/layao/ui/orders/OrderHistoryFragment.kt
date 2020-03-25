@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.ORDERS_COLLECTION
@@ -19,8 +18,6 @@ class OrderHistoryFragment : Fragment(),
     OrderAdapter.OrderItemClickListener {
 
     private var adapter: OrderAdapter? = null
-
-    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +48,6 @@ class OrderHistoryFragment : Fragment(),
             .setQuery(query, Order::class.java)
             .build()
 
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
-
         adapter = OrderAdapter(options, this)
 
         view.mHistoryOrdersRV.adapter = adapter
@@ -63,13 +55,6 @@ class OrderHistoryFragment : Fragment(),
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onStart() {
@@ -91,7 +76,10 @@ class OrderHistoryFragment : Fragment(),
     override fun orderItemClickListener(orderId: String) {
         val args = Bundle()
         args.putString("orderId", orderId)
-        navController.navigate(R.id.action_orderHistoryFragment_to_orderDetailFragment, args)
+        Navigation.createNavigateOnClickListener(
+            R.id.action_orderHistoryFragment_to_orderDetailFragment,
+            args
+        )
     }
 
 
