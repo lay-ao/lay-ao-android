@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/mFullName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_extrabold"
+            android:gravity="center|start"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextPrimary"
+            android:typeface="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Arslan Mushtaq" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:text="@string/wallet_amount"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
+            android:typeface="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mFullName" />
+
+        <TextView
+            android:id="@+id/mWalletAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_wallet"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView31"
+            app:layout_constraintTop_toBottomOf="@+id/textView31"
+            tools:text="Rs. 1000 " />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:text="@string/email_address"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintStart_toStartOf="@+id/mWalletAmount"
+            app:layout_constraintTop_toBottomOf="@+id/mWalletAmount" />
+
+        <TextView
+            android:id="@+id/mEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_email_color"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView25"
+            app:layout_constraintTop_toBottomOf="@+id/textView25"
+            tools:text="johnwick@email.com" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:text="@string/delivery_address"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintStart_toStartOf="@+id/mEmail"
+            app:layout_constraintTop_toBottomOf="@+id/mEmail" />
+
+        <TextView
+            android:id="@+id/mAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_location"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView26"
+            app:layout_constraintTop_toBottomOf="@+id/textView26"
+            tools:text="House #XX, Block XX, Wapda Town, Lahore, Punjab, Pakistan" />
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:text="@string/contact"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintStart_toStartOf="@+id/mAddress"
+            app:layout_constraintTop_toBottomOf="@+id/mAddress" />
+
+        <TextView
+            android:id="@+id/mContact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_contact"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView27"
+            app:layout_constraintTop_toBottomOf="@+id/textView27"
+            tools:text="+92 XXX 1234567 " />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:text="@string/gender"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintStart_toStartOf="@+id/mContact"
+            app:layout_constraintTop_toBottomOf="@+id/mContact" />
+
+        <TextView
+            android:id="@+id/mGender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="#0D009688"
+            android:drawableStart="@drawable/ic_gender"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
+            android:padding="12dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView28"
+            app:layout_constraintTop_toBottomOf="@+id/textView28"
+            tools:text="Male/Female/SuperHuman" />
+
+        <Button
+            android:id="@+id/mSignOut"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableTop="@drawable/ic_log_out"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/sign_out"
+            android:textColor="@color/colorTextPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mGender" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

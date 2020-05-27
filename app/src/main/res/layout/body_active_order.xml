@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.2"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_next"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:id="@+id/mOrderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center|end"
+            android:fontFamily="@font/open_sans"
+            app:layout_constraintBottom_toBottomOf="@+id/mOrderId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Order Id" />
+
+        <TextView
+            android:id="@+id/mOrderId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/open_sans_extrabold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/mOrderStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Order Status" />
+
+        <TextView
+            android:id="@+id/mCustomerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_person_color_24dp"
+            android:drawablePadding="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/mOrderId"
+            app:layout_constraintTop_toBottomOf="@+id/mOrderId"
+            tools:text="Placed by [Name]" />
+
+        <TextView
+            android:id="@+id/mOrderAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_location"
+            android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/mCustomerName"
+            app:layout_constraintTop_toBottomOf="@+id/mCustomerName"
+            tools:text="Delivery at [Address]" />
+
+        <TextView
+            android:id="@+id/mCustomerContact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_contact"
+            android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mOrderAddress"
+            tools:text="Contact Number: [Contact Number]" />
+
+        <TextView
+            android:id="@+id/mCartTotal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_grand_total"
+            android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mCustomerContact"
+            tools:text="Grand Total: [Grand Total Amount]" />
+
+        <TextView
+            android:id="@+id/mTotalItems"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_cart"
+            android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mCartTotal"
+            tools:text="Total items: [Total Item Count]" />
+
+        <TextView
+            android:id="@+id/mOrderTiming"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_time"
+            android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mTotalItems"
+            tools:text="Order placed today at [Time and Date]" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

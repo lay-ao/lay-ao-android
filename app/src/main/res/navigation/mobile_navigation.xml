@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.designbyark.layao.ui.home.HomeFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_bannerDetailFragment"
+            app:destination="@id/bannerDetailFragment" />
+        <action
+            android:id="@+id/action_nav_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+        <action
+            android:id="@+id/action_nav_productListFragment"
+            app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/home_to_favorites_dest"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_brandsListFragment"
+            app:destination="@id/brandsListFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_CPListFragment"
+            app:destination="@id/CPListFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_category"
+            app:destination="@id/navigation_category" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_category"
+        android:name="com.designbyark.layao.ui.categories.CategoriesFragment"
+        android:label="@string/title_categories"
+        tools:layout="@layout/fragment_categories">
+
+        <action
+            android:id="@+id/action_navigation_category_to_CPListFragment"
+            app:destination="@id/CPListFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_cart"
+        android:name="com.designbyark.layao.ui.cart.CartFragment"
+        android:label="@string/title_cart"
+        tools:layout="@layout/fragment_cart">
+        <action
+            android:id="@+id/action_navigation_cart_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+        <action
+            android:id="@+id/action_navigation_cart_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_cart_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_user"
+        android:name="com.designbyark.layao.ui.user.UserFragment"
+        android:label="@string/title_user"
+        tools:layout="@layout/fragment_active_user">
+        <action
+            android:id="@+id/action_navigation_user_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_navigation_user_to_registerFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_navigation_user_to_editUserFragment"
+            app:destination="@id/editUserFragment" />
+        <action
+            android:id="@+id/action_navigation_user_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_user_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bannerDetailFragment"
+        android:name="com.designbyark.layao.ui.home.banners.detail.BannerDetailFragment"
+        android:label="@string/title_banner_detail"
+        tools:layout="@layout/fragment_banner_detail" />
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.designbyark.layao.ui.home.product.ProductDetailFragment"
+        android:label="Product Detail"
+        tools:layout="@layout/fragment_product_detail" >
+        <action
+            android:id="@+id/action_productDetailFragment_self"
+            app:destination="@id/productDetailFragment"
+            app:popUpTo="@id/productDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.designbyark.layao.ui.productList.ProductListFragment"
+        android:label="Product List"
+        tools:layout="@layout/fragment_product_list">
+        <action
+            android:id="@+id/action_productListFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/CPListFragment"
+        android:name="com.designbyark.layao.ui.categories.CPListFragment"
+        android:label="Product List"
+        tools:layout="@layout/fragment_product_list">
+        <action
+            android:id="@+id/action_CPListFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.designbyark.layao.ui.favorites.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.designbyark.layao.MainActivity"
+        android:label="@string/app_name"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.designbyark.layao.ui.checkout.CheckoutFragment"
+        android:label="Checkout"
+        tools:layout="@layout/fragment_checkout">
+        <action
+            android:id="@+id/action_checkoutFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_orders"
+        android:name="com.designbyark.layao.ui.orders.OrdersFragment"
+        android:label="@string/title_order"
+        tools:layout="@layout/fragment_orders">
+        <action
+            android:id="@+id/action_navigation_orders_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+        <action
+            android:id="@+id/orders_to_history_orders_dest"
+            app:destination="@id/orderHistoryFragment" />
+        <action
+            android:id="@+id/action_navigation_orders_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_navigation_orders_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_navigation_orders_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.designbyark.layao.ui.orderDetail.OrderDetailFragment"
+        android:label="Order Detail"
+        tools:layout="@layout/fragment_order_detail" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.designbyark.layao.ui.user.SignUpFragment"
+        android:label="@string/title_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_signUpDetailsFragment"
+            app:destination="@id/signUpDetailsFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/navigation_user"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.designbyark.layao.ui.user.SignInFragment"
+        android:label="@string/common_signin_button_text"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_navigation_user"
+            app:destination="@id/navigation_user"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/navigation_user"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editUserFragment"
+        android:name="com.designbyark.layao.ui.user.EditUserFragment"
+        android:label="@string/title_user_information"
+        tools:layout="@layout/fragment_edit_user">
+        <action
+            android:id="@+id/action_editUserFragment_to_navigation_user"
+            app:destination="@id/navigation_user" />
+        <action
+            android:id="@+id/action_editUserFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/brandsListFragment"
+        android:name="com.designbyark.layao.ui.brands.BrandsListFragment"
+        android:label="Brands"
+        tools:layout="@layout/fragment_brands_list">
+        <action
+            android:id="@+id/action_brandsListFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpDetailsFragment"
+        android:name="com.designbyark.layao.ui.user.SignUpDetailsFragment"
+        android:label="One more step left"
+        tools:layout="@layout/fragment_sign_up_details">
+        <action
+            android:id="@+id/action_signUpDetailsFragment_to_navigation_user"
+            app:destination="@id/navigation_user" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.designbyark.layao.ui.orders.OrderHistoryFragment"
+        android:label="Order History"
+        tools:layout="@layout/fragment_order_history">
+        <action
+            android:id="@+id/action_orderHistoryFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/facetFragment"
+        android:name="com.designbyark.layao.search.FacetFragment"
+        android:label="Filter your Search"
+        tools:layout="@layout/fragment_facet" />
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.designbyark.layao.search.SearchFragment"
+        android:label="Search Products"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_navigation_search_to_facetFragment"
+            app:destination="@id/facetFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.designbyark.layao.ui.user.ForgotPasswordFragment"
+        android:label="Forgot Password"
+        tools:layout="@layout/fragment_forgot_password" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.designbyark.layao.ui.checkout.MapFragment"
+        android:label="@string/title_activity_maps"
+        tools:layout="@layout/fragment_map" />
+
+</navigation>
