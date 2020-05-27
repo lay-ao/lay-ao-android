@@ -2,7 +2,9 @@ package com.designbyark.layao.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -12,7 +14,7 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Category
 import com.designbyark.layao.ui.home.banners.BannerSliderAdapter
-import com.designbyark.layao.ui.home.banners.HomeCategoriesAdapter
+import com.designbyark.layao.ui.home.banners.CategoriesAdapter
 import com.designbyark.layao.ui.home.brands.BrandsAdapter
 import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
 import com.designbyark.layao.ui.home.newArrival.NewArrivalAdapter
@@ -31,7 +33,7 @@ class HomeFragment : Fragment(),
     NewArrivalAdapter.NewArrivalClickListener,
     BrandsAdapter.BrandItemClickListener,
     BannerSliderAdapter.BannerItemClickListener,
-    HomeCategoriesAdapter.HomeCategoryItemClickListener {
+    CategoriesAdapter.CategoryItemClickListener {
 
     companion object {
         const val BANNER_ID = "bannerId"
@@ -43,7 +45,7 @@ class HomeFragment : Fragment(),
         const val DISCOUNT_ID = "discountId"
     }
 
-    private var mHomeCategoryAdapter: HomeCategoriesAdapter? = null
+    private var mHomeCategoryAdapter: CategoriesAdapter? = null
     private var mDiscountItemsAdapter: DiscountItemsAdapter? = null
     private var mNewArrivalAdapter: NewArrivalAdapter? = null
     private var mBrandsAdapter: BrandsAdapter? = null
@@ -89,7 +91,7 @@ class HomeFragment : Fragment(),
         val productsCollection = firestore.collection(PRODUCTS_COLLECTION)
 
         getBannerData(view, firestore, requireContext())
-        getHomeCategoryData(view, firestore)
+        getCategoryData(view, firestore)
         getDiscountItemsData(view, productsCollection)
         getNewArrivalData(view, productsCollection)
         getBrandsData(view, firestore)
@@ -144,7 +146,7 @@ class HomeFragment : Fragment(),
         view.mBannerImageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
     }
 
-    private fun getHomeCategoryData(view: View, firestore: FirebaseFirestore) {
+    private fun getCategoryData(view: View, firestore: FirebaseFirestore) {
 
         // Get Banner Collection Reference from Firestore
         val collection = firestore.collection(CATEGORIES_COLLECTION)
@@ -153,11 +155,11 @@ class HomeFragment : Fragment(),
         val query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
 
         // Setting query with model class
-        val options = FirestoreRecyclerOptions.Builder<Banner>()
-            .setQuery(query, Banner::class.java)
+        val options = FirestoreRecyclerOptions.Builder<Category>()
+            .setQuery(query, Category::class.java)
             .build()
 
-        mHomeCategoryAdapter = HomeCategoriesAdapter(options, this, requireContext())
+        mHomeCategoryAdapter = CategoriesAdapter(options, this)
 
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mHomeCategoriesRV, requireContext())
@@ -288,7 +290,7 @@ class HomeFragment : Fragment(),
         navController.navigate(R.id.action_nav_bannerDetailFragment, args)
     }
 
-    override fun onHomeCategoryItemClickListener(categoryId: String) {
+    override fun onCategoryItemClickListener(categoryId: String) {
         val args = Bundle()
         args.putString(CATEGORY_ID, categoryId)
         navController.navigate(R.id.action_navigation_home_to_CPListFragment, args)

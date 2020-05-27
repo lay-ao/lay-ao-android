@@ -1,60 +1,43 @@
 package com.designbyark.layao.ui.home.banners
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.designbyark.layao.R
-import com.designbyark.layao.common.circularProgressBar
-import com.designbyark.layao.data.Banner
+import com.designbyark.layao.data.Category
+import com.designbyark.layao.databinding.BodyHomeCategoriesBinding
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class HomeCategoriesAdapter internal constructor(
-    options: FirestoreRecyclerOptions<Banner>,
-    private val itemClickListener: HomeCategoryItemClickListener,
-    private val context: Context
-) : FirestoreRecyclerAdapter<Banner, HomeCategoriesAdapter.HomeCategoriesViewHolder>(options) {
+class CategoriesAdapter internal constructor(
+    options: FirestoreRecyclerOptions<Category>,
+    private val itemClickListener: CategoryItemClickListener
+) : FirestoreRecyclerAdapter<Category, CategoriesAdapter.CategoriesViewHolder>(options) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCategoriesViewHolder {
-        val view = LayoutInflater.from(context)
-            .inflate(R.layout.body_home_categories, parent, false)
-        return HomeCategoriesViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = BodyHomeCategoriesBinding.inflate(layoutInflater, parent, false)
+        return CategoriesViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HomeCategoriesViewHolder, position: Int, model: Banner) {
-        holder.run {
-            setImage(model.image, context)
-            setText(model.title)
-            itemView.setOnClickListener {
-                itemClickListener.onHomeCategoryItemClickListener(snapshots.getSnapshot(holder.adapterPosition).id)
-            }
+    override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int, model: Category) {
+        holder.bind(model)
+        holder.itemView.setOnClickListener {
+            itemClickListener.onCategoryItemClickListener(snapshots.getSnapshot(holder.adapterPosition).id)
         }
     }
 
-    inner class HomeCategoriesViewHolder internal constructor(private val view: View) :
-        RecyclerView.ViewHolder(view) {
+    inner class CategoriesViewHolder internal constructor(private val binding: BodyHomeCategoriesBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        internal fun setImage(image: String, context: Context) {
-            val imageView: ImageView = view.findViewById(R.id.image)
-            Glide.with(context)
-                .load(image)
-                .placeholder(circularProgressBar(context))
-                .into(imageView)
+        fun bind(category: Category) {
+            binding.category = category
+            binding.executePendingBindings()
         }
 
-        internal fun setText(value: String) {
-            val textView: TextView = view.findViewById(R.id.title)
-            textView.text = value
-        }
     }
 
-    interface HomeCategoryItemClickListener {
-        fun onHomeCategoryItemClickListener(categoryId: String)
+    interface CategoryItemClickListener {
+        fun onCategoryItemClickListener(categoryId: String)
     }
 
 }
