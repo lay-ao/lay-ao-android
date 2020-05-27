@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.home.newArrival
+package com.designbyark.layao.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.favorites
+package com.designbyark.layao.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.widget.Toast
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.isConnectedToInternet
+import com.designbyark.layao.ui.favorites.Favorites
+import com.designbyark.layao.ui.favorites.FavoritesViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference

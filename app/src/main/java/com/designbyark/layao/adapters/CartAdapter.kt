@@ -1,14 +1,13 @@
-package com.designbyark.layao.ui.cart
+package com.designbyark.layao.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.data.cart.Cart
+import com.designbyark.layao.ui.cart.CartViewHolder
+import com.designbyark.layao.ui.cart.CartViewModel
 
 class CartAdapter internal constructor(
     private val context: Context,

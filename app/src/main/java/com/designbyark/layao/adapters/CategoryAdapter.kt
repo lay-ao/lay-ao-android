@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.categories
+package com.designbyark.layao.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

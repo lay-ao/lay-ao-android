@@ -86,7 +86,7 @@
 
     <fragment
         android:id="@+id/bannerDetailFragment"
-        android:name="com.designbyark.layao.ui.home.banners.detail.BannerDetailFragment"
+        android:name="com.designbyark.layao.ui.home.bannerdetail.BannerDetailFragment"
         android:label="@string/title_banner_detail"
         tools:layout="@layout/fragment_banner_detail" />
 

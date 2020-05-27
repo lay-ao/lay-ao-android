@@ -12,11 +12,11 @@ import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Category
-import com.designbyark.layao.ui.home.banners.BannerSliderAdapter
+import com.designbyark.layao.adapters.BannerSliderAdapter
 import com.designbyark.layao.ui.home.banners.CategoriesAdapter
-import com.designbyark.layao.ui.home.brands.BrandsAdapter
-import com.designbyark.layao.ui.home.discountItems.DiscountItemsAdapter
-import com.designbyark.layao.ui.home.newArrival.NewArrivalAdapter
+import com.designbyark.layao.adapters.BrandsAdapter
+import com.designbyark.layao.adapters.DiscountItemsAdapter
+import com.designbyark.layao.adapters.NewArrivalAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -133,7 +133,11 @@ class HomeFragment : Fragment(),
                 val banner = document.toObject(Banner::class.java)
                 bannerList.add(banner)
             }
-            view.mBannerImageSlider.sliderAdapter = BannerSliderAdapter(bannerList, this)
+            view.mBannerImageSlider.sliderAdapter =
+                BannerSliderAdapter(
+                    bannerList,
+                    this
+                )
         }
 
         view.mBannerImageSlider.startAutoCycle()
@@ -171,7 +175,12 @@ class HomeFragment : Fragment(),
         // Setting query with model class
         val options = getProductOptions(query)
 
-        mDiscountItemsAdapter = DiscountItemsAdapter(options, requireContext(), this)
+        mDiscountItemsAdapter =
+            DiscountItemsAdapter(
+                options,
+                requireContext(),
+                this
+            )
 
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mDiscountItemRV, requireContext())
@@ -187,7 +196,11 @@ class HomeFragment : Fragment(),
         // Setting query with model class
         val options = getProductOptions(query)
 
-        mNewArrivalAdapter = NewArrivalAdapter(options, requireContext(), this)
+        mNewArrivalAdapter = NewArrivalAdapter(
+            options,
+            requireContext(),
+            this
+        )
 
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mNewArrivalRV, requireActivity())
@@ -207,7 +220,11 @@ class HomeFragment : Fragment(),
             .setQuery(query, Category::class.java)
             .build()
 
-        mBrandsAdapter = BrandsAdapter(options, requireContext(), this)
+        mBrandsAdapter = BrandsAdapter(
+            options,
+            requireContext(),
+            this
+        )
 
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mBrandsRV, requireContext())

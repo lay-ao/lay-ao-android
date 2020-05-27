@@ -3,10 +3,10 @@ package com.designbyark.layao.ui.favorites
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.FavoriteAdapter
 import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -75,7 +75,10 @@ class FavoritesFragment : Fragment() {
             .setQuery(favoritesCollection, Favorites::class.java)
             .build()
 
-        favoriteAdapter = FavoriteAdapter(options, favoritesCollection)
+        favoriteAdapter = FavoriteAdapter(
+            options,
+            favoritesCollection
+        )
         view.mFavoritesRV.let {
             it.adapter = favoriteAdapter
             it.addItemDecoration(

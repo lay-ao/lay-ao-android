@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.CategoryAdapter
 import com.designbyark.layao.common.CATEGORIES_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Category
@@ -50,7 +51,11 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
             .build()
 
         // Assigning adapter class
-        mAdapter = CategoryAdapter(options, requireActivity(), this)
+        mAdapter = CategoryAdapter(
+            options,
+            requireActivity(),
+            this
+        )
 
         // Assigning adapter to Recycler View
         view.mCategoryRV.adapter = mAdapter

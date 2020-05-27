@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.CartAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_cart.view.*
 import kotlinx.android.synthetic.main.fragment_empty_cart.view.*
@@ -74,7 +74,10 @@ class CartFragment : Fragment() {
         })
 
         val cartAdapter =
-            CartAdapter(requireContext(), cartViewModel)
+            CartAdapter(
+                requireContext(),
+                cartViewModel
+            )
         view.mCartRV.adapter = cartAdapter
 
         cartViewModel.allCartItems.observe(requireActivity(), Observer { items ->

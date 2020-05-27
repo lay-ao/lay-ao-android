@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.BrandsListAdapter
 import com.designbyark.layao.common.BRANDS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Brands
@@ -46,7 +47,8 @@ class BrandsListFragment : Fragment(),
             .build()
 
         // Assigning adapter class
-        mBrandsListAdapter = BrandsListAdapter(options, this)
+        mBrandsListAdapter =
+            BrandsListAdapter(options, this)
 
         // Assigning adapter to Recycler View
         view.mBrandsRV.adapter = mBrandsListAdapter

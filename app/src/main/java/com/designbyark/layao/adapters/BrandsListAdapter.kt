@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.brands
+package com.designbyark.layao.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.circularProgressBar
 import com.designbyark.layao.data.Brands
-import com.designbyark.layao.data.Category
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
