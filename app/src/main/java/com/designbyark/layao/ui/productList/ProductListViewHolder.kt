@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.circularProgressBar
-import com.designbyark.layao.common.setDiscountPrice
+import com.designbyark.layao.common.findDiscountPrice
 import java.util.*
 
 class ProductListViewHolder internal constructor(private val view: View) :
@@ -29,7 +29,7 @@ class ProductListViewHolder internal constructor(private val view: View) :
         if (discount > 0) {
             priceView.text = String.format(
                 "Rs. %.0f/%s",
-                setDiscountPrice(price, discount),
+                findDiscountPrice(price, discount),
                 unit
             )
         } else {

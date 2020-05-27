@@ -83,7 +83,7 @@ fun setQuantityPrice(price: Double, quantity: Long, discount: Double, unit: Stri
         return String.format(
             Locale.getDefault(),
             "Rs. %.0f / %d %s",
-            setDiscountPrice(price, discount) * quantity,
+            findDiscountPrice(price, discount) * quantity,
             quantity,
             unit
         )
@@ -98,7 +98,7 @@ fun setQuantityPrice(price: Double, quantity: Long, discount: Double, unit: Stri
     }
 }
 
-fun setDiscountPrice(price: Double, discount: Double): Double {
+fun findDiscountPrice(price: Double, discount: Double): Double {
     val formula = discount / 100
     val salePrice = price * formula
     return price - salePrice
@@ -106,8 +106,8 @@ fun setDiscountPrice(price: Double, discount: Double): Double {
     // (price - (price * (discount / 100.0))) * quantity
 }
 
-fun getSavingPrice(discountPrice: Double, beforePrice: Double): Double {
-    return beforePrice - discountPrice
+fun getSavingPrice(discountPrice: Double, originalPrice: Double): Double {
+    return originalPrice - discountPrice
 }
 
 // region VALIDATIONS

@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.designbyark.layao.common.circularProgressBar
+import com.designbyark.layao.common.findDiscountPrice
 import com.designbyark.layao.common.getSavingPrice
 import com.designbyark.layao.data.Products
 import java.util.*
@@ -29,5 +30,8 @@ fun setDiscount(view: TextView, discount: Double) {
 
 @BindingAdapter("app:setSavingPrice")
 fun setSavingPrice(view: TextView, product: Products) {
-    view.text = String.format("Save Rs. %.0f", getSavingPrice(product.price, product.discount))
+    view.text = String.format(
+        "Save Rs. %.0f",
+        getSavingPrice(findDiscountPrice(product.price, product.discount), product.price)
+    )
 }

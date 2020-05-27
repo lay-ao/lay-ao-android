@@ -3,14 +3,13 @@ package com.designbyark.layao.ui.checkout
 import android.content.Context
 import android.graphics.Paint
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.circularProgressBar
-import com.designbyark.layao.common.setDiscountPrice
+import com.designbyark.layao.common.findDiscountPrice
 import java.util.*
 
 class OrderCartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,7 +43,7 @@ class OrderCartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             perPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             discountPrice.text = String.format(
                 Locale.getDefault(),
-                "Rs. %.0f/%s", setDiscountPrice(price, discount), unit
+                "Rs. %.0f/%s", findDiscountPrice(price, discount), unit
             )
         } else {
             perPrice.text = String.format(
@@ -61,12 +60,12 @@ class OrderCartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             if (quantity > 1) {
                 quantityPlaceHolder.text = String.format(
                     Locale.getDefault(),
-                    "Rs. %.0f / %d %ss", (setDiscountPrice(price, discount) * quantity), quantity, unit
+                    "Rs. %.0f / %d %ss", (findDiscountPrice(price, discount) * quantity), quantity, unit
                 )
             } else {
                 quantityPlaceHolder.text = String.format(
                     Locale.getDefault(),
-                    "Rs. %.0f / %s", (setDiscountPrice(price, discount) * quantity), unit
+                    "Rs. %.0f / %s", (findDiscountPrice(price, discount) * quantity), unit
                 )
             }
 
@@ -105,7 +104,7 @@ class OrderCartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (discount > 0) {
             totalPlaceHolder.text = String.format(
                 Locale.getDefault(),
-                "Rs. %.2f", setDiscountPrice(price, discount) * quantity
+                "Rs. %.2f", findDiscountPrice(price, discount) * quantity
             )
         } else {
             totalPlaceHolder.text = String.format(

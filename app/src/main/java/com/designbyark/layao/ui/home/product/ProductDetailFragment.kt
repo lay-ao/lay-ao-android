@@ -125,7 +125,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             cart.quantity = quantity
             cart.stock = stock
             if (discount > 0) {
-                cart.total = setDiscountPrice(price, discount) * quantity
+                cart.total = findDiscountPrice(price, discount) * quantity
             } else {
                 cart.total = price * quantity
             }
@@ -187,7 +187,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
                     if (discount > 0) {
                         view.mPrice.text = String.format(
                             Locale.getDefault(),
-                            "Rs. %.0f/%s", setDiscountPrice(price, discount), unit
+                            "Rs. %.0f/%s", findDiscountPrice(price, discount), unit
                         )
                         view.mOriginalPrice.text = String.format(
                             Locale.getDefault(),

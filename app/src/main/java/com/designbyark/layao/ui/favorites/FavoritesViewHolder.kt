@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.circularProgressBar
-import com.designbyark.layao.common.setDiscountPrice
+import com.designbyark.layao.common.findDiscountPrice
 import java.util.*
 
 class FavoritesViewHolder internal constructor(private val view: View) :
@@ -39,7 +39,7 @@ class FavoritesViewHolder internal constructor(private val view: View) :
             textView.text = String.format(
                 Locale.getDefault(),
                 "Rs. %.2f/%s",
-                setDiscountPrice(price, discount),
+                findDiscountPrice(price, discount),
                 unit
             )
         } else {
