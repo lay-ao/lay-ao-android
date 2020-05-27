@@ -1,47 +1,41 @@
 package com.designbyark.layao.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.designbyark.layao.R
-import com.designbyark.layao.common.getSavingPrice
-import com.designbyark.layao.common.setDiscountPrice
+import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.data.Products
-import com.designbyark.layao.ui.home.product.ProductViewHolder
+import com.designbyark.layao.databinding.BodyDiscountItemsBinding
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class DiscountItemsAdapter internal constructor(
     options: FirestoreRecyclerOptions<Products>,
-    var context: Context,
-    val itemClickListener: DiscountItemClickListener
+    private val itemClickListener: DiscountItemClickListener
 ) :
-    FirestoreRecyclerAdapter<Products, ProductViewHolder>(options) {
+    FirestoreRecyclerAdapter<Products, DiscountItemsAdapter.DiscountItemViewHolder>(options) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.body_discount_items, parent, false)
-        return ProductViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscountItemViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = BodyDiscountItemsBinding.inflate(layoutInflater, parent, false)
+        return DiscountItemViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int, model: Products) {
-        holder.run {
-            setImage(model.image, context)
-            setTitle(model.title)
-            setDiscount(model.discount)
-            setSavingPrice(
-                getSavingPrice(
-                    setDiscountPrice(model.price, model.discount),
-                    model.price
-                )
-            )
-        }
-
+    override fun onBindViewHolder(holder: DiscountItemViewHolder, position: Int, model: Products) {
+        holder.bind(model)
         holder.itemView.setOnClickListener {
             val data = mutableMapOf<String, String>()
             data["id"] = snapshots.getSnapshot(holder.adapterPosition).id
             data["tag"] = model.tag
             itemClickListener.onDiscountItemClickListener(data)
+        }
+    }
+
+    class DiscountItemViewHolder(private val binding: BodyDiscountItemsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(product: Products) {
+            binding.product = product
+            binding.executePendingBindings()
         }
     }
 

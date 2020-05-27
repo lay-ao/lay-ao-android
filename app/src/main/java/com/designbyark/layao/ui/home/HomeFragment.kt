@@ -177,11 +177,7 @@ class HomeFragment : Fragment(),
         val options = getProductOptions(query)
 
         mDiscountItemsAdapter =
-            DiscountItemsAdapter(
-                options,
-                requireContext(),
-                this
-            )
+            DiscountItemsAdapter(options, this)
 
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mDiscountItemRV, requireContext())
@@ -194,15 +190,12 @@ class HomeFragment : Fragment(),
         if (mHomeCategoryAdapter != null) {
             mHomeCategoryAdapter?.startListening()
         }
-
         if (mDiscountItemsAdapter != null) {
             mDiscountItemsAdapter?.startListening()
         }
-
         if (mNewArrivalAdapter != null) {
             mNewArrivalAdapter?.startListening()
         }
-
         if (mBrandsAdapter != null) {
             mBrandsAdapter?.startListening()
         }
@@ -212,9 +205,9 @@ class HomeFragment : Fragment(),
     override fun onStop() {
         super.onStop()
 
-        (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setSubtitle(null)
-        }
+//        (requireActivity() as AppCompatActivity).run {
+//            supportActionBar?.setSubtitle(null)
+//        }
 
         if (mHomeCategoryAdapter != null) {
             mHomeCategoryAdapter?.stopListening()
@@ -304,7 +297,6 @@ class HomeFragment : Fragment(),
         args.putString(CATEGORY_ID, categoryId)
         navController.navigate(R.id.action_navigation_home_to_CPListFragment, args)
     }
-
 
 
 }
