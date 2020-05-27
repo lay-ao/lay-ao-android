@@ -23,7 +23,7 @@
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/mBannerImageSlider"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 app:sliderAutoCycleDirection="back_and_forth"
                 app:sliderAutoCycleEnabled="true"
                 app:sliderIndicatorGravity="center_horizontal|bottom"

@@ -1,6 +1,5 @@
 package com.designbyark.layao.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -90,7 +89,7 @@ class HomeFragment : Fragment(),
         // Getting collection reference from firestore
         val productsCollection = firestore.collection(PRODUCTS_COLLECTION)
 
-        getBannerData(view, firestore, requireContext())
+        getBannerData(view, firestore)
         getCategoryData(view, firestore)
         getDiscountItemsData(view, productsCollection)
         getNewArrivalData(view, productsCollection)
@@ -118,11 +117,7 @@ class HomeFragment : Fragment(),
 
     }
 
-    private fun getBannerData(
-        view: View,
-        firestore: FirebaseFirestore,
-        context: Context
-    ) {
+    private fun getBannerData(view: View, firestore: FirebaseFirestore) {
 
         // Getting collection reference from firestore
         val collection = firestore.collection(BANNER_COLLECTION)
@@ -138,7 +133,7 @@ class HomeFragment : Fragment(),
                 val banner = document.toObject(Banner::class.java)
                 bannerList.add(banner)
             }
-            view.mBannerImageSlider.sliderAdapter = BannerSliderAdapter(context, bannerList, this)
+            view.mBannerImageSlider.sliderAdapter = BannerSliderAdapter(bannerList, this)
         }
 
         view.mBannerImageSlider.startAutoCycle()
