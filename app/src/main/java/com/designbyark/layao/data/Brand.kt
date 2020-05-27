@@ -4,7 +4,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 
 @IgnoreExtraProperties
-class Brands {
+class Brand {
 
     @PropertyName("title")
     var title: String = ""

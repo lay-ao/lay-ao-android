@@ -9,7 +9,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.adapters.BrandsListAdapter
 import com.designbyark.layao.common.BRANDS_COLLECTION
 import com.designbyark.layao.common.TITLE
-import com.designbyark.layao.data.Brands
+import com.designbyark.layao.data.Brand
 import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -42,8 +42,8 @@ class BrandsListFragment : Fragment(),
         val query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
 
         // Setting query with model class
-        val options = FirestoreRecyclerOptions.Builder<Brands>()
-            .setQuery(query, Brands::class.java)
+        val options = FirestoreRecyclerOptions.Builder<Brand>()
+            .setQuery(query, Brand::class.java)
             .build()
 
         // Assigning adapter class

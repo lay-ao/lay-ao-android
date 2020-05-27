@@ -9,14 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
-import com.designbyark.layao.common.*
-import com.designbyark.layao.data.Banner
-import com.designbyark.layao.data.Category
 import com.designbyark.layao.adapters.BannerSliderAdapter
-import com.designbyark.layao.ui.home.banners.CategoriesAdapter
 import com.designbyark.layao.adapters.BrandsAdapter
 import com.designbyark.layao.adapters.DiscountItemsAdapter
 import com.designbyark.layao.adapters.NewArrivalAdapter
+import com.designbyark.layao.common.*
+import com.designbyark.layao.data.Banner
+import com.designbyark.layao.data.Brand
+import com.designbyark.layao.data.Category
+import com.designbyark.layao.ui.home.banners.CategoriesAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -89,11 +90,11 @@ class HomeFragment : Fragment(),
         // Getting collection reference from firestore
         val productsCollection = firestore.collection(PRODUCTS_COLLECTION)
 
-        getBannerData(view, firestore)
-        getCategoryData(view, firestore)
-        getDiscountItemsData(view, productsCollection)
-        getNewArrivalData(view, productsCollection)
-        getBrandsData(view, firestore)
+        getBanners(view, firestore)
+        getCategories(view, firestore)
+        getDiscountItems(view, productsCollection)
+        getNewArrivals(view, productsCollection)
+        getBrands(view, firestore)
 
         view.mAllDiscountItems.setOnClickListener {
             val args = Bundle()
@@ -117,7 +118,7 @@ class HomeFragment : Fragment(),
 
     }
 
-    private fun getBannerData(view: View, firestore: FirebaseFirestore) {
+    private fun getBanners(view: View, firestore: FirebaseFirestore) {
 
         // Getting collection reference from firestore
         val collection = firestore.collection(BANNER_COLLECTION)
@@ -145,7 +146,7 @@ class HomeFragment : Fragment(),
         view.mBannerImageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
     }
 
-    private fun getCategoryData(view: View, firestore: FirebaseFirestore) {
+    private fun getCategories(view: View, firestore: FirebaseFirestore) {
 
         // Get Banner Collection Reference from Firestore
         val collection = firestore.collection(CATEGORIES_COLLECTION)
@@ -166,7 +167,7 @@ class HomeFragment : Fragment(),
 
     }
 
-    private fun getDiscountItemsData(view: View, collection: CollectionReference) {
+    private fun getDiscountItems(view: View, collection: CollectionReference) {
 
         // Applying query to collection reference
         val query = collection.whereGreaterThan(DISCOUNT, 0)
@@ -185,50 +186,6 @@ class HomeFragment : Fragment(),
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mDiscountItemRV, requireContext())
         view.mDiscountItemRV.adapter = mDiscountItemsAdapter
-    }
-
-    private fun getNewArrivalData(view: View, collection: CollectionReference) {
-
-        // Applying query to collection reference
-        val query = collection.whereEqualTo(NEW_ARRIVAL, true)
-            .orderBy(TITLE, Query.Direction.ASCENDING)
-
-        // Setting query with model class
-        val options = getProductOptions(query)
-
-        mNewArrivalAdapter = NewArrivalAdapter(
-            options,
-            requireContext(),
-            this
-        )
-
-        // Assigning adapter to Recycler View
-        setHorizontalListLayout(view.mNewArrivalRV, requireActivity())
-        view.mNewArrivalRV.adapter = mNewArrivalAdapter
-    }
-
-    private fun getBrandsData(view: View, firestore: FirebaseFirestore) {
-
-        // Getting collection reference from firestore
-        val collection = firestore.collection(BRANDS_COLLECTION)
-
-        // Applying query to collection reference
-        val query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
-
-        // Setting query with model class
-        val options = FirestoreRecyclerOptions.Builder<Category>()
-            .setQuery(query, Category::class.java)
-            .build()
-
-        mBrandsAdapter = BrandsAdapter(
-            options,
-            requireContext(),
-            this
-        )
-
-        // Assigning adapter to Recycler View
-        setHorizontalListLayout(view.mBrandsRV, requireContext())
-        view.mBrandsRV.adapter = mBrandsAdapter
     }
 
     override fun onStart() {
@@ -277,6 +234,46 @@ class HomeFragment : Fragment(),
 
     }
 
+    private fun getNewArrivals(view: View, collection: CollectionReference) {
+
+        // Applying query to collection reference
+        val query = collection.whereEqualTo(NEW_ARRIVAL, true)
+            .orderBy(TITLE, Query.Direction.ASCENDING)
+
+        // Setting query with model class
+        val options = getProductOptions(query)
+
+        mNewArrivalAdapter = NewArrivalAdapter(
+            options,
+            requireContext(),
+            this
+        )
+
+        // Assigning adapter to Recycler View
+        setHorizontalListLayout(view.mNewArrivalRV, requireActivity())
+        view.mNewArrivalRV.adapter = mNewArrivalAdapter
+    }
+
+    private fun getBrands(view: View, firestore: FirebaseFirestore) {
+
+        // Getting collection reference from firestore
+        val collection = firestore.collection(BRANDS_COLLECTION)
+
+        // Applying query to collection reference
+        val query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
+
+        // Setting query with model class
+        val options = FirestoreRecyclerOptions.Builder<Brand>()
+            .setQuery(query, Brand::class.java)
+            .build()
+
+        mBrandsAdapter = BrandsAdapter(options, this)
+
+        // Assigning adapter to Recycler View
+        setHorizontalListLayout(view.mBrandsRV, requireContext())
+        view.mBrandsRV.adapter = mBrandsAdapter
+    }
+
     override fun onDiscountItemClickListener(productData: MutableMap<String, String>) {
         val args = Bundle()
         args.putString(PRODUCT_ID, productData["id"])
@@ -308,15 +305,7 @@ class HomeFragment : Fragment(),
         navController.navigate(R.id.action_navigation_home_to_CPListFragment, args)
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.general_favorites -> {
-//                navController.navigate(R.id.home_to_favorites_dest)
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
+
 
 }
 

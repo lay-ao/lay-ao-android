@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.circularProgressBar
-import com.designbyark.layao.data.Brands
+import com.designbyark.layao.data.Brand
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class BrandsListAdapter internal constructor(
-    options: FirestoreRecyclerOptions<Brands>,
+    options: FirestoreRecyclerOptions<Brand>,
     private val itemClickListener: BrandsItemClickListener
-) : FirestoreRecyclerAdapter<Brands, BrandsListAdapter.BrandsItemViewHolder>(options) {
+) : FirestoreRecyclerAdapter<Brand, BrandsListAdapter.BrandsItemViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrandsItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -25,7 +25,7 @@ class BrandsListAdapter internal constructor(
         return BrandsItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: BrandsItemViewHolder, position: Int, model: Brands) {
+    override fun onBindViewHolder(holder: BrandsItemViewHolder, position: Int, model: Brand) {
         holder.run {
             setImage(holder.itemView.context, model.image)
             setTitle(model.title)

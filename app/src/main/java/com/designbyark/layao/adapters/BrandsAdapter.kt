@@ -1,34 +1,39 @@
 package com.designbyark.layao.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.designbyark.layao.R
-import com.designbyark.layao.data.Category
-import com.designbyark.layao.ui.home.product.ProductViewHolder
+import androidx.recyclerview.widget.RecyclerView
+import com.designbyark.layao.data.Brand
+import com.designbyark.layao.databinding.BodyBrandsBinding
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class BrandsAdapter internal constructor(
-    options: FirestoreRecyclerOptions<Category>,
-    val context: Context,
+    options: FirestoreRecyclerOptions<Brand>,
     private val itemClickListener: BrandItemClickListener
-) : FirestoreRecyclerAdapter<Category, ProductViewHolder>(options) {
+) : FirestoreRecyclerAdapter<Brand, BrandsAdapter.BrandViewHolder>(options) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.body_brands, parent, false)
-        return ProductViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrandViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = BodyBrandsBinding.inflate(layoutInflater, parent, false)
+        return BrandViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int, model: Category) {
-        holder.setImage(model.image, context)
-        holder.setTitle(model.title)
+    override fun onBindViewHolder(holder: BrandViewHolder, position: Int, model: Brand) {
+        holder.bind(model)
         holder.itemView.setOnClickListener {
             itemClickListener.mBrandItemClickListener(
-                snapshots
-                    .getSnapshot(holder.adapterPosition).id
+                snapshots.getSnapshot(holder.adapterPosition).id
             )
+        }
+    }
+
+    class BrandViewHolder(private val binding: BodyBrandsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(brand: Brand) {
+            binding.brand = brand
+            binding.executePendingBindings()
         }
     }
 
