@@ -2,13 +2,11 @@ package com.designbyark.layao.ui.orderDetail
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.data.cart.Cart
-import com.designbyark.layao.ui.cart.CartViewHolder
-import com.designbyark.layao.ui.checkout.OrderCartViewHolder
+import com.designbyark.layao.viewholders.OrderCartViewHolder
 
 class OrderCartAdapter internal constructor(
     private val context: Context,

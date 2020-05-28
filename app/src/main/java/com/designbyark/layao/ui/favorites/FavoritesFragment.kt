@@ -8,6 +8,7 @@ import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.FavoriteAdapter
 import com.designbyark.layao.common.USERS_COLLECTION
+import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView

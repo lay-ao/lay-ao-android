@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.productList
+package com.designbyark.layao.viewholders
 
 import android.content.Context
 import android.view.View

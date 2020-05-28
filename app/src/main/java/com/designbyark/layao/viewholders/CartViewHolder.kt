@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.cart
+package com.designbyark.layao.viewholders
 
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.data.cart.Cart

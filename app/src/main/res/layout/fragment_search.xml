@@ -6,7 +6,7 @@
     <data>
         <variable
             name="search"
-            type="com.designbyark.layao.search.SearchFragment" />
+            type="com.designbyark.layao.ui.search.SearchFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

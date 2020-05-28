@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.favorites
+package com.designbyark.layao.data
 
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName

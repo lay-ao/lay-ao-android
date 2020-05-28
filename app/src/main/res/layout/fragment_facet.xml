@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
-        tools:context=".search.FacetFragment">
+        tools:context=".ui.facet.FacetFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/facetList"

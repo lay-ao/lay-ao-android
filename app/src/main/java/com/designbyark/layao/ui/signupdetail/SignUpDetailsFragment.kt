@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.user
+package com.designbyark.layao.ui.signupdetail
 
 
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.User
+import com.designbyark.layao.ui.signup.SignUpFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference

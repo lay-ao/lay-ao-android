@@ -1,4 +1,4 @@
-package com.designbyark.layao.search
+package com.designbyark.layao.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +22,9 @@ import com.algolia.search.model.APIKey
 import com.algolia.search.model.ApplicationID
 import com.algolia.search.model.Attribute
 import com.algolia.search.model.IndexName
+import com.designbyark.layao.adapters.ProductAdapter
 import com.designbyark.layao.data.ProductsData
+import com.designbyark.layao.viewholders.SearchFacetListViewHolder
 import io.ktor.client.features.logging.LogLevel
 
 const val APPLICATION_ID = "BQ4YKO5KVQ"
@@ -33,16 +35,16 @@ const val INDEX_PRODUCTS = "Products"
 
 class SearchViewModel : ViewModel() {
 
-    val client = ClientSearch(
+    private val client = ClientSearch(
         ApplicationID(APPLICATION_ID),
         APIKey(API_KEY),
         LogLevel.ALL
     )
 
-    val productsIndex = client.initIndex(IndexName(INDEX_PRODUCTS))
-    val searcher = SearcherSingleIndex(productsIndex)
+    private val productsIndex = client.initIndex(IndexName(INDEX_PRODUCTS))
+    private val searcher = SearcherSingleIndex(productsIndex)
 
-    val dataSourceEntry = SearcherSingleIndexDataSource.Factory(searcher) { hit ->
+    private val dataSourceEntry = SearcherSingleIndexDataSource.Factory(searcher) { hit ->
         ProductsData(
             hit.json.getPrimitive("objectID").content,
             hit.json.getPrimitive("title").content,
@@ -53,20 +55,20 @@ class SearchViewModel : ViewModel() {
         )
     }
 
-    val pagedListConfig = PagedList.Config.Builder().setPageSize(50).build()
+    private val pagedListConfig = PagedList.Config.Builder().setPageSize(50).build()
     val products: LiveData<PagedList<ProductsData>> =
         LivePagedListBuilder(dataSourceEntry, pagedListConfig).build()
     val adapterProduct = ProductAdapter()
 
-    val filterState = FilterState()
-    val facetList = FacetListConnector(
+    private val filterState = FilterState()
+    private val facetList = FacetListConnector(
         searcher = searcher,
         filterState = filterState,
         attribute = Attribute("tag"),
         selectionMode =  SelectionMode.Multiple
     )
 
-    val facetPresenter = FacetListPresenterImpl(
+    private val facetPresenter = FacetListPresenterImpl(
         sortBy = listOf(FacetSortCriterion.CountDescending),
         limit = 100
     )
@@ -75,7 +77,7 @@ class SearchViewModel : ViewModel() {
 
     val searchBox = SearchBoxConnectorPagedList(searcher, listOf(products))
 
-    val connection = ConnectionHandler()
+    private val connection = ConnectionHandler()
 
     init {
         connection += searchBox

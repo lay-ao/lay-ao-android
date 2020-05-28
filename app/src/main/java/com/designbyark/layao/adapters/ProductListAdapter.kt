@@ -1,34 +1,27 @@
-package com.designbyark.layao.ui.productList
+package com.designbyark.layao.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.designbyark.layao.R
+import androidx.annotation.LayoutRes
 import com.designbyark.layao.data.Products
+import com.designbyark.layao.viewholders.ProductListViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-
-class SimilarProductListAdapter internal constructor(
+class ProductListAdapter internal constructor(
     options: FirestoreRecyclerOptions<Products>,
-    private val itemClickListener: ProductListItemClickListener,
-    private val productId: String
+    @LayoutRes private val layoutId: Int,
+    private val itemClickListener: ProductListItemClickListener
 ) : FirestoreRecyclerAdapter<Products, ProductListViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.body_similar_product_list, parent, false)
+            .inflate(layoutId, parent, false)
         return ProductListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ProductListViewHolder, position: Int, model: Products) {
         holder.run {
-            if (snapshots.getSnapshot(holder.adapterPosition).id == productId) {
-                itemView.visibility = View.GONE
-                itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
-                return@run
-            }
             setImage(model.image, holder.itemView.context)
             setPrice(model.price, model.unit, model.discount)
             setTitle(model.title)

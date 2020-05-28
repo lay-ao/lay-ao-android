@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.ProductListAdapter
 import com.designbyark.layao.common.DISCOUNT
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
@@ -93,7 +94,11 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
             .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(options, R.layout.body_product_list, this)
+        mAdapter = ProductListAdapter(
+            options,
+            R.layout.body_product_list,
+            this
+        )
 
         view.mProductListRV.addItemDecoration(
             MarginItemDecoration(

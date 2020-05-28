@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.home.banners
+package com.designbyark.layao.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

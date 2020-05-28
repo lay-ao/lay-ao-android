@@ -1,4 +1,4 @@
-package com.designbyark.layao.search
+package com.designbyark.layao.viewholders
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView

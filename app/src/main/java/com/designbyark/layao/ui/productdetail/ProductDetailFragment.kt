@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.home.product
+package com.designbyark.layao.ui.productdetail
 
 import android.graphics.Paint
 import android.os.Bundle
@@ -16,9 +16,9 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.viewmodels.CartViewModel
-import com.designbyark.layao.ui.favorites.Favorites
+import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.ui.home.HomeFragment
-import com.designbyark.layao.ui.productList.SimilarProductListAdapter
+import com.designbyark.layao.adapters.SimilarProductListAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -142,7 +142,11 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = SimilarProductListAdapter(options, this, productId!!)
+        mAdapter = SimilarProductListAdapter(
+            options,
+            this,
+            productId!!
+        )
         setHorizontalListLayout(view.mSimilarProductsRV, requireContext())
         view.mSimilarProductsRV.adapter = mAdapter
     }
@@ -238,7 +242,8 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
                                     Log.e(LOG_TAG, exception.localizedMessage, exception)
                                 }
                         } else {
-                            val favorites = Favorites()
+                            val favorites =
+                                Favorites()
                             favorites.available = model.available
                             favorites.brand = model.brand
                             favorites.discount = model.discount

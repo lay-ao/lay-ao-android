@@ -1,4 +1,4 @@
-package com.designbyark.layao.search
+package com.designbyark.layao.adapters
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import com.designbyark.layao.R
 import com.designbyark.layao.data.ProductsData
 import com.designbyark.layao.databinding.SearchListItemProductsBinding
+import com.designbyark.layao.viewholders.SearchProductViewHolder
 import com.designbyark.layao.ui.home.HomeFragment
 
-class ProductAdapter : PagedListAdapter<ProductsData, SearchProductViewHolder>(ProductAdapter) {
+class ProductAdapter : PagedListAdapter<ProductsData, SearchProductViewHolder>(
+    ProductAdapter
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchProductViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

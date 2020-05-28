@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.checkout
+package com.designbyark.layao.viewholders
 
 import android.content.Context
 import android.graphics.Paint

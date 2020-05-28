@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -14,14 +13,13 @@ import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.ui.home.HomeFragment
-import com.designbyark.layao.ui.productList.ProductListAdapter
+import com.designbyark.layao.adapters.ProductListAdapter
 import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import java.util.*
 
-class CPListFragment : Fragment(),
+class CateogryListFragment : Fragment(),
     ProductListAdapter.ProductListItemClickListener {
 
     private var categoryId: String? = null
@@ -68,7 +66,11 @@ class CPListFragment : Fragment(),
             .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(options, R.layout.body_product_list, this)
+        mAdapter = ProductListAdapter(
+            options,
+            R.layout.body_product_list,
+            this
+        )
 
         recyclerView.addItemDecoration(
             MarginItemDecoration(

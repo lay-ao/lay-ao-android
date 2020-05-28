@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.user
+package com.designbyark.layao.ui.forgotpassword
 
 import android.os.Bundle
 import android.util.Log

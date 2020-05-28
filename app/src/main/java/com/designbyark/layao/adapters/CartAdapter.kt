@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.databinding.BodyCartItemBinding
-import com.designbyark.layao.ui.cart.CartViewHolder
+import com.designbyark.layao.viewholders.CartViewHolder
 import com.designbyark.layao.viewmodels.CartViewModel
 
 class CartAdapter internal constructor(

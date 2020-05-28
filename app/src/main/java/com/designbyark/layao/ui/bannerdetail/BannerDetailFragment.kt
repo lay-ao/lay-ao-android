@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.home.bannerdetail
+package com.designbyark.layao.ui.bannerdetail
 
 
 import android.content.ClipData

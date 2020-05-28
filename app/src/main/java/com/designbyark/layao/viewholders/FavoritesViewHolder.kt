@@ -1,6 +1,7 @@
-package com.designbyark.layao.ui.favorites
+package com.designbyark.layao.viewholders
 
 import androidx.recyclerview.widget.RecyclerView
+import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.databinding.BodyFavoriteBinding
 
 class FavoritesViewHolder internal constructor(private var binding: BodyFavoriteBinding) :

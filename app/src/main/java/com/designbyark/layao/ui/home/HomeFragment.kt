@@ -16,7 +16,7 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Brand
 import com.designbyark.layao.data.Category
-import com.designbyark.layao.ui.home.banners.CategoriesAdapter
+import com.designbyark.layao.adapters.CategoriesAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -158,7 +158,8 @@ class HomeFragment : Fragment(),
             .setQuery(query, Category::class.java)
             .build()
 
-        mHomeCategoryAdapter = CategoriesAdapter(options, this)
+        mHomeCategoryAdapter =
+            CategoriesAdapter(options, this)
 
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mHomeCategoriesRV, requireContext())

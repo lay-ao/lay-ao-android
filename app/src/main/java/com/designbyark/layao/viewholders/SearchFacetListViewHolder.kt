@@ -1,4 +1,4 @@
-package com.designbyark.layao.search
+package com.designbyark.layao.viewholders
 
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +23,9 @@ class SearchFacetListViewHolder(view: View) : FacetListViewHolder(view) {
     object Factory : FacetListViewHolder.Factory {
 
         override fun createViewHolder(parent: ViewGroup): FacetListViewHolder {
-            return SearchFacetListViewHolder(parent.inflate(R.layout.facet_item))
+            return SearchFacetListViewHolder(
+                parent.inflate(R.layout.facet_item)
+            )
         }
 
     }

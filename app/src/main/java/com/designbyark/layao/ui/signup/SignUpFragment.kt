@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.user
+package com.designbyark.layao.ui.signup
 
 
 import android.os.Bundle

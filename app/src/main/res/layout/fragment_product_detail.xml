@@ -8,7 +8,7 @@
     android:clipToPadding="true"
     android:fillViewport="false"
     android:scrollbarStyle="insideInset"
-    tools:context=".ui.home.product.ProductDetailFragment">
+    tools:context=".ui.productdetail.ProductDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
