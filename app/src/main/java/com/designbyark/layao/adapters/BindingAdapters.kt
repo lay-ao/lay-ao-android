@@ -32,6 +32,23 @@ fun setDiscount(view: TextView, discount: Double) {
     view.text = String.format(Locale.getDefault(), "%.0f%% off", discount)
 }
 
+@BindingAdapter("app:setPrice")
+fun setPrice(view: TextView, product: Products) {
+    if (product.discount > 0) {
+        view.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f/%s",
+            findDiscountPrice(product.price, product.discount),
+            product.unit
+        )
+    } else {
+        view.text = String.format(
+            Locale.getDefault(), "Rs. %.0f/%s",
+            product.price, product.unit
+        )
+    }
+}
+
 @BindingAdapter("app:setSavingPrice")
 fun setSavingPrice(view: TextView, product: Products) {
     view.text = String.format(
@@ -49,14 +66,14 @@ fun setDiscountAmount(view: TextView, discount: Double) {
     }
 }
 
-@BindingAdapter("app:hideDiscount")
-fun hideDiscount(view: TextView, discount: Double) {
-    if (discount > 0) {
-        view.visibility = View.VISIBLE
-    } else {
-        view.visibility = View.INVISIBLE
-    }
-}
+//@BindingAdapter("app:hideDiscount")
+//fun hideDiscount(view: TextView, discount: Double) {
+//    if (discount > 0) {
+//        view.visibility = View.VISIBLE
+//    } else {
+//        view.visibility = View.INVISIBLE
+//    }
+//}
 
 @BindingAdapter("app:hideDecrease")
 fun hideDecrease(view: ImageButton, quantity: Long) {

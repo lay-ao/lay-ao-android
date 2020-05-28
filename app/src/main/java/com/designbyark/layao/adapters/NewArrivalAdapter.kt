@@ -1,43 +1,42 @@
 package com.designbyark.layao.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.designbyark.layao.R
+import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.data.Products
-import com.designbyark.layao.ui.home.product.ProductViewHolder
+import com.designbyark.layao.databinding.BodyNewArrivalBinding
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class NewArrivalAdapter internal constructor(
     options: FirestoreRecyclerOptions<Products>,
-    var context: Context,
-    val itemClickListener: NewArrivalClickListener
-) : FirestoreRecyclerAdapter<Products, ProductViewHolder>(options) {
+    private val itemClickListener: NewArrivalClickListener
+) : FirestoreRecyclerAdapter<Products, NewArrivalAdapter.NewArrivalViewHolder>(options) {
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ProductViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.body_new_arrival, parent, false)
-        return ProductViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewArrivalViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = BodyNewArrivalBinding.inflate(layoutInflater, parent, false)
+        return NewArrivalViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: ProductViewHolder,
-        position: Int,
-        model: Products
-    ) {
-        holder.setImage(model.image, context)
-        holder.setTitle(model.title)
-        holder.setPrice(model.price, model.unit)
+    override fun onBindViewHolder(holder: NewArrivalViewHolder, position: Int, model: Products) {
+        holder.bind(model)
         holder.itemView.setOnClickListener {
             itemClickListener.mNewArrivalClickListener(
                 snapshots
                     .getSnapshot(holder.adapterPosition).id
             )
         }
+    }
+
+    inner class NewArrivalViewHolder internal constructor(private val binding: BodyNewArrivalBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(product: Products) {
+            binding.product = product
+            binding.executePendingBindings()
+        }
+
     }
 
     interface NewArrivalClickListener {

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -236,11 +235,7 @@ class HomeFragment : Fragment(),
         // Setting query with model class
         val options = getProductOptions(query)
 
-        mNewArrivalAdapter = NewArrivalAdapter(
-            options,
-            requireContext(),
-            this
-        )
+        mNewArrivalAdapter = NewArrivalAdapter(options, this)
 
         // Assigning adapter to Recycler View
         setHorizontalListLayout(view.mNewArrivalRV, requireActivity())
