@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.cart
+package com.designbyark.layao.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

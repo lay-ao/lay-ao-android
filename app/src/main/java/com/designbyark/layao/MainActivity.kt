@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import com.designbyark.layao.ui.cart.CartViewModel
+import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

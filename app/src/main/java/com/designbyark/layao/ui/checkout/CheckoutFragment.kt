@@ -9,7 +9,6 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -17,7 +16,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.User
-import com.designbyark.layao.ui.cart.CartViewModel
+import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView

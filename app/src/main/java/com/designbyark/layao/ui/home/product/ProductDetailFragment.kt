@@ -15,7 +15,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.cart.Cart
-import com.designbyark.layao.ui.cart.CartViewModel
+import com.designbyark.layao.viewmodels.CartViewModel
 import com.designbyark.layao.ui.favorites.Favorites
 import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.ui.productList.SimilarProductListAdapter
