@@ -75,7 +75,6 @@ class CartFragment : Fragment() {
 
         val cartAdapter =
             CartAdapter(
-                requireContext(),
                 cartViewModel
             )
         view.mCartRV.adapter = cartAdapter
