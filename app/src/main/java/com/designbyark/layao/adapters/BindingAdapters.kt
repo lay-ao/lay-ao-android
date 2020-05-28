@@ -6,11 +6,13 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.algolia.instantsearch.helper.android.highlighting.toSpannedString
 import com.bumptech.glide.Glide
 import com.designbyark.layao.common.circularProgressBar
 import com.designbyark.layao.common.findDiscountPrice
 import com.designbyark.layao.common.getSavingPrice
 import com.designbyark.layao.data.Products
+import com.designbyark.layao.data.ProductsData
 import com.designbyark.layao.data.cart.Cart
 import java.util.*
 
@@ -185,3 +187,7 @@ fun setUnitLabel(view: TextView, unit: String) {
     view.text = String.format("Per %s", unit)
 }
 
+@BindingAdapter("app:setSearchProductTitle")
+fun setSearchProductTitle(view: TextView, productsData: ProductsData) {
+    view.text = productsData.highlightedTitle?.toSpannedString() ?: productsData.title
+}

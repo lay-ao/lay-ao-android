@@ -1,4 +1,4 @@
-package com.designbyark.layao.search
+package com.designbyark.layao.data
 
 import com.algolia.instantsearch.core.highlighting.HighlightedString
 import com.algolia.instantsearch.helper.highlighting.Highlightable

@@ -1,6 +1,5 @@
 package com.designbyark.layao.search
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
@@ -18,12 +17,12 @@ import com.algolia.instantsearch.helper.filter.facet.connectView
 import com.algolia.instantsearch.helper.filter.state.FilterState
 import com.algolia.instantsearch.helper.searcher.SearcherSingleIndex
 import com.algolia.instantsearch.helper.searcher.connectFilterState
-import com.algolia.instantsearch.helper.stats.StatsConnector
 import com.algolia.search.client.ClientSearch
 import com.algolia.search.model.APIKey
 import com.algolia.search.model.ApplicationID
 import com.algolia.search.model.Attribute
 import com.algolia.search.model.IndexName
+import com.designbyark.layao.data.ProductsData
 import io.ktor.client.features.logging.LogLevel
 
 const val APPLICATION_ID = "BQ4YKO5KVQ"
