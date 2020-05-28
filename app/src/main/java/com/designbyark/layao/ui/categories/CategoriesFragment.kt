@@ -51,11 +51,7 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
             .build()
 
         // Assigning adapter class
-        mAdapter = CategoryAdapter(
-            options,
-            requireActivity(),
-            this
-        )
+        mAdapter = CategoryAdapter(options, this)
 
         // Assigning adapter to Recycler View
         view.mCategoryRV.adapter = mAdapter
