@@ -74,12 +74,12 @@ class CheckoutFragment : Fragment() {
         val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
         bottomMenu.visibility = View.GONE
 
+        val deliveryFee = 30.0
+        var totalAmount: Double?
+
         if (auth.currentUser == null) {
             view.mRetrieveData.visibility = View.GONE
         }
-
-        val deliveryFee = 30.0
-        var totalAmount: Double?
 
         userCollection.document(auth.currentUser?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->

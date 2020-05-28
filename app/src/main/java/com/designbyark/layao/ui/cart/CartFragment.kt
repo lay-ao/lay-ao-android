@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.CartAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -86,7 +87,7 @@ class CartFragment : Fragment() {
         })
 
         view.mCheckout.setOnClickListener {
-            if (totalPrice < 500) {
+            if (totalPrice < 500.0) {
                 Toast.makeText(
                     requireActivity(),
                     "Amount too low, add more items",
@@ -97,7 +98,7 @@ class CartFragment : Fragment() {
                 val args = Bundle()
                 args.putDouble("grand_total", totalPrice)
                 args.putInt("total_items", totalItemCount)
-                Navigation.createNavigateOnClickListener(R.id.action_navigation_cart_to_checkoutFragment, args)
+                findNavController().navigate(R.id.action_navigation_cart_to_checkoutFragment, args)
             }
         }
     }
