@@ -3,6 +3,7 @@ package com.designbyark.layao.ui.brands
 
 import android.os.Bundle
 import android.view.*
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
@@ -10,6 +11,7 @@ import com.designbyark.layao.adapters.BrandsListAdapter
 import com.designbyark.layao.common.BRANDS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Brand
+import com.designbyark.layao.databinding.FragmentBrandsListBinding
 import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,13 +22,15 @@ class BrandsListFragment : Fragment(),
     BrandsListAdapter.BrandsItemClickListener {
 
     private var mBrandsListAdapter: BrandsListAdapter? = null
+    private lateinit var binding: FragmentBrandsListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_brands_list, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_brands_list, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,7 +55,7 @@ class BrandsListFragment : Fragment(),
             BrandsListAdapter(options, this)
 
         // Assigning adapter to Recycler View
-        view.mBrandsRV.adapter = mBrandsListAdapter
+        binding.mBrandsRV.adapter = mBrandsListAdapter
     }
 
     override fun mBrandsItemClickListener(brandId: String) {
