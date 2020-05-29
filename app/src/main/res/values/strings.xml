@@ -122,6 +122,11 @@
     <string name="delivery_charges_message">Order less than <b>Rs. 1000</b> will charge <b>Rs. 50</b> for delivery.</string>
     <string name="address_placeholder">Wapda Town, Lahore, Punjab, Pakistan</string>
     <string name="select_gender">Select Gender</string>
+    <string name="offer_zone">Offer Zone</string>
+    <string name="shop_by_category">Shop by Category</string>
+    <string name="new_arrivals">New Arrivals</string>
+    <string name="shop_by_brands">SHOP BY BRANDS</string>
+    <string name="email_is_not_verified">Email is not Verified</string>
 
 
 </resources>

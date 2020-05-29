@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.*
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Brand
 import com.designbyark.layao.data.Category
+import com.designbyark.layao.databinding.FragmentHomeBinding
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
-import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment(),
     DiscountItemsAdapter.DiscountItemClickListener,
@@ -45,7 +45,7 @@ class HomeFragment : Fragment(),
     private var mNewArrivalAdapter: NewArrivalAdapter? = null
     private var mBrandsAdapter: BrandsAdapter? = null
 
-    private lateinit var navController: NavController
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +53,8 @@ class HomeFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,8 +69,6 @@ class HomeFragment : Fragment(),
 //            supportActionBar?.setSubtitle(getString(R.string.app_slogan))
 //        }
 
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
         val auth = FirebaseAuth.getInstance()
@@ -78,106 +77,19 @@ class HomeFragment : Fragment(),
         user?.reload()?.addOnSuccessListener {
             user = auth.currentUser
             if (!user?.isEmailVerified!!) {
-                view.mEmailVerified.visibility = View.VISIBLE
+                binding.mEmailVerified.visibility = View.VISIBLE
             }
         }
 
         // Getting collection reference from firestore
         val productsCollection = firestore.collection(PRODUCTS_COLLECTION)
 
-        getBanners(view, firestore)
-        getCategories(view, firestore)
-        getDiscountItems(view, productsCollection)
-        getNewArrivals(view, productsCollection)
-        getBrands(view, firestore)
+        getBanners(firestore)
+        getCategories(firestore)
+        getDiscountItems(productsCollection)
+        getNewArrivals(productsCollection)
+        getBrands(firestore)
 
-        view.mAllDiscountItems.setOnClickListener {
-            val args = Bundle()
-            args.putString(DISCOUNT_ID, "discountId")
-            navController.navigate(R.id.action_nav_productListFragment, args)
-        }
-
-        view.mAllNewArrival.setOnClickListener {
-            val args = Bundle()
-            args.putString(PASSED_ID, "newArrival")
-            navController.navigate(R.id.action_nav_productListFragment, args)
-        }
-
-        view.mAllBrands.setOnClickListener {
-            navController.navigate(R.id.action_navigation_home_to_brandsListFragment)
-        }
-
-        view.mAllCategories.setOnClickListener {
-            navController.navigate(R.id.action_navigation_home_to_navigation_category)
-        }
-
-    }
-
-    private fun getBanners(view: View, firestore: FirebaseFirestore) {
-
-        // Getting collection reference from firestore
-        val collection = firestore.collection(BANNER_COLLECTION)
-
-        // Applying query to collection reference
-        val query = collection
-            .whereEqualTo(ACTIVE, true)
-            .orderBy("validity", Query.Direction.ASCENDING)
-
-        query.get().addOnSuccessListener { documents ->
-            val bannerList: ArrayList<Banner> = arrayListOf()
-            for (document in documents) {
-                val banner = document.toObject(Banner::class.java)
-                bannerList.add(banner)
-            }
-            view.mBannerImageSlider.sliderAdapter =
-                BannerSliderAdapter(
-                    bannerList,
-                    this
-                )
-        }
-
-        view.mBannerImageSlider.startAutoCycle()
-        view.mBannerImageSlider.setIndicatorAnimation(IndicatorAnimations.WORM)
-        view.mBannerImageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-    }
-
-    private fun getCategories(view: View, firestore: FirebaseFirestore) {
-
-        // Get Banner Collection Reference from Firestore
-        val collection = firestore.collection(CATEGORIES_COLLECTION)
-
-        // Applying query to collection reference
-        val query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
-
-        // Setting query with model class
-        val options = FirestoreRecyclerOptions.Builder<Category>()
-            .setQuery(query, Category::class.java)
-            .build()
-
-        mHomeCategoryAdapter =
-            CategoriesAdapter(options, this)
-
-        // Assigning adapter to Recycler View
-        setHorizontalListLayout(view.mHomeCategoriesRV, requireContext())
-        view.mHomeCategoriesRV.adapter = mHomeCategoryAdapter
-
-    }
-
-    private fun getDiscountItems(view: View, collection: CollectionReference) {
-
-        // Applying query to collection reference
-        val query = collection.whereGreaterThan(DISCOUNT, 0)
-            .orderBy(DISCOUNT, Query.Direction.ASCENDING)
-
-        // Setting query with model class
-        val options = getProductOptions(query)
-
-        mDiscountItemsAdapter =
-            DiscountItemsAdapter(options, this)
-
-        // Assigning adapter to Recycler View
-        setHorizontalListLayout(view.mDiscountItemRV, requireContext())
-        view.mDiscountItemRV.adapter = mDiscountItemsAdapter
     }
 
     override fun onStart() {
@@ -223,7 +135,94 @@ class HomeFragment : Fragment(),
 
     }
 
-    private fun getNewArrivals(view: View, collection: CollectionReference) {
+    fun allDiscountItems() {
+        val args = Bundle()
+        args.putString(DISCOUNT_ID, "discountId")
+        findNavController().navigate(R.id.action_nav_productListFragment, args)
+    }
+
+    fun allNewArrivals() {
+        val args = Bundle()
+        args.putString(PASSED_ID, "newArrival")
+        findNavController().navigate(R.id.action_nav_productListFragment, args)
+    }
+
+    fun allBrands() {
+        findNavController().navigate(R.id.action_navigation_home_to_brandsListFragment)
+    }
+
+    fun allCategories() {
+        findNavController().navigate(R.id.action_navigation_home_to_navigation_category)
+    }
+
+    private fun getBanners(firestore: FirebaseFirestore) {
+
+        // Getting collection reference from firestore
+        val collection = firestore.collection(BANNER_COLLECTION)
+
+        // Applying query to collection reference
+        val query = collection
+            .whereEqualTo(ACTIVE, true)
+            .orderBy("validity", Query.Direction.ASCENDING)
+
+        query.get().addOnSuccessListener { documents ->
+            val bannerList: ArrayList<Banner> = arrayListOf()
+            for (document in documents) {
+                val banner = document.toObject(Banner::class.java)
+                bannerList.add(banner)
+            }
+            binding.mBannerImageSlider.sliderAdapter =
+                BannerSliderAdapter(
+                    bannerList,
+                    this
+                )
+        }
+
+        binding.mBannerImageSlider.startAutoCycle()
+        binding.mBannerImageSlider.setIndicatorAnimation(IndicatorAnimations.WORM)
+        binding.mBannerImageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+    }
+
+    private fun getCategories(firestore: FirebaseFirestore) {
+
+        // Get Banner Collection Reference from Firestore
+        val collection = firestore.collection(CATEGORIES_COLLECTION)
+
+        // Applying query to collection reference
+        val query = collection.orderBy(TITLE, Query.Direction.ASCENDING)
+
+        // Setting query with model class
+        val options = FirestoreRecyclerOptions.Builder<Category>()
+            .setQuery(query, Category::class.java)
+            .build()
+
+        mHomeCategoryAdapter =
+            CategoriesAdapter(options, this)
+
+        // Assigning adapter to Recycler View
+        setHorizontalListLayout(binding.mHomeCategoriesRV, requireContext())
+        binding.mHomeCategoriesRV.adapter = mHomeCategoryAdapter
+
+    }
+
+    private fun getDiscountItems(collection: CollectionReference) {
+
+        // Applying query to collection reference
+        val query = collection.whereGreaterThan(DISCOUNT, 0)
+            .orderBy(DISCOUNT, Query.Direction.ASCENDING)
+
+        // Setting query with model class
+        val options = getProductOptions(query)
+
+        mDiscountItemsAdapter =
+            DiscountItemsAdapter(options, this)
+
+        // Assigning adapter to Recycler View
+        setHorizontalListLayout(binding.mDiscountItemRV, requireContext())
+        binding.mDiscountItemRV.adapter = mDiscountItemsAdapter
+    }
+
+    private fun getNewArrivals(collection: CollectionReference) {
 
         // Applying query to collection reference
         val query = collection.whereEqualTo(NEW_ARRIVAL, true)
@@ -235,11 +234,11 @@ class HomeFragment : Fragment(),
         mNewArrivalAdapter = NewArrivalAdapter(options, this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(view.mNewArrivalRV, requireActivity())
-        view.mNewArrivalRV.adapter = mNewArrivalAdapter
+        setHorizontalListLayout(binding.mNewArrivalRV, requireActivity())
+        binding.mNewArrivalRV.adapter = mNewArrivalAdapter
     }
 
-    private fun getBrands(view: View, firestore: FirebaseFirestore) {
+    private fun getBrands(firestore: FirebaseFirestore) {
 
         // Getting collection reference from firestore
         val collection = firestore.collection(BRANDS_COLLECTION)
@@ -255,39 +254,39 @@ class HomeFragment : Fragment(),
         mBrandsAdapter = BrandsAdapter(options, this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(view.mBrandsRV, requireContext())
-        view.mBrandsRV.adapter = mBrandsAdapter
+        setHorizontalListLayout(binding.mBrandsRV, requireContext())
+        binding.mBrandsRV.adapter = mBrandsAdapter
     }
 
     override fun onDiscountItemClickListener(productData: MutableMap<String, String>) {
         val args = Bundle()
         args.putString(PRODUCT_ID, productData["id"])
         args.putString(PRODUCT_TAG, productData["tag"])
-        navController.navigate(R.id.action_nav_productDetailFragment, args)
+        findNavController().navigate(R.id.action_nav_productDetailFragment, args)
     }
 
     override fun mNewArrivalClickListener(productId: String) {
         val args = Bundle()
         args.putString(PRODUCT_ID, productId)
-        navController.navigate(R.id.action_nav_productDetailFragment, args)
+        findNavController().navigate(R.id.action_nav_productDetailFragment, args)
     }
 
     override fun mBrandItemClickListener(brandId: String) {
         val args = Bundle()
         args.putString(BRAND_ID, brandId)
-        navController.navigate(R.id.action_nav_productListFragment, args)
+        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     override fun mBannerItemClickListener(bannerId: String?) {
         val args = Bundle()
         args.putString(BANNER_ID, bannerId)
-        navController.navigate(R.id.action_nav_bannerDetailFragment, args)
+        findNavController().navigate(R.id.action_nav_bannerDetailFragment, args)
     }
 
     override fun onCategoryItemClickListener(categoryId: String) {
         val args = Bundle()
         args.putString(CATEGORY_ID, categoryId)
-        navController.navigate(R.id.action_navigation_home_to_CPListFragment, args)
+        findNavController().navigate(R.id.action_navigation_home_to_CPListFragment, args)
     }
 
 
