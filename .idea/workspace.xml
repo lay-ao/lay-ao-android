@@ -17,11 +17,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35ba7bfd-870c-4ab8-9391-47e942c66edc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_heart.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/favorites/FavoritesFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/favorites/FavoritesFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_favorites.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_favorites.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_no_favorites.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_no_favorites.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/forgotpassword/ForgotPasswordFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/forgotpassword/ForgotPasswordFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_forgot_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_forgot_password.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
