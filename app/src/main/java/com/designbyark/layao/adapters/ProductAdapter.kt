@@ -6,15 +6,14 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.R
 import com.designbyark.layao.data.ProductsData
 import com.designbyark.layao.databinding.SearchListItemProductsBinding
-import com.designbyark.layao.viewholders.SearchProductViewHolder
 import com.designbyark.layao.ui.home.HomeFragment
 
-class ProductAdapter : PagedListAdapter<ProductsData, SearchProductViewHolder>(
-    ProductAdapter
-) {
+class ProductAdapter :
+    PagedListAdapter<ProductsData, ProductAdapter.SearchProductViewHolder>(ProductAdapter) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchProductViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -43,6 +42,15 @@ class ProductAdapter : PagedListAdapter<ProductsData, SearchProductViewHolder>(
 
         override fun areContentsTheSame(oldItem: ProductsData, newItem: ProductsData): Boolean {
             return oldItem.title == newItem.title
+        }
+    }
+
+    inner class SearchProductViewHolder(private val binding: SearchListItemProductsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(productsData: ProductsData) {
+            binding.data = productsData
+            binding.executePendingBindings()
         }
     }
 

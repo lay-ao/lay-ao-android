@@ -3,11 +3,8 @@ package com.designbyark.layao.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.designbyark.layao.R
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.BodyProductListBinding
-import com.designbyark.layao.ui.productList.ProductListFragment
-import com.designbyark.layao.viewholders.ProductListViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 

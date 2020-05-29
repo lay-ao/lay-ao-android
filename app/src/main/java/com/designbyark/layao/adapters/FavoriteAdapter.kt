@@ -4,11 +4,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.isConnectedToInternet
 import com.designbyark.layao.databinding.BodyFavoriteBinding
 import com.designbyark.layao.data.Favorites
-import com.designbyark.layao.viewholders.FavoritesViewHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
@@ -16,7 +16,7 @@ import com.google.firebase.firestore.CollectionReference
 class FavoriteAdapter internal constructor(
     options: FirestoreRecyclerOptions<Favorites>,
     private val collection: CollectionReference
-) : FirestoreRecyclerAdapter<Favorites, FavoritesViewHolder>(options) {
+) : FirestoreRecyclerAdapter<Favorites, FavoriteAdapter.FavoritesViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -53,6 +53,18 @@ class FavoriteAdapter internal constructor(
                 ).show()
             }
         }
+    }
+
+    inner class FavoritesViewHolder internal constructor(private var binding: BodyFavoriteBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        val favButton = binding.favoriteButton
+
+        fun bind(favorites: Favorites) {
+            binding.favorite = favorites
+            binding.executePendingBindings()
+        }
+
     }
 
 }
