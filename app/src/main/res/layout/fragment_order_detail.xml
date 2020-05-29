@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="12dp"
-    tools:context=".ui.orderDetail.OrderDetailFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="detail"
+            type="com.designbyark.layao.ui.orderDetail.OrderDetailFragment" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        tools:context=".ui.orderDetail.OrderDetailFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mOrderCartRV"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,56 +31,71 @@
             android:id="@+id/mOrderId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/open_sans"
+            android:layout_marginEnd="16dp"
             android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/darker_gray"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mOrderCartRV"
+            app:layout_constraintBottom_toBottomOf="@+id/order_status_section"
+            app:layout_constraintEnd_toStartOf="@+id/order_status_section"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Order ID" />
 
-        <TextView
-            android:id="@+id/mOrderStatus"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/order_status_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/hind_bold"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mOrderCartRV"
-            tools:text="Order Status" />
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="1dp"
+            app:cardElevation="0dp">
+
+            <TextView
+                android:id="@+id/mOrderStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hind_bold"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                tools:text="Order Status" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/mCustomerName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:drawableStart="@drawable/ic_person_color_24dp"
-            android:drawablePadding="10dp"
-            android:fontFamily="@font/open_sans"
+            android:drawablePadding="6dp"
+            android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/mOrderStatus"
-            app:layout_constraintTop_toBottomOf="@+id/mOrderStatus"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_status_section"
             tools:text="Placed by Arslan Mushtaq" />
 
         <TextView
             android:id="@+id/mOrderAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:drawableStart="@drawable/ic_location"
-            android:drawablePadding="10dp"
+            android:drawablePadding="6dp"
             android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/mCustomerName"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mCustomerName"
             tools:text="Delivery at House #91, Block F1, Wapda Town" />
 
@@ -83,12 +103,14 @@
             android:id="@+id/mCustomerContact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:drawableStart="@drawable/ic_contact"
-            android:drawablePadding="10dp"
+            android:drawablePadding="6dp"
             android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
             android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mOrderAddress"
@@ -98,11 +120,13 @@
             android:id="@+id/mCartTotal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:drawableStart="@drawable/ic_grand_total"
-            android:drawablePadding="10dp"
+            android:drawablePadding="6dp"
             android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mCustomerContact"
@@ -112,11 +136,13 @@
             android:id="@+id/mTotalItems"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:drawableStart="@drawable/ic_cart_black_24dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="6dp"
             android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mCartTotal"
@@ -126,61 +152,65 @@
             android:id="@+id/mOrderTiming"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:drawableStart="@drawable/ic_time"
-            android:drawablePadding="10dp"
+            android:drawablePadding="6dp"
             android:fontFamily="@font/open_sans"
+            android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mTotalItems"
             tools:text="Order placed today at 12:23 PM" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/mCancelOrder"
-            style="@style/Widget.AppCompat.Button.Small"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/open_sans"
             android:text="@string/cancel_order"
-            app:backgroundTint="@android:color/holo_red_dark"
+            app:backgroundTint="#1AB81C1C"
             app:elevation="0dp"
+            android:onClick="@{() -> detail.cancelOrder()}"
+            android:textColor="@android:color/holo_red_dark"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mCancelOrderLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/mOrderTiming"
+            app:strokeColor="@android:color/holo_red_light"
+            app:strokeWidth="1dp"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_cart"
-            android:drawablePadding="10dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/hind_bold"
             android:text="@string/cart_items"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/mCancelOrderLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/open_sans"
-            android:gravity="center|start"
-            android:paddingEnd="12dp"
-            android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mOrderTiming"
-            tools:ignore="RtlSymmetry"
-            tools:text="@string/order_cancelling_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/mCancelOrder" />
+
+        <TextView
+            android:id="@+id/order_cancel_msg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="Order can be cancelled only when your order is being processed."
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintEnd_toStartOf="@+id/mCancelOrder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mOrderTiming" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 
 
-</ScrollView>
