@@ -1,15 +1,11 @@
 package com.designbyark.layao.ui.orders
 
-import android.app.AlertDialog
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.designbyark.layao.R
-import com.designbyark.layao.common.displayNotification
 import com.designbyark.layao.data.Order
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.CollectionReference
 
 class OrderAdapter internal constructor(
     options: FirestoreRecyclerOptions<Order>,

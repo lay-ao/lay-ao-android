@@ -7,8 +7,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.isConnectedToInternet
-import com.designbyark.layao.databinding.BodyFavoriteBinding
 import com.designbyark.layao.data.Favorites
+import com.designbyark.layao.databinding.BodyFavoriteBinding
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference

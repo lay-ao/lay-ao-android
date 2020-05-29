@@ -16,7 +16,6 @@ import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.fragment_brands_list.view.*
 
 class BrandsListFragment : Fragment(),
     BrandsListAdapter.BrandsItemClickListener {

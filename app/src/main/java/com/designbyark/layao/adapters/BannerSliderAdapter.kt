@@ -2,9 +2,9 @@ package com.designbyark.layao.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.designbyark.layao.adapters.BannerSliderAdapter.BannerSliderAdapterVH
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.databinding.BodyBannerBinding
-import com.designbyark.layao.adapters.BannerSliderAdapter.BannerSliderAdapterVH
 import com.smarteist.autoimageslider.SliderViewAdapter
 
 class BannerSliderAdapter(

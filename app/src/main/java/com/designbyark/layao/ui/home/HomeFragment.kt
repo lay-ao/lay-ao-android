@@ -8,15 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
-import com.designbyark.layao.adapters.BannerSliderAdapter
-import com.designbyark.layao.adapters.BrandsAdapter
-import com.designbyark.layao.adapters.DiscountItemsAdapter
-import com.designbyark.layao.adapters.NewArrivalAdapter
+import com.designbyark.layao.adapters.*
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Brand
 import com.designbyark.layao.data.Category
-import com.designbyark.layao.adapters.CategoriesAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
