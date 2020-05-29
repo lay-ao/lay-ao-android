@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.ORDERS_COLLECTION
@@ -105,10 +106,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
     override fun orderItemClickListener(orderId: String) {
         val args = Bundle()
         args.putString("orderId", orderId)
-        Navigation.createNavigateOnClickListener(
-            R.id.action_navigation_orders_to_orderDetailFragment,
-            args
-        )
+        findNavController().navigate(R.id.action_navigation_orders_to_orderDetailFragment, args)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

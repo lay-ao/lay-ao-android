@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.OrderCartAdapter
 import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
 import com.google.firebase.auth.FirebaseAuth
@@ -134,7 +135,6 @@ class OrderDetailFragment : Fragment() {
 
                     val orderCartAdapter =
                         OrderCartAdapter(
-                            context,
                             model.items
                         )
                     view.mOrderCartRV.adapter = orderCartAdapter
