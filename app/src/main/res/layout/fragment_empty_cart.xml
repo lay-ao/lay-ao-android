@@ -45,12 +45,7 @@
                 android:layout_marginTop="4dp"
                 android:paddingVertical="8dp"
                 android:text="@string/add_items_to_cart"
-                android:textColor="@android:color/black"
-                android:textStyle="italic"
-                android:onClick="@{() -> cart.moveToHome()}"
-                app:backgroundTint="@android:color/white"
-                app:strokeColor="@color/colorPrimaryDark"
-                app:strokeWidth="1dp" />
+                android:onClick="@{() -> cart.moveToHome()}" />
 
         </LinearLayout>
 
