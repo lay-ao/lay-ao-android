@@ -1,8 +1,9 @@
-package com.designbyark.layao.ui.brands
+package com.designbyark.layao.ui.brandslist
 
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -34,6 +35,10 @@ class BrandsListFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()

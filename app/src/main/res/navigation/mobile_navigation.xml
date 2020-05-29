@@ -113,7 +113,7 @@
 
     <fragment
         android:id="@+id/CPListFragment"
-        android:name="com.designbyark.layao.ui.categories.CateogryListFragment"
+        android:name="com.designbyark.layao.ui.categorylist.CateogryListFragment"
         android:label="Product List"
         tools:layout="@layout/fragment_product_list">
         <action
@@ -226,7 +226,7 @@
     </fragment>
     <fragment
         android:id="@+id/brandsListFragment"
-        android:name="com.designbyark.layao.ui.brands.BrandsListFragment"
+        android:name="com.designbyark.layao.ui.brandslist.BrandsListFragment"
         android:label="Brands"
         tools:layout="@layout/fragment_brands_list">
         <action

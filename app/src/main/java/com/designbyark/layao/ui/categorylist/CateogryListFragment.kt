@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.categories
+package com.designbyark.layao.ui.categorylist
 
 
 import android.os.Bundle

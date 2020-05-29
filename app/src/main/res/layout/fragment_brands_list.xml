@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.brands.BrandsListFragment"
+        tools:context=".ui.brandslist.BrandsListFragment"
         android:padding="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="3"
-            tools:context=".ui.brands.BrandsListFragment"
+            tools:context=".ui.brandslist.BrandsListFragment"
             tools:listitem="@layout/body_brand_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
