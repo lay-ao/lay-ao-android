@@ -16,9 +16,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35ba7bfd-870c-4ab8-9391-47e942c66edc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/categories/CategoriesFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/categories/CategoriesFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/categories/CateogryListFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/categorylist/CateogryListFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_categories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_categories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/categorylist/CateogryListFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/designbyark/layao/ui/categorylist/CategoryListFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_product_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_product_list.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/mobile_navigation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/mobile_navigation.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

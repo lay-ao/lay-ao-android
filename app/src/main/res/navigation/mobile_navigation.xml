@@ -113,7 +113,7 @@
 
     <fragment
         android:id="@+id/CPListFragment"
-        android:name="com.designbyark.layao.ui.categorylist.CateogryListFragment"
+        android:name="com.designbyark.layao.ui.categorylist.CategoryListFragment"
         android:label="Product List"
         tools:layout="@layout/fragment_product_list">
         <action

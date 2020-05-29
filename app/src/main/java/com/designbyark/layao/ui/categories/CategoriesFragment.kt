@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.CategoryAdapter
 import com.designbyark.layao.common.CATEGORIES_COLLECTION
@@ -81,7 +82,7 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
     override fun mCategoryClickListener(categoryId: String) {
         val args = Bundle()
         args.putString(HomeFragment.CATEGORY_ID, categoryId)
-        Navigation.createNavigateOnClickListener(
+        findNavController().navigate(
             R.id.action_navigation_category_to_CPListFragment,
             args
         )
