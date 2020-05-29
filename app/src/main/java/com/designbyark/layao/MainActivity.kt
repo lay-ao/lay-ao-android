@@ -1,6 +1,7 @@
 package com.designbyark.layao
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,18 +11,33 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var cartViewModel: CartViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
+//    private lateinit var firebaseAuth: FirebaseAuth
+//    var firebaseUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+//        firebaseAuth = FirebaseAuth.getInstance()
+//        firebaseAuth.addAuthStateListener { firebaseAuth ->
+//            if (firebaseAuth.currentUser == null) {
+//                Log.d(LOG_TAG, "Not Signed in!")
+//            } else {
+//                firebaseUser = firebaseAuth.currentUser
+//                Log.d(LOG_TAG, "Current user: ${firebaseUser?.email}")
+//            }
+//        }
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
