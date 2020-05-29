@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.designbyark.layao.R
 import com.designbyark.layao.data.Products
-import com.designbyark.layao.viewholders.ProductListViewHolder
+import com.designbyark.layao.databinding.BodySimilarProductListBinding
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
@@ -15,33 +14,46 @@ class SimilarProductListAdapter internal constructor(
     options: FirestoreRecyclerOptions<Products>,
     private val itemClickListener: ProductListItemClickListener,
     private val productId: String
-) : FirestoreRecyclerAdapter<Products, ProductListViewHolder>(options) {
+) : FirestoreRecyclerAdapter<Products, SimilarProductListAdapter.SimilarProductListViewHolder>(
+    options
+) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.body_similar_product_list, parent, false)
-        return ProductListViewHolder(view)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): SimilarProductListViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = BodySimilarProductListBinding.inflate(layoutInflater, parent, false)
+        return SimilarProductListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ProductListViewHolder, position: Int, model: Products) {
-        holder.run {
-            if (snapshots.getSnapshot(holder.adapterPosition).id == productId) {
-                itemView.visibility = View.GONE
-                itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
-                return@run
-            }
-            setImage(model.image, holder.itemView.context)
-            setPrice(model.price, model.unit, model.discount)
-            setTitle(model.title)
-            setDiscount(model.discount)
-
-            itemView.setOnClickListener {
-                val data = mutableMapOf<String, String>()
-                data["id"] = snapshots.getSnapshot(holder.adapterPosition).id
-                data["tag"] = model.tag
-                itemClickListener.mProductListItemClickListener(data)
-            }
+    override fun onBindViewHolder(
+        holder: SimilarProductListViewHolder,
+        position: Int,
+        model: Products
+    ) {
+        holder.bind(model)
+        if (snapshots.getSnapshot(holder.adapterPosition).id == productId) {
+            holder.itemView.visibility = View.GONE
+            holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            return
         }
+        holder.itemView.setOnClickListener {
+            val data = mutableMapOf<String, String>()
+            data["id"] = snapshots.getSnapshot(holder.adapterPosition).id
+            data["tag"] = model.tag
+            itemClickListener.mProductListItemClickListener(data)
+        }
+    }
+
+    inner class SimilarProductListViewHolder internal constructor(private val binding: BodySimilarProductListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(product: Products) {
+            binding.product = product
+            binding.executePendingBindings()
+        }
+
     }
 
     interface ProductListItemClickListener {

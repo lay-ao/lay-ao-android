@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
@@ -277,7 +278,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         val args = Bundle()
         args.putString(HomeFragment.PRODUCT_ID, productData["id"])
         args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        Navigation.createNavigateOnClickListener(R.id.action_productDetailFragment_self, args)
+        findNavController().navigate(R.id.action_productDetailFragment_self, args)
     }
 
 
