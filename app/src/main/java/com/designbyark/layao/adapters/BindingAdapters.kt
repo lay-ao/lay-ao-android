@@ -31,7 +31,11 @@ fun setTitle(view: TextView, title: String) {
 
 @BindingAdapter("app:setDiscount")
 fun setDiscount(view: TextView, discount: Double) {
-    view.text = String.format(Locale.getDefault(), "%.0f%% off", discount)
+    if (discount > 0) {
+        view.text = String.format(Locale.getDefault(), "%.0f%% off", discount)
+    } else {
+        view.visibility = View.INVISIBLE
+    }
 }
 
 @BindingAdapter("app:setPrice")

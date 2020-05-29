@@ -86,19 +86,12 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         discountId = ""
     }
 
-    private fun getData(
-        view: View,
-        query: Query
-    ) {
+    private fun getData(view: View, query: Query) {
         val options = FirestoreRecyclerOptions.Builder<Products>()
             .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(
-            options,
-            R.layout.body_product_list,
-            this
-        )
+        mAdapter = ProductListAdapter(options, this)
 
         view.mProductListRV.addItemDecoration(
             MarginItemDecoration(

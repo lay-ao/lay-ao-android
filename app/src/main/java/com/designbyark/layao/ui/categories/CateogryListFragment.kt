@@ -68,7 +68,6 @@ class CateogryListFragment : Fragment(),
 
         mAdapter = ProductListAdapter(
             options,
-            R.layout.body_product_list,
             this
         )
 
