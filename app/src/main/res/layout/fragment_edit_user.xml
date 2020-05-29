@@ -1,255 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.edituser.EditUserFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="edit"
+            type="com.designbyark.layao.ui.edituser.EditUserFragment" />
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        tools:context=".ui.edituser.EditUserFragment">
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans_extrabold"
-            android:text="Edit User"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="16dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mFullNameIL"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Full Name"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/holo_green_dark"
-            app:boxStrokeWidth="0.5dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="33"
-            app:errorEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20"
-            app:startIconDrawable="@drawable/ic_person_color_24dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mFullNameIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@android:color/holo_green_dark"
+                app:boxStrokeWidth="0.5dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="33"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:startIconDrawable="@drawable/ic_person_color_24dp"
+                app:startIconTint="@color/colorPrimary">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mFullNameET"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mFullNameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:inputType="textPersonName"
+                    android:maxLength="33"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mEmailIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:enabled="false"
+                android:hint="@string/email_address"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@android:color/holo_green_dark"
+                app:boxStrokeWidth="0.5dp"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:helperText="Email cannot be changed"
+                app:helperTextEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mFullNameIL"
+                app:startIconDrawable="@drawable/ic_email_grey"
+                app:startIconTint="#006064">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mEmailET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:inputType="none"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/address_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:inputType="textPersonName"
-                android:maxLength="33"
-                android:selectAllOnFocus="false"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mEmailIL">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mEmailIL"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:enabled="false"
-            android:hint="Email"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/holo_green_dark"
-            app:boxStrokeWidth="0.5dp"
-            app:counterEnabled="false"
-            app:errorEnabled="true"
-            app:helperText="Email cannot be changed"
-            app:helperTextEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mFullNameIL"
-            app:startIconDrawable="@drawable/ic_email_grey">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/mHouseNumIL"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:hint="@string/house_number"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxBackgroundMode="filled"
+                    app:boxStrokeColor="@android:color/holo_green_dark"
+                    app:boxStrokeWidth="0.5dp"
+                    app:errorEnabled="true"
+                    app:helperTextEnabled="false"
+                    app:hintAnimationEnabled="true"
+                    app:hintEnabled="true"
+                    app:startIconDrawable="@drawable/ic_home_black_24dp"
+                    app:startIconTint="@color/design_default_color_secondary_variant">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mEmailET"
-                android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/mHouseNumET"
+                        style="@style/Widget.Design.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans"
+                        android:inputType="textPostalAddress"
+                        android:maxLength="50"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        tools:text="91" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/mBlockSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:dropDownWidth="wrap_content"
+                    android:entries="@array/blocks"
+                    android:spinnerMode="dialog"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/mHouseNumIL"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/mHouseNumIL"
+                    app:layout_constraintTop_toBottomOf="@+id/mEmailIL" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mAddressHelp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/open_sans"
-                android:inputType="none"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mHouseNumIL"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="House Number"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/holo_green_dark"
-            app:boxStrokeWidth="0.5dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="8"
-            app:errorEnabled="true"
-            app:helperTextEnabled="false"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mEmailIL"
-            app:startIconDrawable="@drawable/ic_house_color_24dp"
-            app:startIconTint="@null">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mHouseNumET"
-                style="@style/Widget.Design.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:inputType="textPostalAddress"
-                android:maxLength="8"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
+                android:gravity="center"
+                android:text="@string/address_placeholder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:text="91" />
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/address_section" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Spinner
-            android:id="@+id/mBlockSpinner"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:dropDownWidth="wrap_content"
-            android:spinnerMode="dropdown"
-            app:layout_constraintBottom_toBottomOf="@+id/mHouseNumIL"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/mHouseNumIL"
-            app:layout_constraintTop_toBottomOf="@+id/mEmailIL" />
-
-        <TextView
-            android:id="@+id/mAddressHelp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:drawableEnd="@drawable/ic_help_color_24dp"
-            android:drawableRight="@drawable/ic_help_color_24dp"
-            android:drawablePadding="10dp"
-            android:fontFamily="@font/open_sans"
-            android:gravity="center"
-            android:text="Wapda Town, Lahore, Punjab, Pakistan"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/darker_gray"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mHouseNumIL" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mContactIL"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Contact"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/holo_green_dark"
-            app:boxStrokeWidth="0.5dp"
-            app:counterEnabled="false"
-            app:errorEnabled="true"
-            app:helperText="03(XX) 123 45 67"
-            app:helperTextEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mAddressHelp"
-            app:passwordToggleEnabled="false"
-            app:startIconDrawable="@drawable/ic_local_phone_color_24dp"
-            app:startIconTint="@null">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mContactET"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/service_warning"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/card_background"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/delivery_services_msg"
+                android:textColor="@android:color/black"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mAddressHelp"
+                tools:ignore="SmallSp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mContactIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/contact"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@android:color/holo_green_dark"
+                app:boxStrokeWidth="0.5dp"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:helperText="03(XX) 123 45 67"
+                app:helperTextEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/service_warning"
+                app:passwordToggleEnabled="false"
+                app:startIconDrawable="@drawable/ic_local_phone_color_24dp"
+                app:startIconTint="@null">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mContactET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/mGenderSpinner"
+                style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:dropDownWidth="wrap_content"
+                android:entries="@array/gender"
+                android:padding="16dp"
+                android:spinnerMode="dropdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/open_sans"
-                android:inputType="phone"
-                android:maxLength="11"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:text="@string/select_gender"
+                android:textColor="@android:color/darker_gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mContactIL" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mEditButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/open_sans"
+                android:onClick="@{() -> edit.editUser()}"
+                android:text="@string/edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mGenderSpinner" />
 
-        <Spinner
-            android:id="@+id/mGenderSpinner"
-            style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:dropDownWidth="wrap_content"
-            android:entries="@array/gender"
-            android:padding="16dp"
-            android:spinnerMode="dropdown"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mChangePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#FFD600"
+                android:fontFamily="@font/open_sans"
+                android:gravity="center"
+                android:onClick="@{() -> edit.changePassword()}"
+                android:paddingHorizontal="12dp"
+                android:text="@string/change_password"
+                android:textColor="@android:color/holo_blue_dark"
+                app:layout_constraintBottom_toBottomOf="@+id/mEditButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mGenderSpinner" />
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/open_sans"
-            android:text="Select Gender"
-            android:textColor="@android:color/darker_gray"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mContactIL" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mEditButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/open_sans"
-            android:text="Edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mGenderSpinner" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mDeleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/open_sans"
-            android:text="Delete Account"
-            app:backgroundTint="@android:color/holo_red_dark"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mChangePassword" />
-
-        <Button
-            android:id="@+id/mChangePassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans"
-            android:backgroundTint="#FFD600"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="24dp"
-            android:text="Change Password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mGenderSpinner" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+    </ScrollView>
+</layout>

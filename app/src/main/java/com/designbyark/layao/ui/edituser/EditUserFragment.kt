@@ -4,39 +4,39 @@ package com.designbyark.layao.ui.edituser
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.common.duplicationValue
 import com.designbyark.layao.common.emptyValidation
 import com.designbyark.layao.data.User
+import com.designbyark.layao.databinding.FragmentEditUserBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_edit_user.view.*
 
 class EditUserFragment : Fragment() {
 
-    private lateinit var navController: NavController
-
     private lateinit var userDoc: DocumentReference
-
     private var user: User? = null
+    private lateinit var binding: FragmentEditUserBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_edit_user, container, false)
+        setHasOptionsMenu(true)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_user, container, false)
+        binding.edit = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,15 +47,10 @@ class EditUserFragment : Fragment() {
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val userCollection = firebaseFirestore.collection(USERS_COLLECTION)
 
-//        (requireActivity() as AppCompatActivity).run {
-//            supportActionBar?.setTitle("Edit User")
-//        }
-//        setHasOptionsMenu(true)
-
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setTitle("Edit User")
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
 
         if (firebaseUser != null) {
             userDoc = userCollection.document(firebaseUser.uid)
@@ -63,31 +58,21 @@ class EditUserFragment : Fragment() {
             Toast.makeText(requireContext(), "No user found!", Toast.LENGTH_SHORT).show()
         }
 
-        findUserData(view)
-
-        view.mEditButton.setOnClickListener {
-            validateUserData(view)
-        }
-
-        view.mChangePassword.setOnClickListener {
-            val args = Bundle()
-            args.putInt("change_pass", 0)
-            navController.navigate(R.id.action_editUserFragment_to_forgotPasswordFragment, args)
-        }
+        findUserData()
     }
 
-    private fun validateUserData(view: View) {
+    fun editUser() {
 
-        val fullName = view.mFullNameET.text.toString().trim()
-        if (emptyValidation(fullName, view.mFullNameIL)) return
+        val fullName = binding.mFullNameET.text.toString().trim()
+        if (emptyValidation(fullName, binding.mFullNameIL)) return
 
-        val houseNumber = view.mHouseNumET.text.toString().trim()
-        if (emptyValidation(houseNumber, view.mHouseNumIL)) return
+        val houseNumber = binding.mHouseNumET.text.toString().trim()
+        if (emptyValidation(houseNumber, binding.mHouseNumIL)) return
 
-        val contact = view.mContactET.text.toString().trim()
-        if (emptyValidation(contact, view.mContactIL)) return
+        val contact = binding.mContactET.text.toString().trim()
+        if (emptyValidation(contact, binding.mContactIL)) return
 
-        if (view.mBlockSpinner.selectedItemPosition == 0) {
+        if (binding.mBlockSpinner.selectedItemPosition == 0) {
             Toast.makeText(requireContext(), "Kindly select block number", Toast.LENGTH_SHORT)
                 .show()
             return
@@ -109,27 +94,32 @@ class EditUserFragment : Fragment() {
             Toast.makeText(requireContext(), "Contact updated", Toast.LENGTH_SHORT).show()
         }
 
-        if (view.mBlockSpinner.selectedItemPosition != 0) {
-            userDoc.update("blockNumber", view.mBlockSpinner.selectedItemPosition)
+        if (binding.mBlockSpinner.selectedItemPosition != 0) {
+            userDoc.update("blockNumber", binding.mBlockSpinner.selectedItemPosition)
             userDoc.update(
                 "completeAddress",
-                "House #$houseNumber, ${view.mBlockSpinner.selectedItem}, Wapda Town, " +
+                "House #$houseNumber, ${binding.mBlockSpinner.selectedItem}, Wapda Town, " +
                         "Lahore, Punjab, Pakistan"
             )
             Toast.makeText(requireContext(), "Block Number updated", Toast.LENGTH_SHORT).show()
         }
 
-
-        if (view.mGenderSpinner.selectedItemPosition != user!!.gender) {
-            userDoc.update("gender", view.mGenderSpinner.selectedItemPosition)
+        if (binding.mGenderSpinner.selectedItemPosition != user!!.gender) {
+            userDoc.update("gender", binding.mGenderSpinner.selectedItemPosition)
             Toast.makeText(requireContext(), "Gender updated", Toast.LENGTH_SHORT).show()
         }
 
-        navController.navigate(R.id.action_editUserFragment_to_navigation_user)
+        findNavController().navigate(R.id.action_editUserFragment_to_navigation_user)
 
     }
 
-    private fun findUserData(view: View) {
+    fun changePassword() {
+        val args = Bundle()
+        args.putInt("change_pass", 0)
+        findNavController().navigate(R.id.action_editUserFragment_to_forgotPasswordFragment, args)
+    }
+
+    private fun findUserData() {
 
         userDoc.addSnapshotListener { snapshot, e ->
 
@@ -141,25 +131,23 @@ class EditUserFragment : Fragment() {
             if (snapshot != null && snapshot.exists()) {
                 user = snapshot.toObject(User::class.java)
                 if (user != null) {
-                    view.mFullNameET.setText(user!!.fullName, TextView.BufferType.EDITABLE)
-                    view.mEmailET.setText(user!!.email, TextView.BufferType.EDITABLE)
-                    view.mHouseNumET.setText(user!!.houseNumber, TextView.BufferType.EDITABLE)
-                    view.mContactET.setText(user!!.contact, TextView.BufferType.EDITABLE)
-                    view.mGenderSpinner.setSelection(user!!.gender)
+                    binding.mFullNameET.setText(user!!.fullName, TextView.BufferType.EDITABLE)
+                    binding.mEmailET.setText(user!!.email, TextView.BufferType.EDITABLE)
+                    binding.mHouseNumET.setText(user!!.houseNumber, TextView.BufferType.EDITABLE)
+                    binding.mContactET.setText(user!!.contact, TextView.BufferType.EDITABLE)
+                    binding.mGenderSpinner.setSelection(user!!.gender)
                     if (user!!.blockNumber != 0) {
-                        view.mBlockSpinner.setSelection(user!!.blockNumber)
+                        binding.mBlockSpinner.setSelection(user!!.blockNumber)
                     }
+                    binding.mAddressHelp.text =
+                        String.format("House #%s, %s, Wapda Town, Lahore",
+                            user!!.houseNumber,
+                            binding.mBlockSpinner.selectedItem
+                        )
                 }
             }
         }
 
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> navController.navigateUp()
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
 }
