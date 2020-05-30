@@ -54,6 +54,7 @@ class HomeFragment : Fragment(),
     ): View? {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding.home = this
         return binding.root
     }
 

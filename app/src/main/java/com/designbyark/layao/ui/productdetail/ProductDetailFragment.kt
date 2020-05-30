@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.cart.Cart
+import com.designbyark.layao.databinding.FragmentProductDetailBinding
 import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -24,10 +26,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.fragment_product_detail.view.*
 import java.util.*
 
 class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListItemClickListener {
+
+    private lateinit var cartViewModel: CartViewModel
+    private lateinit var binding: FragmentProductDetailBinding
 
     private var mAdapter: SimilarProductListAdapter? = null
     private var firebaseUser: FirebaseUser? = null
@@ -65,7 +69,9 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         val firebaseAuth = FirebaseAuth.getInstance()
         firebaseUser = firebaseAuth.currentUser
 
-        return inflater.inflate(R.layout.fragment_product_detail, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
+        binding.product = this
+        return binding.root
     }
 
     @ExperimentalStdlibApi
@@ -73,12 +79,11 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-//        (requireActivity() as AppCompatActivity).run {
-//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-//        }
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        }
 
-        val cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
+        cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         val firestore = FirebaseFirestore.getInstance()
         val productCollection = firestore.collection(PRODUCTS_COLLECTION)
         if (firebaseUser != null) {
@@ -87,52 +92,13 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
                 .get().addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
                         documentExists = true
-                        view.mFavorite.isSelected = true
+                        binding.mFavorite.isSelected = true
                     }
                 }
         }
 
         Log.d(LOG_TAG, "Value ${productTag!!}")
         getData(view, firestore)
-
-        view.mAdd.setOnClickListener {
-            if (quantity != stock) {
-                quantity++
-                view.mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
-            } else {
-                Toast.makeText(requireContext(), "Max Stock Reached!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        view.mSubtract.setOnClickListener {
-            quantity--
-            if (quantity <= 1) {
-                quantity = 1
-            }
-            view.mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
-        }
-
-        view.mAddToCart.setOnClickListener {
-
-            val cart = Cart()
-            cart.brand = brand
-            cart.discount = discount
-            cart.image = image
-            cart.price = price
-            cart.tag = mTag
-            cart.title = title
-            cart.unit = unit
-            cart.quantity = quantity
-            cart.stock = stock
-            if (discount > 0) {
-                cart.total = findDiscountPrice(price, discount) * quantity
-            } else {
-                cart.total = price * quantity
-            }
-            cartViewModel.insert(cart)
-            Toast.makeText(requireActivity(), "Added to cart!", Toast.LENGTH_LONG).show()
-
-        }
 
 
         val query = productCollection.whereEqualTo("tag", productTag!!)
@@ -147,8 +113,45 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             this,
             productId!!
         )
-        setHorizontalListLayout(view.mSimilarProductsRV, requireContext())
-        view.mSimilarProductsRV.adapter = mAdapter
+        setHorizontalListLayout(binding.mSimilarProductsRV, requireContext())
+        binding.mSimilarProductsRV.adapter = mAdapter
+    }
+
+    fun subtract() {
+        quantity--
+        if (quantity <= 1) {
+            quantity = 1
+        }
+        binding.mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
+    }
+
+    fun add() {
+        if (quantity != stock) {
+            quantity++
+            binding.mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
+        } else {
+            Toast.makeText(requireContext(), "Max Stock Reached!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun addToCart() {
+        val cart = Cart()
+        cart.brand = brand
+        cart.discount = discount
+        cart.image = image
+        cart.price = price
+        cart.tag = mTag
+        cart.title = title
+        cart.unit = unit
+        cart.quantity = quantity
+        cart.stock = stock
+        if (discount > 0) {
+            cart.total = findDiscountPrice(price, discount) * quantity
+        } else {
+            cart.total = price * quantity
+        }
+        cartViewModel.insert(cart)
+        Toast.makeText(requireActivity(), "Added to cart!", Toast.LENGTH_LONG).show()
     }
 
 
@@ -183,45 +186,45 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
                     stock = model.stock
 
                     Glide.with(view.context).load(image)
-                        .placeholder(circularProgressBar(requireContext())).into(view.mImage)
-                    view.mTitle.text = title
+                        .placeholder(circularProgressBar(requireContext())).into(binding.mImage)
+                    binding.mTitle.text = title
                     (requireActivity() as AppCompatActivity).run {
                         supportActionBar?.setTitle(model.title)
                     }
                     if (discount > 0) {
-                        view.mPrice.text = String.format(
+                        binding.mPrice.text = String.format(
                             Locale.getDefault(),
                             "Rs. %.0f/%s", findDiscountPrice(price, discount), unit
                         )
-                        view.mOriginalPrice.text = String.format(
+                        binding.mOriginalPrice.text = String.format(
                             Locale.getDefault(),
                             "Rs. %.0f/%s", price, unit
                         )
-                        view.mOriginalPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                        binding.mOriginalPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                     } else {
-                        view.mPrice.text = String.format(
+                        binding.mPrice.text = String.format(
                             Locale.getDefault(),
                             "Rs. %.0f/%s", price, unit
                         )
-                        view.mPrice.setTextColor(
+                        binding.mPrice.setTextColor(
                             ContextCompat.getColor(
                                 requireContext(),
                                 R.color.colorTextPrimary
                             )
                         )
-                        view.mOriginalPrice.visibility = View.GONE
-                        view.mDiscount.visibility = View.GONE
+                        binding.mOriginalPrice.visibility = View.GONE
+                        binding.mDiscount.visibility = View.GONE
                     }
-                    view.mBrand.text = brand
+                    binding.mBrand.text = brand
                     if (discount > 0) {
-                        view.mDiscount.text = String.format(
+                        binding.mDiscount.text = String.format(
                             Locale.getDefault(),
                             "%.0f%% off ", discount
                         )
                     }
-                    view.mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
+                    binding.mQuantity.text = setQuantityPrice(price, quantity, discount, unit)
 
-                    view.mFavorite.setOnClickListener {
+                    binding.mFavorite.setOnClickListener {
 
                         if (firebaseUser == null) {
                             Log.d(LOG_TAG, "Adding to Favorite: firebaseUser == null.")
@@ -234,7 +237,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
                                 .delete().addOnCompleteListener { task ->
                                     if (task.isSuccessful && task.isComplete) {
                                         documentExists = false
-                                        view.mFavorite.isSelected = false
+                                        binding.mFavorite.isSelected = false
                                         return@addOnCompleteListener
                                     }
                                 }
@@ -257,7 +260,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
                                 .collection("Favorites").document(productId!!)
                                 .set(favorites).addOnCompleteListener { task ->
                                     if (task.isSuccessful && task.isComplete) {
-                                        view.mFavorite.isSelected = true
+                                        binding.mFavorite.isSelected = true
                                     }
                                 }
                                 .addOnFailureListener { exception ->
