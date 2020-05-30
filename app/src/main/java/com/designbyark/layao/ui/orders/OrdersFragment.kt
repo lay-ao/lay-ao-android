@@ -7,7 +7,10 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.OrderAdapter
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
@@ -58,7 +61,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
         val query = orderCollection.whereEqualTo("userId", firebaseUser?.uid)
             .whereLessThanOrEqualTo("orderStatus", 4)
-            .orderBy("orderStatus", Query.Direction.ASCENDING)
+            .orderBy("orderStatus", Query.Direction.DESCENDING)
 
         query.addSnapshotListener { value, e ->
             var count = 0

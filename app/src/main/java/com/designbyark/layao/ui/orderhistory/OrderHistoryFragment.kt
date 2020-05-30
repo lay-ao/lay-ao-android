@@ -1,4 +1,4 @@
-package com.designbyark.layao.ui.orders
+package com.designbyark.layao.ui.orderhistory
 
 
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.OrderAdapter
 import com.designbyark.layao.common.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
 import com.firebase.ui.firestore.FirestoreRecyclerOptions

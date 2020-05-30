@@ -1,19 +1,22 @@
 package com.designbyark.layao.adapters
 
 import android.graphics.Paint
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.BindingAdapter
 import com.algolia.instantsearch.helper.android.highlighting.toSpannedString
 import com.bumptech.glide.Glide
-import com.designbyark.layao.common.circularProgressBar
-import com.designbyark.layao.common.findDiscountPrice
-import com.designbyark.layao.common.getSavingPrice
+import com.designbyark.layao.common.*
+import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.ProductsData
 import com.designbyark.layao.data.cart.Cart
+import com.google.android.material.card.MaterialCardView
+import com.google.firebase.Timestamp
 import java.util.*
 
 @BindingAdapter("app:setImage")
@@ -186,12 +189,66 @@ fun setChangingQuantity(view: TextView, cart: Cart) {
     }
 }
 
-@BindingAdapter("app:setUnitLabel")
-fun setUnitLabel(view: TextView, unit: String) {
-    view.text = String.format("Per %s", unit)
-}
+//@BindingAdapter("app:setUnitLabel")
+//fun setUnitLabel(view: TextView, unit: String) {
+//    view.text = String.format("Per %s", unit)
+//}
 
 @BindingAdapter("app:setSearchProductTitle")
 fun setSearchProductTitle(view: TextView, productsData: ProductsData) {
     view.text = productsData.highlightedTitle?.toSpannedString() ?: productsData.title
+}
+
+@BindingAdapter("app:setOrderStatus")
+fun setOrderStatus(view: TextView, status: Int) {
+    view.text = getOrderStatus(status)
+}
+
+@BindingAdapter("app:setOrderUI")
+fun setOrderUI(view: MaterialCardView, status: Int) {
+    when (status) {
+        0 -> view.strokeColor = getColor(view.context, android.R.color.holo_orange_dark)
+        1 -> view.strokeColor = getColor(view.context, android.R.color.holo_blue_dark)
+        2 -> view.strokeColor = getColor(view.context, android.R.color.holo_green_dark)
+        3 -> view.strokeColor = getColor(view.context, android.R.color.holo_purple)
+        4 -> view.strokeColor = getColor(view.context, android.R.color.holo_red_dark)
+        5 -> view.strokeColor = getColor(view.context, android.R.color.holo_green_dark)
+        6 -> view.strokeColor = getColor(view.context, android.R.color.holo_red_dark)
+        else -> view.strokeColor = getColor(view.context, android.R.color.black)
+    }
+}
+
+@BindingAdapter("app:setGrandTotal")
+fun setGrandTotal(view: TextView, grandTotal: Double) {
+    view.text = String.format(Locale.getDefault(), "Grand Total: Rs. %.0f", grandTotal)
+}
+
+@BindingAdapter("app:setOrderTiming")
+fun setOrderTiming(view: TextView, time: Timestamp) {
+    view.text = String.format(
+        "Order time: %s", DateUtils.getRelativeDateTimeString(
+            view.context,
+            time.toDate().time,
+            DateUtils.SECOND_IN_MILLIS,
+            DateUtils.YEAR_IN_MILLIS,
+            0
+        )
+    )
+}
+
+@BindingAdapter("app:setItems")
+fun setItems(view: TextView, count: Int) {
+    var plurals = "item"
+    if (count > 1) {
+        plurals = "items"
+    }
+    view.text = String.format("Cart item(s): %d %s", count, plurals)
+}
+
+@BindingAdapter("app:setOrderId")
+fun setOrderId(view: TextView, order: Order) {
+    view.text = String.format(
+        "Order #%s",
+        formatOrderId(order.orderId, order.contactNumber).toUpperCase(Locale.getDefault())
+    )
 }

@@ -7,5 +7,5 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.orders.OrderHistoryFragment"
+    tools:context=".ui.orderhistory.OrderHistoryFragment"
     tools:listitem="@layout/body_active_order" />
