@@ -89,7 +89,7 @@
     <string name="cart_total">Cart Total</string>
     <string name="gst_information">GST included within the amount</string>
     <string name="delivery_information">Delivery Information</string>
-    <string name="name">Name</string>
+    <string name="name">Full Name</string>
     <string name="house_number">House No.</string>
     <string name="comments_optional">Comments (Optional)</string>
     <string name="place_order">Place Order</string>
@@ -128,6 +128,8 @@
     <string name="shop_by_brands">SHOP BY BRANDS</string>
     <string name="email_is_not_verified">Email is not Verified</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="terms_and_condition_label">You accept our Terms and Conditions</string>
 
 
 </resources>
