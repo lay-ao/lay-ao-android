@@ -113,7 +113,7 @@
     <string name="order_cancelling_desc">Cancelling an order will charge Rs. 30 if the driver is on the way.</string>
     <string name="fine_count_desc">Cannot Place Order Due to FINE COUNT limit. Call at +92XXX123ABCD (HELPLINE) for resolving error.</string>
     <string name="no_orders_placed_yet">No Orders Placed Yet!</string>
-    <string name="empty_order_attraction">Let\'s buy something?</string>
+    <string name="empty_order_attraction">Buy something?</string>
     <string name="product_image">Product Image</string>
     <string name="add_to_cart">add to cart</string>
     <string name="similar_products">Similar Products</string>
