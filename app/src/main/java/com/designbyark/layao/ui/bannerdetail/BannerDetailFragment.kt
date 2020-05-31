@@ -11,13 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import com.designbyark.layao.R
-import com.designbyark.layao.common.BANNER_COLLECTION
-import com.designbyark.layao.common.formatDate
-import com.designbyark.layao.data.Banner
 import com.designbyark.layao.databinding.FragmentBannerDetailBinding
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class BannerDetailFragment : Fragment() {

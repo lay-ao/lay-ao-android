@@ -31,7 +31,12 @@
             app:destination="@id/brandsListFragment" />
         <action
             android:id="@+id/action_navigation_home_to_CPListFragment"
-            app:destination="@id/CPListFragment" />
+            app:destination="@id/CPListFragment">
+            <argument
+                android:name="categoryId"
+                app:argType="string"
+                android:defaultValue="NIP" />
+        </action>
         <action
             android:id="@+id/action_navigation_home_to_navigation_category"
             app:destination="@id/navigation_category" />
@@ -127,6 +132,10 @@
         <action
             android:id="@+id/action_CPListFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
+        <argument
+            android:name="categoryId"
+            app:argType="string"
+            android:defaultValue="NIP" />
     </fragment>
 
     <fragment
