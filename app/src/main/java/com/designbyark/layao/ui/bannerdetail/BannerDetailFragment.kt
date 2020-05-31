@@ -5,7 +5,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ import com.designbyark.layao.common.BANNER_COLLECTION
 import com.designbyark.layao.common.formatDate
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.databinding.FragmentBannerDetailBinding
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -47,27 +45,37 @@ class BannerDetailFragment : Fragment() {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
 
-        val firestore = FirebaseFirestore.getInstance()
-        val collection = firestore.collection(BANNER_COLLECTION)
-        val document = args.bannerId.let { collection.document(it) }
+        // val firestore = FirebaseFirestore.getInstance()
+        // val collection = firestore.collection(BANNER_COLLECTION)
+        // val document = collection.document("30%-off-fruits")
 
-        getData(view, document)
+        // getData(document)
+        getData(args.banner)
     }
 
-    private fun getData(view: View, document: DocumentReference?) {
-        document?.get()?.addOnSuccessListener { documentSnapshot ->
-            val model = documentSnapshot.toObject(Banner::class.java)
-            if (model != null) {
-                Glide.with(requireActivity()).load(model.image).into(binding.mImage)
-                binding.mTitle.text = model.title
-                binding.mDescription.text = model.description
-                binding.mValidity.text = model.validity?.let { "Valid till ${formatDate(it)}" }
-                binding.mPromoCode.text = String.format("Promo Code: %s", model.code)
-                promoCode = model.code
-            }
-        }?.addOnFailureListener { exception ->
-            Log.d("Banner Detail: ", "get failed with ", exception)
-        }
+//    private fun getData(document: DocumentReference?) {
+//        document?.get()?.addOnSuccessListener { documentSnapshot ->
+//            val model = documentSnapshot.toObject(Banner::class.java)
+//            if (model != null) {
+//                Glide.with(requireActivity()).load(model.image).into(binding.mImage)
+//                binding.mTitle.text = model.title
+//                binding.mDescription.text = model.description
+//                binding.mValidity.text = model.validity?.let { "Valid till ${formatDate(it)}" }
+//                binding.mPromoCode.text = String.format("Promo Code: %s", model.code)
+//                promoCode = model.code
+//            }
+//        }?.addOnFailureListener { exception ->
+//            Log.d("Banner Detail: ", "get failed with ", exception)
+//        }
+//    }
+
+    private fun getData(banner: Banner) {
+        Glide.with(requireActivity()).load(banner.image).into(binding.mImage)
+        binding.mTitle.text = banner.title
+        binding.mDescription.text = banner.description
+        binding.mValidity.text = banner.validity?.let { "Valid till ${formatDate(it)}" }
+        binding.mPromoCode.text = String.format("Promo Code: %s", banner.code)
+        promoCode = banner.code
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

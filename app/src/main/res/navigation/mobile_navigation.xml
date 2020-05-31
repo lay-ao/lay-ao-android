@@ -14,9 +14,8 @@
             android:id="@+id/action_nav_bannerDetailFragment"
             app:destination="@id/bannerDetailFragment" >
             <argument
-                android:name="bannerId"
-                app:argType="string"
-                android:defaultValue="NIP" />
+                android:name="banner"
+                app:argType="com.designbyark.layao.data.Banner" />
         </action>
         <action
             android:id="@+id/action_nav_productDetailFragment"
@@ -95,9 +94,8 @@
         android:label="@string/title_banner_detail"
         tools:layout="@layout/fragment_banner_detail" >
         <argument
-            android:name="bannerId"
-            app:argType="string"
-            android:defaultValue="NIP" />
+            android:name="banner"
+            app:argType="com.designbyark.layao.data.Banner" />
     </fragment>
 
     <fragment
