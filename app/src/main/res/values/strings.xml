@@ -108,7 +108,8 @@
     <string name="app_slogan">Groceries at your doorstep</string>
     <string name="create_an_account">Create an Account</string>
     <string name="sign_in">Sign In</string>
-    <string name="auth_slogan">Join the Lay Ao family.\nA 24 hour Grocery Delivery System</string>
+    <string name="auth_slogan">The fastest Grocery Delivery System in Pakistan</string>
+    <string name="auth_title">Join the Lay Ao family</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="order_cancelling_desc">Cancelling an order will charge Rs. 30 if the driver is on the way.</string>
     <string name="fine_count_desc">Cannot Place Order Due to FINE COUNT limit. Call at +92XXX123ABCD (HELPLINE) for resolving error.</string>
@@ -134,6 +135,8 @@
     <string name="skip">Skip</string>
     <string name="done">Done</string>
     <string name="complete_registration">Complete Registration</string>
+    <string name="login_long_msg">Already have an account? Log in</string>
+    <string name="edit_info">Edit Info</string>
 
 
 </resources>

@@ -1,74 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
+        <variable
+            name="user"
+            type="com.designbyark.layao.ui.user.UserFragment" />
+    </data>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:contentDescription="@string/auth_slogan"
-            android:src="@drawable/ic_app_logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/hind_bold"
-            android:gravity="center"
-            android:text="@string/auth_slogan"
-            android:textAllCaps="true"
-            android:textAppearance="@android:style/TextAppearance.Material.Small"
-            android:textColor="@color/colorTextPrimary" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:text="@string/create_an_account" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:contentDescription="@string/auth_slogan"
+                android:src="@drawable/ic_home_black_24dp"
+                android:tint="@color/colorPrimary" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mSignIn"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/open_sans"
-                android:text="@string/sign_in"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                app:backgroundTint="@android:color/white"
-                app:strokeColor="@color/colorPrimaryDark"
-                app:strokeWidth="1dp" />
+                android:fontFamily="@font/hind_bold"
+                android:gravity="center"
+                android:text="@string/auth_title"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:textColor="@color/colorTextPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/hind_bold"
+                android:gravity="center"
+                android:text="@string/auth_slogan"
+                android:textAppearance="@android:style/TextAppearance.Material.Small"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> user.startRegistration()}"
+                    android:fontFamily="@font/open_sans"
+                    android:text="@string/create_an_account" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mSignIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/open_sans"
+                    android:gravity="center"
+                    android:paddingHorizontal="8dp"
+                    android:onClick="@{() -> user.login()}"
+                    android:paddingVertical="6dp"
+                    android:text="@string/login_long_msg"
+                    android:textColor="@android:color/black"
+                    android:textStyle="italic"
+                    app:backgroundTint="@android:color/white"
+                    app:strokeColor="@color/colorPrimaryDark"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
