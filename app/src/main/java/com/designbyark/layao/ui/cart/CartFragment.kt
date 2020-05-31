@@ -5,37 +5,45 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.CartAdapter
+import com.designbyark.layao.databinding.FragmentCartBinding
+import com.designbyark.layao.databinding.FragmentEmptyCartBinding
+import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.fragment_cart.view.*
-import kotlinx.android.synthetic.main.fragment_empty_cart.view.*
 import java.util.*
 
 class CartFragment : Fragment() {
 
     private lateinit var cartViewModel: CartViewModel
+    private lateinit var binding: FragmentCartBinding
+    private lateinit var emptyBinding: FragmentEmptyCartBinding
 
     private var totalPrice: Double = 0.0
     private var totalItemCount: Int = 0
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false)
+        emptyBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_empty_cart, container, false)
 
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         if (cartViewModel.itemCount() == 0) {
-            return inflater.inflate(R.layout.fragment_empty_cart, container, false)
+            emptyBinding.cart = this
+            return emptyBinding.root
         }
 
-        return inflater.inflate(R.layout.fragment_cart, container, false)
+        binding.cart = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,11 +59,6 @@ class CartFragment : Fragment() {
             (requireActivity() as AppCompatActivity).run {
                 supportActionBar?.setTitle(R.string.title_cart)
             }
-
-            view.mAddItemsToCart.setOnClickListener {
-                Navigation.createNavigateOnClickListener(R.id.action_navigation_cart_to_navigation_home, null)
-            }
-
             return
         }
 
@@ -65,39 +68,26 @@ class CartFragment : Fragment() {
 
         cartViewModel.getGrandTotal().observe(requireActivity(), Observer {
             if (it == null || it < 1) {
-                view.mCartTotal.text = "Rs. 0"
+                binding.mCartTotal.text = "Rs. 0"
                 totalPrice = 0.0
                 return@Observer
             }
-            view.mCartTotal.text = String.format(Locale.getDefault(), "Rs. %.0f", it)
+            binding.mCartTotal.text = String.format(Locale.getDefault(), "Rs. %.0f", it)
             totalPrice = it
         })
 
-        val cartAdapter =
-            CartAdapter(requireContext(), cartViewModel)
-        view.mCartRV.adapter = cartAdapter
+        val cartAdapter = CartAdapter(cartViewModel)
+        binding.mCartRV.adapter = cartAdapter
 
         cartViewModel.allCartItems.observe(requireActivity(), Observer { items ->
             items?.let { cartAdapter.setItems(it) }
             totalItemCount = items.size
-            view.mTotalItems.text = String.format(Locale.getDefault(), "x%d", totalItemCount)
+            binding.mTotalItems.text = String.format(Locale.getDefault(), "x%d", totalItemCount)
         })
+    }
 
-        view.mCheckout.setOnClickListener {
-            if (totalPrice < 500) {
-                Toast.makeText(
-                    requireActivity(),
-                    "Amount too low, add more items",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            } else {
-                val args = Bundle()
-                args.putDouble("grand_total", totalPrice)
-                args.putInt("total_items", totalItemCount)
-                Navigation.createNavigateOnClickListener(R.id.action_navigation_cart_to_checkoutFragment, args)
-            }
-        }
+    fun moveToHome() {
+        findNavController().navigate(R.id.action_navigation_cart_to_navigation_home)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -136,5 +126,18 @@ class CartFragment : Fragment() {
                 dialog.dismiss()
             }
             .show()
+    }
+
+    fun checkout() {
+        if (totalPrice < 500.0) {
+            Toast.makeText(requireActivity(), "Amount too low, add more items", Toast.LENGTH_LONG)
+                .show()
+            return
+        } else {
+            val args = Bundle()
+            args.putDouble("grand_total", totalPrice)
+            args.putInt("total_items", totalItemCount)
+            findNavController().navigate(R.id.action_navigation_cart_to_checkoutFragment, args)
+        }
     }
 }

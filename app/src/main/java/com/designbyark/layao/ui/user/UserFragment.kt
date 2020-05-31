@@ -4,31 +4,32 @@ package com.designbyark.layao.ui.user
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.USERS_COLLECTION
 import com.designbyark.layao.common.formatGender
 import com.designbyark.layao.common.isConnectedToInternet
 import com.designbyark.layao.data.User
+import com.designbyark.layao.databinding.FragmentActiveUserBinding
+import com.designbyark.layao.databinding.FragmentNoUserBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_active_user.view.*
-import java.util.*
 
 
 class UserFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private var firebaseUser: FirebaseUser? = null
-    private lateinit var navController: NavController
+
+    private lateinit var emptyBinding: FragmentNoUserBinding
+    private lateinit var binding: FragmentActiveUserBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,34 +45,15 @@ class UserFragment : Fragment() {
             bottomMenu.visibility = View.VISIBLE
         }
 
-        navController = Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        )
-
         if (firebaseUser == null) {
-
-            val noUserView = inflater.inflate(
-                R.layout.fragment_no_user,
-                container,
-                false
-            )
-
-            val registerButton: Button = noUserView.findViewById(R.id.mSignUp)
-            val signInButton: Button = noUserView.findViewById(R.id.mSignIn)
-
-            registerButton.setOnClickListener {
-                navController.navigate(R.id.action_navigation_user_to_registerFragment)
-            }
-
-            signInButton.setOnClickListener {
-                navController.navigate(R.id.action_navigation_user_to_signInFragment)
-            }
-
-            return noUserView
+            emptyBinding =
+                DataBindingUtil.inflate(inflater, R.layout.fragment_no_user, container, false)
+            emptyBinding.user = this
+            return emptyBinding.root
         }
-
-        return inflater.inflate(R.layout.fragment_active_user, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_active_user, container, false)
+        binding.user = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,17 +71,6 @@ class UserFragment : Fragment() {
         val userCollection = firestore.collection(USERS_COLLECTION)
 
         getUserData(view, userCollection, firebaseUser!!)
-
-        view.mSignOut.setOnClickListener {
-
-            if (!isConnectedToInternet(requireContext())) {
-                Log.e(LOG_TAG, "Not connected to the internet!")
-                return@setOnClickListener
-            }
-
-            auth.signOut()
-            navController.navigate(R.id.action_navigation_user_to_signInFragment)
-        }
     }
 
     private fun getUserData(
@@ -109,7 +80,6 @@ class UserFragment : Fragment() {
     ) {
         userCollection.document(firebaseUser.uid)
             .addSnapshotListener { snapshot, e ->
-                e?.printStackTrace()
 
                 if (snapshot != null && snapshot.exists()) {
                     val model = snapshot.toObject(User::class.java)
@@ -117,25 +87,21 @@ class UserFragment : Fragment() {
 
                         val emptyString = "Not specified"
 
-                        view.mWalletAmount.text = String.format(
-                            Locale.getDefault(),
-                            "Rs. %.0f", model.wallet
-                        )
-                        view.mFullName.text = model.fullName
-                        view.mEmail.text = model.email
+                        binding.mFullName.text = model.fullName
+                        binding.mEmail.text = model.email
 
                         if (model.completeAddress == "" || model.completeAddress.isEmpty()) {
-                            view.mAddress.text = emptyString
+                            binding.mAddress.text = emptyString
                         } else {
-                            view.mAddress.text = model.completeAddress
+                            binding.mAddress.text = model.completeAddress
                         }
 
                         if (model.contact == "" || model.contact.isEmpty()) {
-                            view.mContact.text = emptyString
+                            binding.mContact.text = emptyString
                         } else {
-                            view.mContact.text = model.contact
+                            binding.mContact.text = model.contact
                         }
-                        view.mGender.text = formatGender(model.gender)
+                        binding.mGender.text = formatGender(model.gender)
                     }
                 }
             }
@@ -150,10 +116,28 @@ class UserFragment : Fragment() {
         }
     }
 
+    fun startRegistration() {
+        findNavController().navigate(R.id.action_navigation_user_to_registerFragment)
+    }
+
+    fun login() {
+        findNavController().navigate(R.id.action_navigation_user_to_signInFragment)
+    }
+
+    fun signOut() {
+        if (!isConnectedToInternet(requireContext())) {
+            Log.e(LOG_TAG, "Not connected to the internet!")
+            return
+        }
+
+        auth.signOut()
+        findNavController().navigate(R.id.action_navigation_user_to_signInFragment)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.user_edit -> {
-                navController.navigate(R.id.action_navigation_user_to_editUserFragment)
+                findNavController().navigate(R.id.action_navigation_user_to_editUserFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)

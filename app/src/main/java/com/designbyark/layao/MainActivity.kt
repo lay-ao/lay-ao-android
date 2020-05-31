@@ -1,30 +1,48 @@
 package com.designbyark.layao
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import com.designbyark.layao.ui.cart.CartViewModel
+import com.designbyark.layao.common.LOG_TAG
+import com.designbyark.layao.databinding.ActivityMainBinding
+import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var cartViewModel: CartViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
+//    private lateinit var firebaseAuth: FirebaseAuth
+//    var firebaseUser: FirebaseUser? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+//        firebaseAuth = FirebaseAuth.getInstance()
+//        firebaseAuth.addAuthStateListener { firebaseAuth ->
+//            if (firebaseAuth.currentUser == null) {
+//                Log.d(LOG_TAG, "Not Signed in!")
+//            } else {
+//                firebaseUser = firebaseAuth.currentUser
+//                Log.d(LOG_TAG, "Current user: ${firebaseUser?.email}")
+//            }
+//        }
+
+        setSupportActionBar(binding.toolbar)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -41,11 +59,10 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // Set up Bottom Navigation View
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-        bottomNav.setupWithNavController(navController)
+        binding.bottomNavView.setupWithNavController(navController)
 
         cartViewModel = ViewModelProvider(this).get(CartViewModel::class.java)
-        val badgeCount = bottomNav.getOrCreateBadge(R.id.navigation_cart)
+        val badgeCount = binding.bottomNavView.getOrCreateBadge(R.id.navigation_cart)
 
         cartViewModel.allCartItems.observe(this, Observer {
             if (it.isEmpty()) {
@@ -54,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.number = it.size
                 badgeCount.isVisible = true
             }
-        })
+        });
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

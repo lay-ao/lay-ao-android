@@ -1,147 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.user.SignInFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="signin"
+            type="com.designbyark.layao.ui.signin.SignInFragment" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.signin.SignInFragment">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mEmailIL"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="Email Address"
-            android:textColorHint="@android:color/darker_gray"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/holo_green_dark"
-            app:boxStrokeWidth="0.5dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="50"
-            app:errorEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:layout_constraintBottom_toTopOf="@+id/mDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mEmailET"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:inputType="textWebEmailAddress|textEmailAddress"
-                android:maxLength="50"
-                android:singleLine="true"
-                android:text="m.arslanmushtaqahmed@gmail.com"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mPasswordIL"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Password"
-            android:textColorHint="@android:color/darker_gray"
-            app:boxBackgroundColor="@android:color/transparent"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/holo_green_dark"
-            app:boxStrokeWidth="0.5dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="16"
-            app:errorEnabled="true"
-            app:helperTextEnabled="false"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mDivider"
-            app:passwordToggleContentDescription="Show Password"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@android:color/black">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mPasswordET"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:inputType="textWebPassword"
-                android:maxLength="16"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:text="secretpassword"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <View
-            android:id="@+id/mDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@android:color/transparent"
+            android:padding="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:fontFamily="@font/open_sans_extrabold"
-            android:text="@string/common_signin_button_text"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@android:color/holo_green_dark"
-            app:layout_constraintBottom_toTopOf="@+id/mEmailIL"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mEmailIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/email_address"
+                android:textColorHint="@android:color/darker_gray"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@android:color/holo_green_dark"
+                app:boxStrokeWidth="0.5dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/mDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:startIconDrawable="@drawable/ic_email_color"
+                app:startIconTint="@null">
 
-        <Button
-            android:id="@+id/mSignIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/common_signin_button_text"
-            app:layout_constraintEnd_toEndOf="@+id/mPasswordIL"
-            app:layout_constraintTop_toBottomOf="@+id/mPasswordIL" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mEmailET"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
 
-        <TextView
-            android:id="@+id/mForgotPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:fontFamily="@font/open_sans"
-            android:gravity="center"
-            android:text="Forgot Password"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintBottom_toBottomOf="@+id/mSignIn"
-            app:layout_constraintStart_toStartOf="@+id/mPasswordIL"
-            app:layout_constraintTop_toTopOf="@+id/mSignIn" />
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:inputType="textWebEmailAddress|textEmailAddress"
+                    android:maxLength="50"
+                    android:singleLine="true"
+                    android:text="m.arslanmushtaqahmed@gmail.com"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mPasswordIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/password"
+                android:textColorHint="@android:color/darker_gray"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@android:color/holo_green_dark"
+                app:boxStrokeWidth="0.5dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="16"
+                app:errorEnabled="true"
+                app:helperTextEnabled="false"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mDivider"
+                app:passwordToggleContentDescription="Show Password"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@android:color/black"
+                app:startIconDrawable="@drawable/ic_password"
+                app:startIconTint="@null">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mPasswordET"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:inputType="textWebPassword"
+                    android:maxLength="16"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:text="secretpassword"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:id="@+id/mDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/common_signin_button_text"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/holo_green_dark"
+                app:layout_constraintBottom_toTopOf="@+id/mEmailIL"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/mSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/open_sans"
+                android:onClick="@{() -> signin.signIn()}"
+                android:text="@string/common_signin_button_text"
+                app:layout_constraintEnd_toEndOf="@+id/mPasswordIL"
+                app:layout_constraintTop_toBottomOf="@+id/mPasswordIL" />
+
+            <TextView
+                android:id="@+id/mForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:fontFamily="@font/open_sans"
+                android:gravity="center"
+                android:onClick="@{() -> signin.forgotPassword()}"
+                android:paddingHorizontal="12dp"
+                android:text="@string/forgot_password"
+                android:textColor="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/mSignIn"
+                app:layout_constraintStart_toStartOf="@+id/mPasswordIL"
+                app:layout_constraintTop_toTopOf="@+id/mSignIn" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/mIncludeProgressBar"
+            layout="@layout/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <include
-        android:id="@+id/mIncludeProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/progress_bar"
-        android:visibility="gone" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

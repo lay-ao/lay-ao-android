@@ -1,61 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mActiveOrdersRV"
+    <data>
+        <variable
+            name="order"
+            type="com.designbyark.layao.ui.orders.OrdersFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/body_active_order" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/mNoOrdersLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center"
-        android:visibility="gone">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mActiveOrdersRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            tools:itemCount="0"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/body_active_order" />
 
-        <ImageView
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:contentDescription="@string/no_orders_placed_yet"
-            android:src="@drawable/ic_empty_order" />
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/mNoOrdersLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/hind_bold"
-            android:text="@string/no_orders_placed_yet"
-            android:textAllCaps="true"
-            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:visibility="gone">
 
-        <Button
-            android:id="@+id/mBuySomething"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/empty_order_attraction"
-            android:textStyle="bold" />
+            <ImageView
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:contentDescription="@string/no_orders_placed_yet"
+                android:src="@drawable/ic_empty_order" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/hind_bold"
+                android:text="@string/no_orders_placed_yet"
+                android:textColor="@android:color/black"
+                android:textStyle="italic"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+            <Button
+                android:id="@+id/mBuySomething"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> order.buySomething()}"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/empty_order_attraction"
+                android:textStyle="bold" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 

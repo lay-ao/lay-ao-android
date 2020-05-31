@@ -1,27 +1,32 @@
 package com.designbyark.layao.ui.orders
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.OrderAdapter
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
+import com.designbyark.layao.databinding.FragmentNoAuthOrderBinding
+import com.designbyark.layao.databinding.FragmentOrdersBinding
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.fragment_no_auth_order.view.*
-import kotlinx.android.synthetic.main.fragment_orders.view.*
 
 class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
     private var firebaseUser: FirebaseUser? = null
     private var adapter: OrderAdapter? = null
+
+    private lateinit var emptyBinding: FragmentNoAuthOrderBinding
+    private lateinit var binding: FragmentOrdersBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +37,15 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         firebaseUser = firebaseAuth.currentUser
 
         if (firebaseUser == null) {
-            return inflater.inflate(R.layout.fragment_no_auth_order, container, false)
+            emptyBinding =
+                DataBindingUtil.inflate(inflater, R.layout.fragment_no_auth_order, container, false)
+            emptyBinding.auth = this
+            return emptyBinding.root
         }
-        return inflater.inflate(R.layout.fragment_orders, container, false)
 
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_orders, container, false)
+        binding.order = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,12 +53,6 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         setHasOptionsMenu(true)
 
         if (firebaseUser == null) {
-            view.mLoginAuth.setOnClickListener {
-                Navigation.createNavigateOnClickListener(R.id.action_navigation_orders_to_signInFragment)
-            }
-            view.mRegisterAuth.setOnClickListener {
-                Navigation.createNavigateOnClickListener(R.id.action_navigation_orders_to_signUpFragment)
-            }
             return
         }
 
@@ -57,7 +61,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
         val query = orderCollection.whereEqualTo("userId", firebaseUser?.uid)
             .whereLessThanOrEqualTo("orderStatus", 4)
-            .orderBy("orderStatus", Query.Direction.ASCENDING)
+            // .orderBy("orderStatus", Query.Direction.DESCENDING)
 
         query.addSnapshotListener { value, e ->
             var count = 0
@@ -71,12 +75,9 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
             }
 
             if (count > 0) {
-                view.mNoOrdersLayout.visibility = View.GONE
+                binding.mNoOrdersLayout.visibility = View.GONE
             } else {
-                view.mNoOrdersLayout.visibility = View.VISIBLE
-                view.mBuySomething.setOnClickListener {
-                    Navigation.createNavigateOnClickListener(R.id.action_navigation_orders_to_navigation_home)
-                }
+                binding.mNoOrdersLayout.visibility = View.VISIBLE
             }
         }
 
@@ -85,7 +86,19 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
             .build()
 
         adapter = OrderAdapter(options, this)
-        view.mActiveOrdersRV.adapter = adapter
+        binding.mActiveOrdersRV.adapter = adapter
+    }
+
+    fun buySomething() {
+        findNavController().navigate(R.id.action_navigation_orders_to_navigation_home)
+    }
+
+    fun login() {
+        findNavController().navigate(R.id.action_navigation_orders_to_signInFragment)
+    }
+
+    fun register() {
+        findNavController().navigate(R.id.action_navigation_orders_to_signUpFragment)
     }
 
     override fun onStart() {
@@ -105,10 +118,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
     override fun orderItemClickListener(orderId: String) {
         val args = Bundle()
         args.putString("orderId", orderId)
-        Navigation.createNavigateOnClickListener(
-            R.id.action_navigation_orders_to_orderDetailFragment,
-            args
-        )
+        findNavController().navigate(R.id.action_navigation_orders_to_orderDetailFragment, args)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

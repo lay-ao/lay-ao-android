@@ -4,19 +4,21 @@ package com.designbyark.layao.ui.productList
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.designbyark.layao.R
+import com.designbyark.layao.adapters.ProductListAdapter
 import com.designbyark.layao.common.DISCOUNT
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Products
+import com.designbyark.layao.databinding.FragmentProductListBinding
 import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.fragment_product_list.view.*
 
 
 class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickListener {
@@ -26,6 +28,7 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
     private var discountId: String? = null
 
     private var mAdapter: ProductListAdapter? = null
+    private lateinit var binding: FragmentProductListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,9 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_product_list, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_product_list, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,6 +60,7 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
                 newArrivalId != null -> supportActionBar?.setTitle("New Arrival")
                 else -> supportActionBar?.setTitle("Items on Discount")
             }
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
         setHasOptionsMenu(true)
 
@@ -85,23 +91,19 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         discountId = ""
     }
 
-    private fun getData(
-        view: View,
-        query: Query
-    ) {
+    private fun getData(view: View, query: Query) {
         val options = FirestoreRecyclerOptions.Builder<Products>()
             .setQuery(query, Products::class.java)
             .build()
 
-        mAdapter = ProductListAdapter(options, R.layout.body_product_list, this)
+        mAdapter = ProductListAdapter(options, this)
 
-        view.mProductListRV.addItemDecoration(
+        binding.mProductListRV.addItemDecoration(
             MarginItemDecoration(
                 resources.getDimension(R.dimen.default_recycler_view_cell_margin).toInt(), 2
             )
         )
-
-        view.mProductListRV.adapter = mAdapter
+        binding.mProductListRV.adapter = mAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -120,14 +122,14 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
     override fun onStart() {
         super.onStart()
-        if (mAdapter != null){
+        if (mAdapter != null) {
             mAdapter?.startListening()
         }
     }
 
     override fun onStop() {
         super.onStop()
-        if (mAdapter != null){
+        if (mAdapter != null) {
             mAdapter?.stopListening()
         }
     }
