@@ -35,6 +35,7 @@ class BannerDetailFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_banner_detail, container, false)
         binding.detail = this
+        binding.banner = args.banner
         return binding.root
     }
 
@@ -44,38 +45,7 @@ class BannerDetailFragment : Fragment() {
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
-
-        // val firestore = FirebaseFirestore.getInstance()
-        // val collection = firestore.collection(BANNER_COLLECTION)
-        // val document = collection.document("30%-off-fruits")
-
-        // getData(document)
-        getData(args.banner)
-    }
-
-//    private fun getData(document: DocumentReference?) {
-//        document?.get()?.addOnSuccessListener { documentSnapshot ->
-//            val model = documentSnapshot.toObject(Banner::class.java)
-//            if (model != null) {
-//                Glide.with(requireActivity()).load(model.image).into(binding.mImage)
-//                binding.mTitle.text = model.title
-//                binding.mDescription.text = model.description
-//                binding.mValidity.text = model.validity?.let { "Valid till ${formatDate(it)}" }
-//                binding.mPromoCode.text = String.format("Promo Code: %s", model.code)
-//                promoCode = model.code
-//            }
-//        }?.addOnFailureListener { exception ->
-//            Log.d("Banner Detail: ", "get failed with ", exception)
-//        }
-//    }
-
-    private fun getData(banner: Banner) {
-        Glide.with(requireActivity()).load(banner.image).into(binding.mImage)
-        binding.mTitle.text = banner.title
-        binding.mDescription.text = banner.description
-        binding.mValidity.text = banner.validity?.let { "Valid till ${formatDate(it)}" }
-        binding.mPromoCode.text = String.format("Promo Code: %s", banner.code)
-        promoCode = banner.code
+        promoCode = args.banner.code
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

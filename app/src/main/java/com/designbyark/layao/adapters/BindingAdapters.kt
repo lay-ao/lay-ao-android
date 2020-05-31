@@ -32,6 +32,16 @@ fun setTitle(view: TextView, title: String) {
     view.text = title
 }
 
+@BindingAdapter("app:setValidity")
+fun setValidity(view: TextView, date: Date) {
+    view.text = String.format("Valid till %s", formatDate(date))
+}
+
+@BindingAdapter("app:setPromoCode")
+fun setPromoCode(view: TextView, code: String) {
+    view.text = String.format("Promo Code: %s", code)
+}
+
 @BindingAdapter("app:setDiscount")
 fun setDiscount(view: TextView, discount: Double) {
     if (discount > 0) {
