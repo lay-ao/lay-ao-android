@@ -278,10 +278,14 @@ class HomeFragment : Fragment(),
         findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
+    // TODO #1 Use Safe Args for passing data
     override fun mBannerItemClickListener(bannerId: String?) {
-        val args = Bundle()
-        args.putString(BANNER_ID, bannerId)
-        findNavController().navigate(R.id.action_nav_bannerDetailFragment, args)
+//        val args = Bundle()
+//        args.putString(BANNER_ID, bannerId)
+//        findNavController().navigate(R.id.action_nav_bannerDetailFragment, args)
+        if (bannerId == null) return
+        val action = HomeFragmentDirections.actionNavBannerDetailFragment(bannerId)
+        findNavController().navigate(action)
     }
 
     override fun onCategoryItemClickListener(categoryId: String) {

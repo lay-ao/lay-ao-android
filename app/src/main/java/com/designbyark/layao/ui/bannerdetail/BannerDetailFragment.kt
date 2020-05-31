@@ -11,30 +11,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.designbyark.layao.R
 import com.designbyark.layao.common.BANNER_COLLECTION
 import com.designbyark.layao.common.formatDate
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.databinding.FragmentBannerDetailBinding
-import com.designbyark.layao.ui.home.HomeFragment
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 
 class BannerDetailFragment : Fragment() {
 
-    private var bannerId: String? = null
+    val args: BannerDetailFragmentArgs by navArgs()
 
     private lateinit var promoCode: String
     private lateinit var binding: FragmentBannerDetailBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            bannerId = it.getString(HomeFragment.BANNER_ID)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +49,7 @@ class BannerDetailFragment : Fragment() {
 
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(BANNER_COLLECTION)
-        val document = bannerId?.let { collection.document(it) }
+        val document = args.bannerId.let { collection.document(it) }
 
         getData(view, document)
     }

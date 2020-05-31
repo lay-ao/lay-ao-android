@@ -12,7 +12,12 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_bannerDetailFragment"
-            app:destination="@id/bannerDetailFragment" />
+            app:destination="@id/bannerDetailFragment" >
+            <argument
+                android:name="bannerId"
+                app:argType="string"
+                android:defaultValue="NIP" />
+        </action>
         <action
             android:id="@+id/action_nav_productDetailFragment"
             app:destination="@id/productDetailFragment" />
@@ -88,7 +93,12 @@
         android:id="@+id/bannerDetailFragment"
         android:name="com.designbyark.layao.ui.bannerdetail.BannerDetailFragment"
         android:label="@string/title_banner_detail"
-        tools:layout="@layout/fragment_banner_detail" />
+        tools:layout="@layout/fragment_banner_detail" >
+        <argument
+            android:name="bannerId"
+            app:argType="string"
+            android:defaultValue="NIP" />
+    </fragment>
 
     <fragment
         android:id="@+id/productDetailFragment"
