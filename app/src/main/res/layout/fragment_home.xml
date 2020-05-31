@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="0dp"
+                android:layout_marginTop="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mEmailVerified">
@@ -222,24 +223,22 @@
                 app:layout_constraintStart_toEndOf="@+id/textView24"
                 app:layout_constraintTop_toTopOf="@+id/textView24" />
 
-
             <TextView
                 android:id="@+id/mEmailVerified"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/error_background"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="3dp"
+                android:paddingVertical="4dp"
                 android:text="@string/email_is_not_verified"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
+                android:textSize="12sp"
                 android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

@@ -130,6 +130,10 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="terms_and_condition_label">You accept our Terms and Conditions</string>
+    <string name="just_one_more_step">Just one more step</string>
+    <string name="skip">Skip</string>
+    <string name="done">Done</string>
+    <string name="complete_registration">Complete Registration</string>
 
 
 </resources>
