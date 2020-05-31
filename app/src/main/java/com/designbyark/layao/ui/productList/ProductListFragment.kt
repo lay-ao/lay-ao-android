@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.ProductListAdapter
 import com.designbyark.layao.common.DISCOUNT
@@ -23,7 +24,9 @@ import com.google.firebase.firestore.Query
 
 class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickListener {
 
-    private var brandId: String? = null
+    private val brandArgs: ProductListFragmentArgs by navArgs()
+
+    // private var brandId: String? = null
     private var newArrivalId: String? = null
     private var discountId: String? = null
 
@@ -33,7 +36,7 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            brandId = it.getString(HomeFragment.BRAND_ID)
+            // brandId = it.getString(HomeFragment.BRAND_ID)
             newArrivalId = it.getString(HomeFragment.PASSED_ID)
             discountId = it.getString(HomeFragment.DISCOUNT_ID)
         }
@@ -56,7 +59,7 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
         (requireActivity() as AppCompatActivity).run {
             when {
-                brandId != null -> supportActionBar?.setTitle(brandId)
+                brandArgs.brandId != "NIP" -> supportActionBar?.setTitle(brandArgs.brandId)
                 newArrivalId != null -> supportActionBar?.setTitle("New Arrival")
                 else -> supportActionBar?.setTitle("Items on Discount")
             }
@@ -67,8 +70,8 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         val query: Query?
 
         when {
-            brandId != null -> {
-                query = collection.whereEqualTo("brand", brandId)
+            brandArgs.brandId != "NIP" -> {
+                query = collection.whereEqualTo("brand", brandArgs.brandId)
                     .orderBy(TITLE, Query.Direction.ASCENDING)
             }
             newArrivalId != null -> {
@@ -86,7 +89,7 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
         getData(view, query)
 
-        brandId = ""
+        // brandId = ""
         newArrivalId = ""
         discountId = ""
     }
