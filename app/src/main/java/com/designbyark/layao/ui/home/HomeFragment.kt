@@ -1,6 +1,7 @@
 package com.designbyark.layao.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Brand
 import com.designbyark.layao.data.Category
+import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentHomeBinding
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -259,20 +261,16 @@ class HomeFragment : Fragment(),
         binding.mBrandsRV.adapter = mBrandsAdapter
     }
 
-    override fun onDiscountItemClickListener(productData: MutableMap<String, String>) {
-        val args = Bundle()
-        args.putString(PRODUCT_ID, productData["id"])
-        args.putString(PRODUCT_TAG, productData["tag"])
-        findNavController().navigate(R.id.action_nav_productDetailFragment, args)
+    override fun onDiscountItemClickListener(product: Products) {
+        val action = HomeFragmentDirections.actionNavProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
-    override fun mNewArrivalClickListener(productId: String) {
-        val args = Bundle()
-        args.putString(PRODUCT_ID, productId)
-        findNavController().navigate(R.id.action_nav_productDetailFragment, args)
+    override fun mNewArrivalClickListener(product: Products) {
+        val action = HomeFragmentDirections.actionNavProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
-    // TODO #2 Use Safe Args for passing data
     override fun mBrandItemClickListener(brandId: String) {
         val action = HomeFragmentDirections.actionNavProductListFragment(brandId)
         findNavController().navigate(action)

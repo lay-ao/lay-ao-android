@@ -6,6 +6,9 @@ import com.google.firebase.firestore.PropertyName
 @IgnoreExtraProperties
 class Favorites {
 
+    @PropertyName("productId")
+    var productId: String = ""
+
     @PropertyName("available")
     var available: Boolean = false
 

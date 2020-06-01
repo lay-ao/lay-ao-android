@@ -65,6 +65,7 @@ fun setPrice(view: TextView, product: Products) {
             Locale.getDefault(), "Rs. %.0f/%s",
             product.price, product.unit
         )
+        view.setTextColor(getColor(view.context, android.R.color.black))
     }
 }
 
@@ -261,4 +262,32 @@ fun setOrderId(view: TextView, order: Order) {
         "Order #%s",
         formatOrderId(order.orderId, order.contactNumber).toUpperCase(Locale.getDefault())
     )
+}
+
+@BindingAdapter("app:setProductPrice")
+fun setProductPrice(view: TextView, product: Products) {
+    if (product.discount > 0) {
+        view.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f/%s", findDiscountPrice(product.price, product.discount), product.unit
+        )
+    } else {
+        view.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f/%s", product.price, product.unit
+        )
+    }
+}
+
+@BindingAdapter("app:setOriginalPrice")
+fun setOriginalPrice(view: TextView, product: Products) {
+    if (product.discount > 0) {
+        view.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f/%s", product.price, product.unit
+        )
+        view.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+    } else {
+        view.visibility = View.GONE
+    }
 }

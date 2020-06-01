@@ -19,7 +19,11 @@
         </action>
         <action
             android:id="@+id/action_nav_productDetailFragment"
-            app:destination="@id/productDetailFragment" />
+            app:destination="@id/productDetailFragment">
+            <argument
+                android:name="product"
+                app:argType="com.designbyark.layao.data.Products" />
+        </action>
         <action
             android:id="@+id/action_nav_productListFragment"
             app:destination="@id/productListFragment">
@@ -117,6 +121,9 @@
             android:id="@+id/action_productDetailFragment_self"
             app:destination="@id/productDetailFragment"
             app:popUpTo="@id/productDetailFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.designbyark.layao.data.Products" />
     </fragment>
 
     <fragment

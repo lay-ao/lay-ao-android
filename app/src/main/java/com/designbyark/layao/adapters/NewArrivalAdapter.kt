@@ -21,11 +21,9 @@ class NewArrivalAdapter internal constructor(
 
     override fun onBindViewHolder(holder: NewArrivalViewHolder, position: Int, model: Products) {
         holder.bind(model)
+        model.productId = snapshots.getSnapshot(position).id
         holder.itemView.setOnClickListener {
-            itemClickListener.mNewArrivalClickListener(
-                snapshots
-                    .getSnapshot(holder.adapterPosition).id
-            )
+            itemClickListener.mNewArrivalClickListener(model)
         }
     }
 
@@ -36,11 +34,10 @@ class NewArrivalAdapter internal constructor(
             binding.product = product
             binding.executePendingBindings()
         }
-
     }
 
     interface NewArrivalClickListener {
-        fun mNewArrivalClickListener(productId: String)
+        fun mNewArrivalClickListener(product: Products)
     }
 
 }

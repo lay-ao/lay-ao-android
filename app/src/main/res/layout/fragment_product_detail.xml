@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="detail"
+            type="com.designbyark.layao.ui.productdetail.ProductDetailFragment" />
+
         <variable
             name="product"
-            type="com.designbyark.layao.ui.productdetail.ProductDetailFragment" />
+            type="com.designbyark.layao.data.Products" />
     </data>
 
     <ScrollView
@@ -27,13 +32,14 @@
                 android:id="@+id/mImage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:contentDescription="@string/product_image"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:setImage="@{product.image}"
                 tools:src="@tools:sample/backgrounds/scenic"
-                tools:srcCompat="@drawable/apple"
-                android:contentDescription="@string/product_image" />
+                tools:srcCompat="@drawable/apple" />
 
             <ImageButton
                 android:id="@+id/mFavorite"
@@ -43,6 +49,7 @@
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/title_favorites"
+                android:onClick="@{() -> detail.addToFav()}"
                 android:src="@drawable/ic_favorite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mDivider" />
@@ -59,6 +66,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/mImage"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:setDiscount="@{product.discount}"
                 tools:text="10% off " />
 
             <TextView
@@ -70,8 +78,9 @@
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center|start"
+                android:text="@{product.title}"
                 android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorTextPrimary"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/mFavorite"
@@ -95,6 +104,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mBrand"
+                app:setProductPrice="@{product}"
                 tools:text="Rs. 100 / kg" />
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -105,7 +115,7 @@
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{() -> product.subtract()}"
+                android:onClick="@{() -> detail.subtract()}"
                 app:backgroundTint="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mOriginalPrice"
@@ -119,7 +129,7 @@
                 android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{() -> product.add()}"
+                android:onClick="@{() -> detail.add()}"
                 app:backgroundTint="@android:color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mOriginalPrice"
@@ -148,6 +158,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/open_sans"
+                android:text="@{product.brand}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="12sp"
@@ -155,7 +166,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/mTitle"
                 tools:text="Pakistani" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/mAddToCart"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
@@ -163,9 +174,9 @@
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/open_sans"
+                android:onClick="@{() -> detail.addToCart()}"
                 android:text="@string/add_to_cart"
                 android:textStyle="bold"
-                android:onClick="@{() -> product.addToCart()}"
                 app:layout_constraintEnd_toEndOf="@+id/mAdd"
                 app:layout_constraintStart_toStartOf="@+id/mSubtract"
                 app:layout_constraintTop_toBottomOf="@+id/mQuantity" />
@@ -183,6 +194,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/mPrice"
                 app:layout_constraintStart_toStartOf="@+id/mPrice"
                 app:layout_constraintTop_toBottomOf="@+id/mPrice"
+                app:setOriginalPrice="@{product}"
                 tools:text="Rs. 110 / kg" />
 
             <View
