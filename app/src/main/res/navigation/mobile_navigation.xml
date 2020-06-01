@@ -272,7 +272,12 @@
         tools:layout="@layout/fragment_brands_list">
         <action
             android:id="@+id/action_brandsListFragment_to_productListFragment"
-            app:destination="@id/productListFragment" />
+            app:destination="@id/productListFragment">
+            <argument
+                android:name="brandId"
+                android:defaultValue="NIP"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/signUpDetailsFragment"
