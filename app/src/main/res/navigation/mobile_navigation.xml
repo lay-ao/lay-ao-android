@@ -71,7 +71,11 @@
         tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_navigation_cart_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />
+            app:destination="@id/checkoutFragment">
+            <argument
+                android:name="checkout"
+                app:argType="com.designbyark.layao.data.Checkout" />
+        </action>
         <action
             android:id="@+id/action_navigation_cart_to_navigation_home"
             app:destination="@id/navigation_home" />
@@ -198,6 +202,9 @@
         <action
             android:id="@+id/action_checkoutFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <argument
+            android:name="checkout"
+            app:argType="com.designbyark.layao.data.Checkout" />
     </fragment>
 
     <fragment

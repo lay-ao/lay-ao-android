@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.CartAdapter
+import com.designbyark.layao.data.Checkout
 import com.designbyark.layao.databinding.FragmentCartBinding
 import com.designbyark.layao.databinding.FragmentEmptyCartBinding
 import com.designbyark.layao.viewmodels.CartViewModel
@@ -129,15 +130,12 @@ class CartFragment : Fragment() {
     }
 
     fun checkout() {
-        if (totalPrice < 500.0) {
-            Toast.makeText(requireActivity(), "Amount too low, add more items", Toast.LENGTH_LONG)
-                .show()
-            return
-        } else {
-            val args = Bundle()
-            args.putDouble("grand_total", totalPrice)
-            args.putInt("total_items", totalItemCount)
-            findNavController().navigate(R.id.action_navigation_cart_to_checkoutFragment, args)
-        }
+        val checkout = Checkout(totalPrice, totalItemCount)
+        val action = CartFragmentDirections.actionNavigationCartToCheckoutFragment(checkout)
+        findNavController().navigate(action)
+//        val args = Bundle()
+//        args.putDouble("grand_total", totalPrice)
+//        args.putInt("total_items", totalItemCount)
+//        findNavController().navigate(R.id.action_navigation_cart_to_checkoutFragment, args)
     }
 }
