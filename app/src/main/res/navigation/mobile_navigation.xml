@@ -133,7 +133,11 @@
         tools:layout="@layout/fragment_product_list">
         <action
             android:id="@+id/action_productListFragment_to_productDetailFragment"
-            app:destination="@id/productDetailFragment" />
+            app:destination="@id/productDetailFragment">
+            <argument
+                android:name="product"
+                app:argType="com.designbyark.layao.data.Products" />
+        </action>
         <argument
             android:name="brandId"
             android:defaultValue="NIP"
@@ -147,7 +151,11 @@
         tools:layout="@layout/fragment_product_list">
         <action
             android:id="@+id/action_CPListFragment_to_productDetailFragment"
-            app:destination="@id/productDetailFragment" />
+            app:destination="@id/productDetailFragment">
+            <argument
+                android:name="product"
+                app:argType="com.designbyark.layao.data.Products" />
+        </action>
         <argument
             android:name="categoryId"
             android:defaultValue="NIP"

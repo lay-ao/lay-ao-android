@@ -16,7 +16,6 @@ import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentProductListBinding
-import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -85,14 +84,10 @@ class CategoryListFragment : Fragment(),
         mAdapter.stopListening()
     }
 
-    override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
-        val args = Bundle()
-        args.putString(HomeFragment.PRODUCT_ID, productData["id"])
-        args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        findNavController().navigate(
-            R.id.action_CPListFragment_to_productDetailFragment,
-            args
-        )
+    override fun mProductListItemClickListener(product: Products) {
+        val action =
+            CategoryListFragmentDirections.actionCPListFragmentToProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
 

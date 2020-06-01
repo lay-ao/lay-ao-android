@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.BrandsListAdapter
 import com.designbyark.layao.common.BRANDS_COLLECTION
@@ -65,7 +66,7 @@ class BrandsListFragment : Fragment(),
     override fun mBrandsItemClickListener(brandId: String) {
         val args = Bundle()
         args.putString(HomeFragment.BRAND_ID, brandId)
-        Navigation.createNavigateOnClickListener(
+        findNavController().navigate(
             R.id.action_brandsListFragment_to_productListFragment,
             args
         )

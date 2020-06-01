@@ -6,7 +6,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.ProductListAdapter
@@ -26,7 +26,6 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
     private val brandArgs: ProductListFragmentArgs by navArgs()
 
-    // private var brandId: String? = null
     private var newArrivalId: String? = null
     private var discountId: String? = null
 
@@ -36,7 +35,6 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            // brandId = it.getString(HomeFragment.BRAND_ID)
             newArrivalId = it.getString(HomeFragment.PASSED_ID)
             discountId = it.getString(HomeFragment.DISCOUNT_ID)
         }
@@ -113,14 +111,10 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         menu.clear()
     }
 
-    override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
-        val args = Bundle()
-        args.putString(HomeFragment.PRODUCT_ID, productData["id"])
-        args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        Navigation.createNavigateOnClickListener(
-            R.id.action_productListFragment_to_productDetailFragment,
-            args
-        )
+    override fun mProductListItemClickListener(product: Products) {
+        val action =
+            ProductListFragmentDirections.actionProductListFragmentToProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {
