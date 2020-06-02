@@ -8,7 +8,8 @@ import com.designbyark.layao.databinding.BodyFavoriteBinding
 import com.designbyark.layao.viewmodels.FavoritesViewModel
 
 class FavoriteAdapter internal constructor(
-    private val favoritesViewModel: FavoritesViewModel
+    private val favoritesViewModel: FavoritesViewModel,
+    private val clickListener: OnFavoriteClickListener
 ) : RecyclerView.Adapter<FavoriteAdapter.FavoritesViewHolder>() {
 
     private var items = emptyList<Favorites>() // Cached copy of items
@@ -27,6 +28,9 @@ class FavoriteAdapter internal constructor(
             favoritesViewModel.deleteAFavorite(items[position])
             notifyItemRemoved(position)
         }
+        holder.itemView.setOnClickListener {
+            clickListener.onFavItemClickListener(items[position].productId)
+        }
     }
 
     inner class FavoritesViewHolder internal constructor(private var binding: BodyFavoriteBinding) :
@@ -44,6 +48,10 @@ class FavoriteAdapter internal constructor(
     internal fun setFavorites(favorites: List<Favorites>) {
         this.items = favorites
         notifyDataSetChanged()
+    }
+
+    interface OnFavoriteClickListener {
+        fun onFavItemClickListener(productId: String)
     }
 
 }

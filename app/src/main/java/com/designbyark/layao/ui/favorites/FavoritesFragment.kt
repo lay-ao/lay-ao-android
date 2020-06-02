@@ -1,6 +1,7 @@
 package com.designbyark.layao.ui.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -10,12 +11,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.FavoriteAdapter
+import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentFavoritesBinding
+import com.designbyark.layao.util.LOG_TAG
 import com.designbyark.layao.util.MarginItemDecoration
+import com.designbyark.layao.util.PRODUCTS_COLLECTION
 import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FirebaseFirestore
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), FavoriteAdapter.OnFavoriteClickListener {
 
     private lateinit var binding: FragmentFavoritesBinding
     private lateinit var favoriteViewModel: FavoritesViewModel
@@ -46,7 +51,7 @@ class FavoritesFragment : Fragment() {
         }
 
 
-        favoriteAdapter = FavoriteAdapter(favoriteViewModel)
+        favoriteAdapter = FavoriteAdapter(favoriteViewModel, this)
 
         favoriteViewModel.allFavorites.observe(requireActivity(), Observer {
             favoriteAdapter?.setFavorites(it)
@@ -77,6 +82,26 @@ class FavoritesFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+    }
+
+    override fun onFavItemClickListener(productId: String) {
+        val firestore = FirebaseFirestore.getInstance()
+        val collection = firestore.collection(PRODUCTS_COLLECTION)
+        val document = collection.document(productId)
+        document.get()
+            .addOnSuccessListener { documentSnapshot ->
+                val product = documentSnapshot.toObject(Products::class.java)
+                if (product != null) {
+                    val action =
+                        FavoritesFragmentDirections.actionFavoritesFragmentToProductDetailFragment(
+                            product
+                        )
+                    findNavController().navigate(action)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(LOG_TAG, "get failed with ", exception)
+            }
     }
 
 }
