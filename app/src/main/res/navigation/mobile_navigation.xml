@@ -270,10 +270,11 @@
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_signUpDetailsFragment"
-            app:destination="@id/signUpDetailsFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@+id/navigation_user"
-            app:popUpToInclusive="true" />
+            app:destination="@id/signUpDetailsFragment">
+            <argument
+                android:name="user"
+                app:argType="com.designbyark.layao.data.User" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -329,6 +330,9 @@
         <action
             android:id="@+id/action_signUpDetailsFragment_to_navigation_user"
             app:destination="@id/navigation_user" />
+        <argument
+            android:name="user"
+            app:argType="com.designbyark.layao.data.User" />
     </fragment>
     <fragment
         android:id="@+id/orderHistoryFragment"

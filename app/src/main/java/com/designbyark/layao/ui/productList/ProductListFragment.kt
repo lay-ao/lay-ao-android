@@ -26,19 +26,10 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
 
     private val args: ProductListFragmentArgs by navArgs()
 
-//    private var newArrivalId: String? = null
-//    private var discountId: String? = null
 
     private var mAdapter: ProductListAdapter? = null
     private lateinit var binding: FragmentProductListBinding
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            newArrivalId = it.getString(HomeFragment.PASSED_ID)
-//            discountId = it.getString(HomeFragment.DISCOUNT_ID)
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,10 +82,6 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         }
 
         getData(query)
-
-        // brandId = ""
-//        newArrivalId = ""
-//        discountId = ""
     }
 
     private fun getData(query: Query) {
