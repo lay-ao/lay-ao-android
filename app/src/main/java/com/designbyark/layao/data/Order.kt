@@ -2,7 +2,6 @@ package com.designbyark.layao.data
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.designbyark.layao.data.cart.Cart
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName

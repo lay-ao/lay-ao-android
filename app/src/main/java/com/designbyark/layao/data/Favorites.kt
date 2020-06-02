@@ -1,36 +1,42 @@
 package com.designbyark.layao.data
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 
-@IgnoreExtraProperties
+@Entity(tableName = "favorites_table")
 class Favorites {
 
-    @PropertyName("productId")
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+
+    @ColumnInfo(name = "productId")
     var productId: String = ""
 
-    @PropertyName("available")
+    @ColumnInfo(name = "available")
     var available: Boolean = false
 
-    @PropertyName("brand")
+    @ColumnInfo(name = "brand")
     var brand: String = ""
 
-    @PropertyName("discount")
+    @ColumnInfo(name = "discount")
     var discount: Double = 0.0
 
-    @PropertyName("image")
+    @ColumnInfo(name = "image")
     var image: String = ""
 
-    @PropertyName("price")
+    @ColumnInfo(name = "price")
     var price: Double = 0.0
 
-    @PropertyName("tag")
+    @ColumnInfo(name = "tag")
     var tag: String = ""
 
-    @PropertyName("title")
+    @ColumnInfo(name = "title")
     var title: String = ""
 
-    @PropertyName("unit")
+    @ColumnInfo(name = "unit")
     var unit: String = ""
 
 }

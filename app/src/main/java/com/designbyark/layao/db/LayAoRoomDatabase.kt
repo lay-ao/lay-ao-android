@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.designbyark.layao.data.cart.Cart
-import com.designbyark.layao.data.cart.CartDao
+import com.designbyark.layao.data.Cart
+import com.designbyark.layao.dao.CartDao
 
 
 @Database(entities = [Cart::class], version = 11, exportSchema = false)

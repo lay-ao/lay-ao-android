@@ -5,15 +5,13 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.CategoryAdapter
-import com.designbyark.layao.common.CATEGORIES_COLLECTION
-import com.designbyark.layao.common.TITLE
+import com.designbyark.layao.util.CATEGORIES_COLLECTION
+import com.designbyark.layao.util.TITLE
 import com.designbyark.layao.data.Category
 import com.designbyark.layao.databinding.FragmentCategoriesBinding
-import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query

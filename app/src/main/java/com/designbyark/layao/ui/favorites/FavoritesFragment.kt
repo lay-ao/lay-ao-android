@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.FavoriteAdapter
-import com.designbyark.layao.common.USERS_COLLECTION
+import com.designbyark.layao.util.USERS_COLLECTION
 import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.databinding.FragmentFavoritesBinding
 import com.designbyark.layao.databinding.FragmentNoFavoritesBinding

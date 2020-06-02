@@ -11,9 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
-import com.designbyark.layao.common.*
 import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentSignUpBinding
+import com.designbyark.layao.util.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -57,7 +57,10 @@ class SignUpFragment : Fragment() {
             return
         }
 
-        disableInteraction(requireActivity(), binding.mIncludeProgressBar)
+        disableInteraction(
+            requireActivity(),
+            binding.mIncludeProgressBar
+        )
 
         startRegistrationProcess()
     }
@@ -65,20 +68,37 @@ class SignUpFragment : Fragment() {
     private fun startRegistrationProcess() {
 
         val fullName = binding.mFullNameET.text.toString()
-        if (emptyValidation(fullName, binding.mFullNameIL)) {
-            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+        if (emptyValidation(
+                fullName,
+                binding.mFullNameIL
+            )
+        ) {
+            enableInteraction(
+                requireActivity(),
+                binding.mIncludeProgressBar
+            )
             return
         }
 
         val email = binding.mEmailET.text.toString()
         if (emailValidation(email, binding.mEmailIL)) {
-            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+            enableInteraction(
+                requireActivity(),
+                binding.mIncludeProgressBar
+            )
             return
         }
 
         val password = binding.mPasswordET.text.toString()
-        if (passwordValidation(password, binding.mPasswordIL)) {
-            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+        if (passwordValidation(
+                password,
+                binding.mPasswordIL
+            )
+        ) {
+            enableInteraction(
+                requireActivity(),
+                binding.mIncludeProgressBar
+            )
             return
         }
 
@@ -89,7 +109,10 @@ class SignUpFragment : Fragment() {
                 binding.mConfirmPassIL
             )
         ) {
-            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+            enableInteraction(
+                requireActivity(),
+                binding.mIncludeProgressBar
+            )
             return
         }
 
@@ -104,7 +127,10 @@ class SignUpFragment : Fragment() {
                     android.R.color.holo_red_dark
                 )
             )
-            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+            enableInteraction(
+                requireActivity(),
+                binding.mIncludeProgressBar
+            )
             return
         } else {
             binding.mTermsText.setTextColor(
@@ -133,7 +159,10 @@ class SignUpFragment : Fragment() {
                         LOG_TAG,
                         "createUserWithEmailAndPassword -> addOnCompleteListener -> currentUser: user is null"
                     )
-                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    enableInteraction(
+                        requireActivity(),
+                        binding.mIncludeProgressBar
+                    )
                     return@addOnCompleteListener
                 }
             }
@@ -151,11 +180,17 @@ class SignUpFragment : Fragment() {
                 if (task.isSuccessful && task.isComplete) {
 
                     Log.d(LOG_TAG, "updateProfile: Started!")
-                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    enableInteraction(
+                        requireActivity(),
+                        binding.mIncludeProgressBar
+                    )
                     val action = SignUpFragmentDirections.actionSignUpFragmentToSignUpDetailsFragment(userModel)
                     findNavController().navigate(action)
                 } else {
-                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    enableInteraction(
+                        requireActivity(),
+                        binding.mIncludeProgressBar
+                    )
                     Log.e(
                         LOG_TAG,
                         "updateAuthProfile -> updateProfile -> addOnCompleteListener: " +
@@ -165,7 +200,10 @@ class SignUpFragment : Fragment() {
                 }
             }
             .addOnFailureListener {
-                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                enableInteraction(
+                    requireActivity(),
+                    binding.mIncludeProgressBar
+                )
                 Log.d(
                     LOG_TAG,
                     "updateAuthProfile -> updateProfile -> addOnFailureListener: " +

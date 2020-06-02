@@ -13,10 +13,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
-import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentCheckoutBinding
+import com.designbyark.layao.util.*
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -147,9 +147,21 @@ class CheckoutFragment : Fragment() {
         val phoneNumber = binding.mContactET.text.toString().trim()
         val houseNumber = binding.mHouseNumberET.text.toString().trim()
 
-        if (emptyValidation(fullName, binding.mFullNameIL)) return
-        if (phoneValidation(phoneNumber, binding.mContactIL)) return
-        if (emptyValidation(houseNumber, binding.mHouseNumberIL)) return
+        if (emptyValidation(
+                fullName,
+                binding.mFullNameIL
+            )
+        ) return
+        if (phoneValidation(
+                phoneNumber,
+                binding.mContactIL
+            )
+        ) return
+        if (emptyValidation(
+                houseNumber,
+                binding.mHouseNumberIL
+            )
+        ) return
         if (binding.blockNumber.selectedItemPosition == 0) {
             Toast.makeText(requireContext(), "No block selected", Toast.LENGTH_SHORT).show()
             return

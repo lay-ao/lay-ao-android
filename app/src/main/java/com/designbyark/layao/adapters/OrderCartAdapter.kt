@@ -3,7 +3,7 @@ package com.designbyark.layao.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.designbyark.layao.data.cart.Cart
+import com.designbyark.layao.data.Cart
 import com.designbyark.layao.databinding.BodyOrderCartItemBinding
 
 class OrderCartAdapter internal constructor(

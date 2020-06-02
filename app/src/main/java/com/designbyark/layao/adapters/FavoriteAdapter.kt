@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.designbyark.layao.common.LOG_TAG
-import com.designbyark.layao.common.isConnectedToInternet
+import com.designbyark.layao.util.LOG_TAG
+import com.designbyark.layao.util.isConnectedToInternet
 import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.databinding.BodyFavoriteBinding
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter

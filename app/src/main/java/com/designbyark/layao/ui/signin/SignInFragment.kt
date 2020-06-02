@@ -7,15 +7,12 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
-import com.designbyark.layao.common.*
 import com.designbyark.layao.databinding.FragmentSignInBinding
+import com.designbyark.layao.util.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_sign_in.view.*
 
 class SignInFragment : Fragment() {
 
@@ -60,20 +57,33 @@ class SignInFragment : Fragment() {
         if (emailValidation(email, binding.mEmailIL)) return
 
         val password = binding.mPasswordET.text.toString()
-        if (passwordValidation(password, binding.mPasswordIL)) return
+        if (passwordValidation(
+                password,
+                binding.mPasswordIL
+            )
+        ) return
 
-        disableInteraction(requireActivity(), binding.mIncludeProgressBar)
+        disableInteraction(
+            requireActivity(),
+            binding.mIncludeProgressBar
+        )
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isComplete && task.isSuccessful) {
-                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    enableInteraction(
+                        requireActivity(),
+                        binding.mIncludeProgressBar
+                    )
                     findNavController().navigate(R.id.action_signInFragment_to_navigation_user)
                 } else {
                     Log.e(
                         LOG_TAG,
                         "signInWithEmailAndPassword -> addOnCompleteListener: ${task.exception?.localizedMessage}"
                     )
-                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    enableInteraction(
+                        requireActivity(),
+                        binding.mIncludeProgressBar
+                    )
                     return@addOnCompleteListener
                 }
             }
@@ -82,7 +92,10 @@ class SignInFragment : Fragment() {
                     LOG_TAG,
                     "signInWithEmailAndPassword -> addOnFailureListener: ${it.localizedMessage}"
                 )
-                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                enableInteraction(
+                    requireActivity(),
+                    binding.mIncludeProgressBar
+                )
                 return@addOnFailureListener
             }
     }

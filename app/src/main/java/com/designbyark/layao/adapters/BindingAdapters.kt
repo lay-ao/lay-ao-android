@@ -14,7 +14,8 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.ProductsData
-import com.designbyark.layao.data.cart.Cart
+import com.designbyark.layao.data.Cart
+import com.designbyark.layao.util.*
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
 import java.util.*
@@ -34,7 +35,9 @@ fun setTitle(view: TextView, title: String) {
 
 @BindingAdapter("app:setValidity")
 fun setValidity(view: TextView, date: Date) {
-    view.text = String.format("Valid till %s", formatDate(date))
+    view.text = String.format("Valid till %s",
+        formatDate(date)
+    )
 }
 
 @BindingAdapter("app:setPromoCode")
@@ -57,7 +60,10 @@ fun setPrice(view: TextView, product: Products) {
         view.text = String.format(
             Locale.getDefault(),
             "Rs. %.0f/%s",
-            findDiscountPrice(product.price, product.discount),
+            findDiscountPrice(
+                product.price,
+                product.discount
+            ),
             product.unit
         )
     } else {
@@ -73,7 +79,12 @@ fun setPrice(view: TextView, product: Products) {
 fun setSavingPrice(view: TextView, product: Products) {
     view.text = String.format(
         "Save Rs. %.0f",
-        getSavingPrice(findDiscountPrice(product.price, product.discount), product.price)
+        getSavingPrice(
+            findDiscountPrice(
+                product.price,
+                product.discount
+            ), product.price
+        )
     )
 }
 
@@ -126,7 +137,10 @@ fun setDiscountPrice(view: TextView, cart: Cart) {
     if (cart.discount > 0) {
         view.text = String.format(
             Locale.getDefault(), "Rs. %.0f/%s",
-            findDiscountPrice(cart.price, cart.discount), cart.unit
+            findDiscountPrice(
+                cart.price,
+                cart.discount
+            ), cart.unit
         )
     } else {
         view.visibility = View.INVISIBLE
@@ -141,7 +155,10 @@ fun setQuantity(view: TextView, cart: Cart) {
             view.text = String.format(
                 Locale.getDefault(),
                 "Rs. %.0f / %d %ss",
-                (findDiscountPrice(cart.price, cart.discount) * cart.quantity),
+                (findDiscountPrice(
+                    cart.price,
+                    cart.discount
+                ) * cart.quantity),
                 cart.quantity,
                 cart.unit
             )
@@ -149,7 +166,10 @@ fun setQuantity(view: TextView, cart: Cart) {
             view.text = String.format(
                 Locale.getDefault(),
                 "Rs. %.0f / %s",
-                (findDiscountPrice(cart.price, cart.discount) * cart.quantity),
+                (findDiscountPrice(
+                    cart.price,
+                    cart.discount
+                ) * cart.quantity),
                 cart.unit
             )
         }
@@ -173,7 +193,10 @@ fun setSubtotal(view: TextView, cart: Cart) {
     if (cart.discount > 0) {
         view.text = String.format(
             Locale.getDefault(),
-            "Rs. %.2f", findDiscountPrice(cart.price, cart.discount) * cart.quantity
+            "Rs. %.2f", findDiscountPrice(
+                cart.price,
+                cart.discount
+            ) * cart.quantity
         )
     } else {
         view.text = String.format(
@@ -260,7 +283,10 @@ fun setItems(view: TextView, count: Int) {
 fun setOrderId(view: TextView, order: Order) {
     view.text = String.format(
         "Order #%s",
-        formatOrderId(order.orderId, order.contactNumber).toUpperCase(Locale.getDefault())
+        formatOrderId(
+            order.orderId,
+            order.contactNumber
+        ).toUpperCase(Locale.getDefault())
     )
 }
 
@@ -269,7 +295,11 @@ fun setProductPrice(view: TextView, product: Products) {
     if (product.discount > 0) {
         view.text = String.format(
             Locale.getDefault(),
-            "Rs. %.0f/%s", findDiscountPrice(product.price, product.discount), product.unit
+            "Rs. %.0f/%s",
+            findDiscountPrice(
+                product.price,
+                product.discount
+            ), product.unit
         )
     } else {
         view.text = String.format(

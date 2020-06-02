@@ -6,7 +6,7 @@
     <data>
         <variable
             name="cart"
-            type="com.designbyark.layao.data.cart.Cart" />
+            type="com.designbyark.layao.data.Cart" />
     </data>
 
     <androidx.cardview.widget.CardView

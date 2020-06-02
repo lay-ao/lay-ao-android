@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.OrderAdapter
-import com.designbyark.layao.common.ORDERS_COLLECTION
+import com.designbyark.layao.util.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.databinding.FragmentOrderHistoryBinding
 import com.firebase.ui.firestore.FirestoreRecyclerOptions

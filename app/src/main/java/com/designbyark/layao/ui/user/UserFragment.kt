@@ -9,10 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
-import com.designbyark.layao.common.LOG_TAG
-import com.designbyark.layao.common.USERS_COLLECTION
-import com.designbyark.layao.common.formatGender
-import com.designbyark.layao.common.isConnectedToInternet
+import com.designbyark.layao.util.LOG_TAG
+import com.designbyark.layao.util.USERS_COLLECTION
+import com.designbyark.layao.util.formatGender
+import com.designbyark.layao.util.isConnectedToInternet
 import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentActiveUserBinding
 import com.designbyark.layao.databinding.FragmentNoUserBinding
@@ -99,7 +99,8 @@ class UserFragment : Fragment() {
                         } else {
                             binding.mContact.text = model.contact
                         }
-                        binding.mGender.text = formatGender(model.gender)
+                        binding.mGender.text =
+                            formatGender(model.gender)
                     }
                 }
             }

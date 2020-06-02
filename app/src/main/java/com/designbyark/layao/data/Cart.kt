@@ -1,4 +1,4 @@
-package com.designbyark.layao.data.cart
+package com.designbyark.layao.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 class Cart() {
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var id: Int? = null
 
     @ColumnInfo(name = "brand")
     var brand: String = ""

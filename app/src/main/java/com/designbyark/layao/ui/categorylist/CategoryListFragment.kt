@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.ProductListAdapter
-import com.designbyark.layao.common.PRODUCTS_COLLECTION
-import com.designbyark.layao.common.TITLE
+import com.designbyark.layao.util.PRODUCTS_COLLECTION
+import com.designbyark.layao.util.TITLE
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentProductListBinding
 import com.designbyark.layao.util.MarginItemDecoration

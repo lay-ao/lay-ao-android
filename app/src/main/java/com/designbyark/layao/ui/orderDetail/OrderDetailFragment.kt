@@ -13,10 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.OrderCartAdapter
-import com.designbyark.layao.common.*
 import com.designbyark.layao.databinding.FragmentOrderDetailBinding
+import com.designbyark.layao.util.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -104,7 +103,8 @@ class OrderDetailFragment : Fragment() {
     }
 
     private fun setOrderStatus(status: Long, context: Context) {
-        binding.mOrderStatus.text = getOrderStatus(status)
+        binding.mOrderStatus.text =
+            getOrderStatus(status)
         when (status) {
             0L -> setStatusUI(
                 getColor(context, android.R.color.holo_orange_dark),

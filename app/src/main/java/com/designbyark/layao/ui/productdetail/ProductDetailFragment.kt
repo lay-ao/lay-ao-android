@@ -11,12 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.SimilarProductListAdapter
-import com.designbyark.layao.common.PRODUCTS_COLLECTION
-import com.designbyark.layao.common.findDiscountPrice
-import com.designbyark.layao.common.setHorizontalListLayout
-import com.designbyark.layao.common.setQuantityPrice
+import com.designbyark.layao.util.PRODUCTS_COLLECTION
+import com.designbyark.layao.util.findDiscountPrice
+import com.designbyark.layao.util.setHorizontalListLayout
+import com.designbyark.layao.util.setQuantityPrice
 import com.designbyark.layao.data.Products
-import com.designbyark.layao.data.cart.Cart
+import com.designbyark.layao.data.Cart
 import com.designbyark.layao.databinding.FragmentProductDetailBinding
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -90,7 +90,10 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             this,
             args.product.productId
         )
-        setHorizontalListLayout(binding.mSimilarProductsRV, requireContext())
+        setHorizontalListLayout(
+            binding.mSimilarProductsRV,
+            requireContext()
+        )
         binding.mSimilarProductsRV.adapter = mAdapter
     }
 
@@ -100,7 +103,12 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             quantity = 1
         }
         binding.mQuantity.text =
-            setQuantityPrice(args.product.price, quantity, args.product.discount, args.product.unit)
+            setQuantityPrice(
+                args.product.price,
+                quantity,
+                args.product.discount,
+                args.product.unit
+            )
     }
 
     fun add() {
@@ -129,7 +137,10 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         cart.quantity = quantity
         cart.stock = args.product.stock
         if (discount > 0) {
-            cart.total = findDiscountPrice(args.product.price, args.product.discount) * quantity
+            cart.total = findDiscountPrice(
+                args.product.price,
+                args.product.discount
+            ) * quantity
         } else {
             cart.total = args.product.price * quantity
         }
