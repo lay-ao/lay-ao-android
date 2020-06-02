@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
@@ -32,21 +33,11 @@ class CheckoutFragment : Fragment() {
     private lateinit var binding: FragmentCheckoutBinding
 
     private var totalAmount: Double = 0.0
-//    private var grandTotal: Double = 0.0
-//    private var totalItems: Int = 0
 
     private lateinit var cartViewModel: CartViewModel
     private lateinit var orderCollection: CollectionReference
     private lateinit var userCollection: CollectionReference
     private lateinit var auth: FirebaseAuth
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            grandTotal = it.getDouble("grand_total")
-//            totalItems = it.getInt("total_items")
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -213,7 +204,7 @@ class CheckoutFragment : Fragment() {
                     )}. Kindly, contact on our helpline for any further assistance. Thank you."
                 )
                 cartViewModel.deleteCart()
-                Navigation.createNavigateOnClickListener(R.id.action_checkoutFragment_to_navigation_home)
+                findNavController().navigate(R.id.action_checkoutFragment_to_navigation_home)
             }
             .addOnFailureListener { e ->
                 Log.e(LOG_TAG, "Error adding document", e)

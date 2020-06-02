@@ -60,7 +60,12 @@
 
         <action
             android:id="@+id/action_navigation_category_to_CPListFragment"
-            app:destination="@id/CPListFragment" />
+            app:destination="@id/CPListFragment" >
+            <argument
+                android:name="categoryId"
+                android:defaultValue="NIP"
+                app:argType="string" />
+        </action>
 
     </fragment>
 
@@ -199,9 +204,6 @@
         <action
             android:id="@+id/action_checkoutFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
-        <action
-            android:id="@+id/action_checkoutFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
         <argument
             android:name="checkout"
             app:argType="com.designbyark.layao.data.Checkout" />
@@ -270,7 +272,12 @@
             app:destination="@id/navigation_user" />
         <action
             android:id="@+id/action_editUserFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
+            app:destination="@id/forgotPasswordFragment">
+            <argument
+                android:name="status"
+                app:argType="integer"
+                android:defaultValue="-1" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/brandsListFragment"
@@ -325,11 +332,11 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="com.designbyark.layao.ui.forgotpassword.ForgotPasswordFragment"
         android:label="Forgot Password"
-        tools:layout="@layout/fragment_forgot_password" />
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="com.designbyark.layao.ui.checkout.MapFragment"
-        android:label="@string/title_activity_maps"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_forgot_password" >
+        <argument
+            android:name="status"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
 </navigation>
