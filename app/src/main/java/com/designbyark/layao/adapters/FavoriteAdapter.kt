@@ -23,10 +23,16 @@ class FavoriteAdapter internal constructor(
 
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
         holder.bind(items[position])
+        holder.favoriteBtn.setOnClickListener {
+            favoritesViewModel.deleteAFavorite(items[position])
+            notifyItemRemoved(position)
+        }
     }
 
     inner class FavoritesViewHolder internal constructor(private var binding: BodyFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val favoriteBtn = binding.favoriteButton
 
         fun bind(favorites: Favorites) {
             binding.favorite = favorites

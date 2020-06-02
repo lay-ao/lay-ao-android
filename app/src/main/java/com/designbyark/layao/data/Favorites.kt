@@ -9,6 +9,7 @@ import com.google.firebase.firestore.PropertyName
 
 /*
 * isFavorite Properties
+* -1 - Default
 * 0 - False
 * 1 - True
 * */

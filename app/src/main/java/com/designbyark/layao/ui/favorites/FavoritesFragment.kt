@@ -29,6 +29,7 @@ class FavoritesFragment : Fragment() {
         setHasOptionsMenu(true)
         favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoritesViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorites, container, false)
+        binding.favorite = this
         return binding.root
     }
 

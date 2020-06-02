@@ -79,7 +79,7 @@
                     android:clickable="true"
                     android:contentDescription="@null"
                     android:focusable="true"
-                    app:srcCompat="@drawable/ic_favorite" />
+                    app:srcCompat="@drawable/ic_favorite_red" />
 
             </LinearLayout>
 
