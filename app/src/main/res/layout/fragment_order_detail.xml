@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="detail"
             type="com.designbyark.layao.ui.orderDetail.OrderDetailFragment" />
+
+        <variable
+            name="order"
+            type="com.designbyark.layao.data.Order" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,6 +44,7 @@
             app:layout_constraintEnd_toStartOf="@+id/order_status_section"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:setOrderId="@{order}"
             tools:text="Order ID" />
 
         <com.google.android.material.card.MaterialCardView
@@ -47,11 +53,11 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="3dp"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardElevation="0dp">
+            app:strokeWidth="1dp">
 
             <TextView
                 android:id="@+id/mOrderStatus"
@@ -81,6 +87,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_status_section"
+            app:setCustomerName="@{order.fullName}"
             tools:text="Placed by Arslan Mushtaq" />
 
         <TextView
@@ -97,6 +104,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mCustomerName"
+            app:setDeliveryAddress="@{order.completeAddress}"
             tools:text="Delivery at House #91, Block F1, Wapda Town" />
 
         <TextView
@@ -114,6 +122,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mOrderAddress"
+            app:setContactDetails="@{order.contactNumber}"
             tools:text="Contact Number: +923038359906" />
 
         <TextView
@@ -130,6 +139,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mCustomerContact"
+            app:setGrandTotal="@{order.grandTotal}"
             tools:text="Grand Total: Rs. 1000" />
 
         <TextView
@@ -143,6 +153,7 @@
             android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp"
+            app:setTotalItems="@{order.totalItems}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mCartTotal"
@@ -159,6 +170,7 @@
             android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp"
+            app:setPlacedTiming="@{order.orderTime}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mTotalItems"
@@ -171,11 +183,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/open_sans"
+            android:onClick="@{() -> detail.cancelOrder()}"
             android:text="@string/cancel_order"
+            android:textColor="@android:color/holo_red_dark"
             app:backgroundTint="#1AB81C1C"
             app:elevation="0dp"
-            android:onClick="@{() -> detail.cancelOrder()}"
-            android:textColor="@android:color/holo_red_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mOrderTiming"
             app:strokeColor="@android:color/holo_red_light"

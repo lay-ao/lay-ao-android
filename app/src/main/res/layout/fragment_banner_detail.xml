@@ -8,6 +8,10 @@
         <variable
             name="detail"
             type="com.designbyark.layao.ui.bannerdetail.BannerDetailFragment" />
+
+        <variable
+            name="banner"
+            type="com.designbyark.layao.data.Banner" />
     </data>
 
     <ScrollView
@@ -32,6 +36,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:setImage="@{banner.image}"
                 tools:src="@tools:sample/backgrounds/scenic[3]" />
 
             <TextView
@@ -40,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center|start"
+                android:text="@{banner.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black"
                 android:typeface="normal"
@@ -54,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/open_sans"
+                android:text="@{banner.description}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12"
@@ -67,8 +74,9 @@
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textSize="12sp"
                 android:textColor="@android:color/black"
+                android:textSize="12sp"
+                app:setValidity="@{banner.validity}"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:setPromoCode="@{banner.code}"
                 android:onClick="@{() -> detail.copyPromoCode()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

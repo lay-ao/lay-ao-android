@@ -251,15 +251,15 @@ fun displayNotification(context: Context, icon: Int, title: String, content: Str
     }
 }
 
-fun getOrderStatus(status: Int): String {
+fun getOrderStatus(status: Long): String {
     return when (status) {
-        0 -> "Processing Order" // Orange
-        1 -> "Order Active"     // Blue
-        2 -> "Order on the way" // Green
-        3 -> "Order Arrived"    // Purple
-        4 -> "Order Delayed"    // Red
-        5 -> "Order Received"   // Green
-        6 -> "Order Cancelled"  // Red
+        0L -> "Processing Order" // Orange
+        1L -> "Order Active"     // Blue
+        2L -> "Order on the way" // Green
+        3L -> "Order Arrived"    // Purple
+        4L -> "Order Delayed"    // Red
+        5L -> "Order Received"   // Green
+        6L -> "Order Cancelled"  // Red
         else -> return "Status Unknown"
     }
 }
@@ -270,7 +270,7 @@ fun formatOrderId(orderId: String, phoneNumber: String): String {
             orderId.takeLast(3)
 }
 
-fun formatGender(code: Int): String {
+fun formatGender(code: Int?): String {
     return when (code) {
         1 -> "Female"
         2 -> "Male"

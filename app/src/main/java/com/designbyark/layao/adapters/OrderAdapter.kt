@@ -21,14 +21,13 @@ class OrderAdapter internal constructor(
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int, model: Order) {
         holder.bind(model)
-        val id = snapshots.getSnapshot(holder.adapterPosition).id
         holder.itemView.setOnClickListener {
-            itemClickListener.orderItemClickListener(id)
+            itemClickListener.orderItemClickListener(model)
         }
     }
 
     interface OrderItemClickListener {
-        fun orderItemClickListener(orderId: String)
+        fun orderItemClickListener(order: Order)
     }
 
     inner class OrderViewHolder internal constructor(private val binding: BodyActiveOrderBinding) :

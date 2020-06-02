@@ -10,11 +10,10 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.common.*
-import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentSignUpDetailsBinding
-import com.designbyark.layao.ui.signup.SignUpFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -22,19 +21,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpDetailsFragment : Fragment() {
 
-    private lateinit var firebaseAuth: FirebaseAuth
-    private var user: User? = null
+    private val args: SignUpDetailsFragmentArgs by navArgs()
 
+    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userCollection: CollectionReference
     private lateinit var binding: FragmentSignUpDetailsBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            user = it.getSerializable(SignUpFragment.KEY) as User
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +47,7 @@ class SignUpDetailsFragment : Fragment() {
 
     private fun saveUserAtFirestore(firebaseUser: FirebaseUser) {
         userCollection.document(firebaseUser.uid)
-            .set(user!!)
+            .set(args.user)
             .addOnCompleteListener { task ->
                 if (task.isComplete && task.isSuccessful) {
                     sendVerificationEmail()
@@ -86,12 +77,12 @@ class SignUpDetailsFragment : Fragment() {
         disableInteraction(requireActivity(), binding.mIncludeProgressBar)
 
         // Set Default values
-        user?.houseNumber = ""
-        user?.blockNumber = 0
-        user?.completeAddress = ""
-        user?.gender = 0
-        user?.contact = ""
-        user?.fineCount = 0
+        args.user.houseNumber = ""
+        args.user.blockNumber = 0
+        args.user.completeAddress = ""
+        args.user.gender = 0
+        args.user.contact = ""
+        args.user.fineCount = 0
 
         // Store user at Firestore
         Log.d(LOG_TAG, "saveUserAtFirestore (Skip): Started")
@@ -123,16 +114,16 @@ class SignUpDetailsFragment : Fragment() {
         }
 
         // Set values
-        user?.houseNumber = houseNumber
-        user?.blockNumber = binding.mBlockSpinner.selectedItemPosition
-        user?.completeAddress = String.format(
+        args.user.houseNumber = houseNumber
+        args.user.blockNumber = binding.mBlockSpinner.selectedItemPosition
+        args.user.completeAddress = String.format(
             "House #%s, %s, Wapda Town, Lahore",
             houseNumber,
             binding.mBlockSpinner.selectedItem.toString()
         )
-        user?.gender = binding.mGenderSpinner.selectedItemPosition
-        user?.contact = phoneNumber
-        user?.fineCount = 0
+        args.user.gender = binding.mGenderSpinner.selectedItemPosition
+        args.user.contact = phoneNumber
+        args.user.fineCount = 0
 
         // Start Registration Process
         Log.d(LOG_TAG, "saveUserAtFirestore (Done): Started")

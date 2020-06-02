@@ -25,7 +25,7 @@ class BannerSliderAdapter(
     override fun onBindViewHolder(holder: BannerSliderAdapterVH, position: Int) {
         holder.bind(mSliderItems[position])
         holder.rootView.setOnClickListener {
-            mBannerItemClickListener.mBannerItemClickListener(mSliderItems[position].id)
+            mBannerItemClickListener.mBannerItemClickListener(mSliderItems[position])
         }
     }
 
@@ -33,7 +33,6 @@ class BannerSliderAdapter(
         ViewHolder(binding.root) {
 
         val rootView = binding.root
-
         fun bind(banner: Banner) {
             binding.banner = banner
             binding.executePendingBindings()
@@ -42,7 +41,7 @@ class BannerSliderAdapter(
     }
 
     interface BannerItemClickListener {
-        fun mBannerItemClickListener(bannerId: String?)
+        fun mBannerItemClickListener(banner: Banner)
     }
 
 }

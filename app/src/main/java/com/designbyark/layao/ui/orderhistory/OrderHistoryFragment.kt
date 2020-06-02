@@ -75,13 +75,9 @@ class OrderHistoryFragment : Fragment(),
         }
     }
 
-    override fun orderItemClickListener(orderId: String) {
-        val args = Bundle()
-        args.putString("orderId", orderId)
-        findNavController().navigate(
-            R.id.action_orderHistoryFragment_to_orderDetailFragment,
-            args
-        )
+    override fun orderItemClickListener(order: Order) {
+        val action = OrderHistoryFragmentDirections.actionOrderHistoryFragmentToOrderDetailFragment(order)
+        findNavController().navigate(action)
     }
 
 

@@ -151,13 +151,9 @@ class SignUpFragment : Fragment() {
                 if (task.isSuccessful && task.isComplete) {
 
                     Log.d(LOG_TAG, "updateProfile: Started!")
-                    val args = Bundle()
-                    args.putSerializable(KEY, userModel)
                     enableInteraction(requireActivity(), binding.mIncludeProgressBar)
-                    findNavController().navigate(
-                        R.id.action_signUpFragment_to_signUpDetailsFragment,
-                        args
-                    )
+                    val action = SignUpFragmentDirections.actionSignUpFragmentToSignUpDetailsFragment(userModel)
+                    findNavController().navigate(action)
                 } else {
                     enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                     Log.e(

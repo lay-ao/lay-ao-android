@@ -80,11 +80,7 @@ class CategoriesFragment : Fragment(), CategoryAdapter.CategoryClickListener {
     }
 
     override fun mCategoryClickListener(categoryId: String) {
-        val args = Bundle()
-        args.putString(HomeFragment.CATEGORY_ID, categoryId)
-        findNavController().navigate(
-            R.id.action_navigation_category_to_CPListFragment,
-            args
-        )
+        val action = CategoriesFragmentDirections.actionNavigationCategoryToCPListFragment(categoryId)
+        findNavController().navigate(action)
     }
 }

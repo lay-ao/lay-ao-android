@@ -22,11 +22,9 @@ class DiscountItemsAdapter internal constructor(
 
     override fun onBindViewHolder(holder: DiscountItemViewHolder, position: Int, model: Products) {
         holder.bind(model)
+        model.productId = snapshots.getSnapshot(position).id
         holder.itemView.setOnClickListener {
-            val data = mutableMapOf<String, String>()
-            data["id"] = snapshots.getSnapshot(holder.adapterPosition).id
-            data["tag"] = model.tag
-            itemClickListener.onDiscountItemClickListener(data)
+            itemClickListener.onDiscountItemClickListener(model)
         }
     }
 
@@ -40,7 +38,7 @@ class DiscountItemsAdapter internal constructor(
     }
 
     interface DiscountItemClickListener {
-        fun onDiscountItemClickListener(productData: MutableMap<String, String>)
+        fun onDiscountItemClickListener(product: Products)
     }
 
 }

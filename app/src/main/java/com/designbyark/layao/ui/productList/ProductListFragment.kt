@@ -6,7 +6,8 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.ProductListAdapter
 import com.designbyark.layao.common.DISCOUNT
@@ -14,30 +15,21 @@ import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentProductListBinding
-import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import java.util.*
 
 
 class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickListener {
 
-    private var brandId: String? = null
-    private var newArrivalId: String? = null
-    private var discountId: String? = null
+    private val args: ProductListFragmentArgs by navArgs()
+
 
     private var mAdapter: ProductListAdapter? = null
     private lateinit var binding: FragmentProductListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            brandId = it.getString(HomeFragment.BRAND_ID)
-            newArrivalId = it.getString(HomeFragment.PASSED_ID)
-            discountId = it.getString(HomeFragment.DISCOUNT_ID)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,18 +40,23 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         return binding.root
     }
 
+    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(PRODUCTS_COLLECTION)
 
+        val title: String
+        when {
+            args.brandId != null -> title = args.brandId?.capitalize(Locale.getDefault())!!
+            args.newArrival != null -> title = "New Arrival"
+            args.discountId != null -> title = "Items on Discount"
+            else -> title = "Products"
+        }
+
         (requireActivity() as AppCompatActivity).run {
-            when {
-                brandId != null -> supportActionBar?.setTitle(brandId)
-                newArrivalId != null -> supportActionBar?.setTitle("New Arrival")
-                else -> supportActionBar?.setTitle("Items on Discount")
-            }
+            supportActionBar?.setTitle(title)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
         setHasOptionsMenu(true)
@@ -67,15 +64,15 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         val query: Query?
 
         when {
-            brandId != null -> {
-                query = collection.whereEqualTo("brand", brandId)
+            args.brandId != null -> {
+                query = collection.whereEqualTo("brand", args.brandId)
                     .orderBy(TITLE, Query.Direction.ASCENDING)
             }
-            newArrivalId != null -> {
+            args.newArrival != null -> {
                 query = collection.whereEqualTo("newArrival", true)
                     .orderBy(TITLE, Query.Direction.ASCENDING)
             }
-            discountId != null -> {
+            args.discountId != null -> {
                 query = collection.whereGreaterThan(DISCOUNT, 0)
                     .orderBy(DISCOUNT, Query.Direction.ASCENDING)
             }
@@ -84,14 +81,10 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
             }
         }
 
-        getData(view, query)
-
-        brandId = ""
-        newArrivalId = ""
-        discountId = ""
+        getData(query)
     }
 
-    private fun getData(view: View, query: Query) {
+    private fun getData(query: Query) {
         val options = FirestoreRecyclerOptions.Builder<Products>()
             .setQuery(query, Products::class.java)
             .build()
@@ -110,14 +103,10 @@ class ProductListFragment : Fragment(), ProductListAdapter.ProductListItemClickL
         menu.clear()
     }
 
-    override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
-        val args = Bundle()
-        args.putString(HomeFragment.PRODUCT_ID, productData["id"])
-        args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        Navigation.createNavigateOnClickListener(
-            R.id.action_productListFragment_to_productDetailFragment,
-            args
-        )
+    override fun mProductListItemClickListener(product: Products) {
+        val action =
+            ProductListFragmentDirections.actionProductListFragmentToProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

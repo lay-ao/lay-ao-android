@@ -36,7 +36,7 @@ class UserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        setHasOptionsMenu(true)
         auth = FirebaseAuth.getInstance()
         firebaseUser = auth.currentUser
 
@@ -59,13 +59,11 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (firebaseUser == null) {
-            (requireActivity() as AppCompatActivity).run {
-                supportActionBar?.setTitle(R.string.title_user)
-            }
-            return
+        val title = auth.currentUser?.displayName ?: "You"
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.title = title
         }
-        setHasOptionsMenu(true)
 
         val firestore = FirebaseFirestore.getInstance()
         val userCollection = firestore.collection(USERS_COLLECTION)

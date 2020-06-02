@@ -6,14 +6,13 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.BrandsListAdapter
 import com.designbyark.layao.common.BRANDS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Brand
 import com.designbyark.layao.databinding.FragmentBrandsListBinding
-import com.designbyark.layao.ui.home.HomeFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -63,12 +62,9 @@ class BrandsListFragment : Fragment(),
     }
 
     override fun mBrandsItemClickListener(brandId: String) {
-        val args = Bundle()
-        args.putString(HomeFragment.BRAND_ID, brandId)
-        Navigation.createNavigateOnClickListener(
-            R.id.action_brandsListFragment_to_productListFragment,
-            args
-        )
+        val action =
+            BrandsListFragmentDirections.actionBrandsListFragmentToProductListFragment(brandId, null, null)
+        findNavController().navigate(action)
     }
 
     override fun onStart() {

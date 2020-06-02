@@ -1,5 +1,7 @@
 package com.designbyark.layao.data
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.designbyark.layao.data.cart.Cart
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
@@ -7,7 +9,7 @@ import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.ServerTimestamp
 
 @IgnoreExtraProperties
-class Order {
+class Order() : Parcelable {
 
     @PropertyName("orderId")
     var orderId: String = ""
@@ -38,7 +40,7 @@ class Order {
     var orderTime: Timestamp = Timestamp.now()
 
     @PropertyName("orderStatus")
-    var orderStatus: Int = 0
+    var orderStatus: Long = 0
 
     @PropertyName("total_items")
     var totalItems: Int = 0
@@ -51,5 +53,51 @@ class Order {
 
     @PropertyName("cancelled")
     var cancelled: Boolean = false
+
+    constructor(parcel: Parcel) : this() {
+        orderId = parcel.readString() ?: ""
+        fullName = parcel.readString() ?: ""
+        contactNumber = parcel.readString() ?: ""
+        houseNumber = parcel.readString() ?: ""
+        block = parcel.readInt()
+        completeAddress = parcel.readString() ?: ""
+        comment = parcel.readString() ?: ""
+        orderTime = parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp.now()
+        orderStatus = parcel.readLong()
+        totalItems = parcel.readInt()
+        grandTotal = parcel.readDouble()
+        userId = parcel.readString() ?: ""
+        cancelled = parcel.readByte() != 0.toByte()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(orderId)
+        parcel.writeString(fullName)
+        parcel.writeString(contactNumber)
+        parcel.writeString(houseNumber)
+        parcel.writeInt(block)
+        parcel.writeString(completeAddress)
+        parcel.writeString(comment)
+        parcel.writeParcelable(orderTime, flags)
+        parcel.writeLong(orderStatus)
+        parcel.writeInt(totalItems)
+        parcel.writeDouble(grandTotal)
+        parcel.writeString(userId)
+        parcel.writeByte(if (cancelled) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Order> {
+        override fun createFromParcel(parcel: Parcel): Order {
+            return Order(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Order?> {
+            return arrayOfNulls(size)
+        }
+    }
 
 }

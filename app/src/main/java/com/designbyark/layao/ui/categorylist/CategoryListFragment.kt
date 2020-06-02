@@ -9,13 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.ProductListAdapter
 import com.designbyark.layao.common.PRODUCTS_COLLECTION
 import com.designbyark.layao.common.TITLE
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentProductListBinding
-import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.util.MarginItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,17 +25,10 @@ import java.util.*
 class CategoryListFragment : Fragment(),
     ProductListAdapter.ProductListItemClickListener {
 
-    private var categoryId: String? = null
-
     private lateinit var binding: FragmentProductListBinding
     private lateinit var mAdapter: ProductListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            categoryId = it.getString(HomeFragment.CATEGORY_ID)
-        }
-    }
+    val args: CategoryListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,14 +44,14 @@ class CategoryListFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setTitle(categoryId?.toUpperCase(Locale.ENGLISH))
+            supportActionBar?.title = args.categoryId.toUpperCase(Locale.ENGLISH)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
 
         val firestore = FirebaseFirestore.getInstance()
         val collection = firestore.collection(PRODUCTS_COLLECTION)
 
-        val query = collection.whereEqualTo("tag", categoryId)
+        val query = collection.whereEqualTo("tag", args.categoryId)
             .orderBy(TITLE, Query.Direction.ASCENDING)
 
         getData(query)
@@ -91,14 +84,10 @@ class CategoryListFragment : Fragment(),
         mAdapter.stopListening()
     }
 
-    override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
-        val args = Bundle()
-        args.putString(HomeFragment.PRODUCT_ID, productData["id"])
-        args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        findNavController().navigate(
-            R.id.action_CPListFragment_to_productDetailFragment,
-            args
-        )
+    override fun mProductListItemClickListener(product: Products) {
+        val action =
+            CategoryListFragmentDirections.actionCPListFragmentToProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
 

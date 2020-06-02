@@ -32,6 +32,16 @@ fun setTitle(view: TextView, title: String) {
     view.text = title
 }
 
+@BindingAdapter("app:setValidity")
+fun setValidity(view: TextView, date: Date) {
+    view.text = String.format("Valid till %s", formatDate(date))
+}
+
+@BindingAdapter("app:setPromoCode")
+fun setPromoCode(view: TextView, code: String) {
+    view.text = String.format("Promo Code: %s", code)
+}
+
 @BindingAdapter("app:setDiscount")
 fun setDiscount(view: TextView, discount: Double) {
     if (discount > 0) {
@@ -55,6 +65,7 @@ fun setPrice(view: TextView, product: Products) {
             Locale.getDefault(), "Rs. %.0f/%s",
             product.price, product.unit
         )
+        view.setTextColor(getColor(view.context, android.R.color.black))
     }
 }
 
@@ -200,20 +211,20 @@ fun setSearchProductTitle(view: TextView, productsData: ProductsData) {
 }
 
 @BindingAdapter("app:setOrderStatus")
-fun setOrderStatus(view: TextView, status: Int) {
+fun setOrderStatus(view: TextView, status: Long) {
     view.text = getOrderStatus(status)
 }
 
 @BindingAdapter("app:setOrderUI")
-fun setOrderUI(view: MaterialCardView, status: Int) {
+fun setOrderUI(view: MaterialCardView, status: Long) {
     when (status) {
-        0 -> view.strokeColor = getColor(view.context, android.R.color.holo_orange_dark)
-        1 -> view.strokeColor = getColor(view.context, android.R.color.holo_blue_dark)
-        2 -> view.strokeColor = getColor(view.context, android.R.color.holo_green_dark)
-        3 -> view.strokeColor = getColor(view.context, android.R.color.holo_purple)
-        4 -> view.strokeColor = getColor(view.context, android.R.color.holo_red_dark)
-        5 -> view.strokeColor = getColor(view.context, android.R.color.holo_green_dark)
-        6 -> view.strokeColor = getColor(view.context, android.R.color.holo_red_dark)
+        0L -> view.strokeColor = getColor(view.context, android.R.color.holo_orange_dark)
+        1L -> view.strokeColor = getColor(view.context, android.R.color.holo_blue_dark)
+        2L -> view.strokeColor = getColor(view.context, android.R.color.holo_green_dark)
+        3L -> view.strokeColor = getColor(view.context, android.R.color.holo_purple)
+        4L -> view.strokeColor = getColor(view.context, android.R.color.holo_red_dark)
+        5L -> view.strokeColor = getColor(view.context, android.R.color.holo_green_dark)
+        6L -> view.strokeColor = getColor(view.context, android.R.color.holo_red_dark)
         else -> view.strokeColor = getColor(view.context, android.R.color.black)
     }
 }
@@ -250,5 +261,67 @@ fun setOrderId(view: TextView, order: Order) {
     view.text = String.format(
         "Order #%s",
         formatOrderId(order.orderId, order.contactNumber).toUpperCase(Locale.getDefault())
+    )
+}
+
+@BindingAdapter("app:setProductPrice")
+fun setProductPrice(view: TextView, product: Products) {
+    if (product.discount > 0) {
+        view.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f/%s", findDiscountPrice(product.price, product.discount), product.unit
+        )
+    } else {
+        view.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f/%s", product.price, product.unit
+        )
+    }
+}
+
+@BindingAdapter("app:setOriginalPrice")
+fun setOriginalPrice(view: TextView, product: Products) {
+    if (product.discount > 0) {
+        view.text = String.format(
+            Locale.getDefault(),
+            "Rs. %.0f/%s", product.price, product.unit
+        )
+        view.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+    } else {
+        view.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("app:setDeliveryAddress")
+fun setDeliveryAddress(view: TextView, address: String) {
+    view.text = String.format("Delivery at %s", address)
+}
+
+@BindingAdapter("app:setContactDetails")
+fun setContactDetails(view: TextView, contact: String) {
+    view.text = String.format("Contact Number: %s", contact)
+}
+
+@BindingAdapter("app:setCustomerName")
+fun setCustomerName(view: TextView, name: String) {
+    view.text = String.format("Placed by %s", name)
+}
+
+@BindingAdapter("app:setTotalItems")
+fun setTotalItems(view: TextView, count: Int) {
+    view.text = String.format("Total item(s): %d", count)
+}
+
+@BindingAdapter("app:setPlacedTiming")
+fun setPlacedTiming(view: TextView, time: Timestamp) {
+    view.text = String.format("Order was placed %s\n(%s)",
+        DateUtils.getRelativeDateTimeString(
+            view.context,
+            time.toDate().time,
+            DateUtils.SECOND_IN_MILLIS,
+            DateUtils.YEAR_IN_MILLIS,
+            0
+        ),
+        formatDate(time.toDate())
     )
 }

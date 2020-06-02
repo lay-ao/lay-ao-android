@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.common.LOG_TAG
 import com.designbyark.layao.common.disableInteraction
@@ -21,14 +22,7 @@ class ForgotPasswordFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: FragmentForgotPasswordBinding
 
-    private var title: Int? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments.let {
-            title = it?.getInt("change_pass")
-        }
-    }
+    private val args: ForgotPasswordFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,16 +44,16 @@ class ForgotPasswordFragment : Fragment() {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
 
-        val changePassword = requireContext().resources.getString(R.string.change_password)
+        val changePassword = getString(R.string.change_password)
 
-        if (title == 0) {
+        if (args.status == 0) {
             (requireActivity() as AppCompatActivity).run {
                 supportActionBar?.setTitle(changePassword)
             }
             binding.mTitle.text = changePassword
             binding.mResetPassword.text = changePassword
         } else {
-            binding.mTitle.text = view.context.resources.getString(R.string.forgot_password)
+            binding.mTitle.text = getString(R.string.forgot_password)
         }
     }
 

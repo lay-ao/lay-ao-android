@@ -1,6 +1,7 @@
 package com.designbyark.layao.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Brand
 import com.designbyark.layao.data.Category
+import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentHomeBinding
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,6 +40,7 @@ class HomeFragment : Fragment(),
         const val CATEGORY_ID = "categoryId"
         const val PASSED_ID = "passedId"
         const val DISCOUNT_ID = "discountId"
+        const val NEW_ARRIVAL_ID = "newArrivalId"
     }
 
     private var mHomeCategoryAdapter: CategoriesAdapter? = null
@@ -114,10 +117,6 @@ class HomeFragment : Fragment(),
     override fun onStop() {
         super.onStop()
 
-//        (requireActivity() as AppCompatActivity).run {
-//            supportActionBar?.setSubtitle(null)
-//        }
-
         if (mHomeCategoryAdapter != null) {
             mHomeCategoryAdapter?.stopListening()
         }
@@ -137,15 +136,19 @@ class HomeFragment : Fragment(),
     }
 
     fun allDiscountItems() {
-        val args = Bundle()
-        args.putString(DISCOUNT_ID, "discountId")
-        findNavController().navigate(R.id.action_nav_productListFragment, args)
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
+        findNavController().navigate(action)
+//        val args = Bundle()
+//        args.putString(DISCOUNT_ID, "discountId")
+//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allNewArrivals() {
-        val args = Bundle()
-        args.putString(PASSED_ID, "newArrival")
-        findNavController().navigate(R.id.action_nav_productListFragment, args)
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, null, NEW_ARRIVAL_ID)
+        findNavController().navigate(action)
+//        val args = Bundle()
+//        args.putString(PASSED_ID, "newArrival")
+//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allBrands() {
@@ -259,35 +262,29 @@ class HomeFragment : Fragment(),
         binding.mBrandsRV.adapter = mBrandsAdapter
     }
 
-    override fun onDiscountItemClickListener(productData: MutableMap<String, String>) {
-        val args = Bundle()
-        args.putString(PRODUCT_ID, productData["id"])
-        args.putString(PRODUCT_TAG, productData["tag"])
-        findNavController().navigate(R.id.action_nav_productDetailFragment, args)
+    override fun onDiscountItemClickListener(product: Products) {
+        val action = HomeFragmentDirections.actionNavProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
-    override fun mNewArrivalClickListener(productId: String) {
-        val args = Bundle()
-        args.putString(PRODUCT_ID, productId)
-        findNavController().navigate(R.id.action_nav_productDetailFragment, args)
+    override fun mNewArrivalClickListener(product: Products) {
+        val action = HomeFragmentDirections.actionNavProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
     override fun mBrandItemClickListener(brandId: String) {
-        val args = Bundle()
-        args.putString(BRAND_ID, brandId)
-        findNavController().navigate(R.id.action_nav_productListFragment, args)
+        val action = HomeFragmentDirections.actionNavProductListFragment(brandId, null, null)
+        findNavController().navigate(action)
     }
 
-    override fun mBannerItemClickListener(bannerId: String?) {
-        val args = Bundle()
-        args.putString(BANNER_ID, bannerId)
-        findNavController().navigate(R.id.action_nav_bannerDetailFragment, args)
+    override fun mBannerItemClickListener(banner: Banner) {
+        val action = HomeFragmentDirections.actionNavBannerDetailFragment(banner)
+        findNavController().navigate(action)
     }
 
     override fun onCategoryItemClickListener(categoryId: String) {
-        val args = Bundle()
-        args.putString(CATEGORY_ID, categoryId)
-        findNavController().navigate(R.id.action_navigation_home_to_CPListFragment, args)
+        val action = HomeFragmentDirections.actionNavigationHomeToCPListFragment(categoryId)
+        findNavController().navigate(action)
     }
 
 

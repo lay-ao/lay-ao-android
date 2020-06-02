@@ -21,11 +21,9 @@ class ProductListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: ProductListVH, position: Int, model: Products) {
         holder.bind(model)
+        model.productId = snapshots.getSnapshot(position).id
         holder.itemView.setOnClickListener {
-            val data = mutableMapOf<String, String>()
-            data["id"] = snapshots.getSnapshot(holder.adapterPosition).id
-            data["tag"] = model.tag
-            itemClickListener.mProductListItemClickListener(data)
+            itemClickListener.mProductListItemClickListener(model)
         }
     }
 
@@ -39,7 +37,7 @@ class ProductListAdapter internal constructor(
     }
 
     interface ProductListItemClickListener {
-        fun mProductListItemClickListener(productData: MutableMap<String, String>)
+        fun mProductListItemClickListener(product: Products)
     }
 
 }
