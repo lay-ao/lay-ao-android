@@ -317,7 +317,11 @@
         tools:layout="@layout/fragment_order_history">
         <action
             android:id="@+id/action_orderHistoryFragment_to_orderDetailFragment"
-            app:destination="@id/orderDetailFragment" />
+            app:destination="@id/orderDetailFragment">
+            <argument
+                android:name="order"
+                app:argType="com.designbyark.layao.data.Order" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/facetFragment"
