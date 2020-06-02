@@ -40,6 +40,7 @@ class HomeFragment : Fragment(),
         const val CATEGORY_ID = "categoryId"
         const val PASSED_ID = "passedId"
         const val DISCOUNT_ID = "discountId"
+        const val NEW_ARRIVAL_ID = "newArrivalId"
     }
 
     private var mHomeCategoryAdapter: CategoriesAdapter? = null
@@ -116,10 +117,6 @@ class HomeFragment : Fragment(),
     override fun onStop() {
         super.onStop()
 
-//        (requireActivity() as AppCompatActivity).run {
-//            supportActionBar?.setSubtitle(null)
-//        }
-
         if (mHomeCategoryAdapter != null) {
             mHomeCategoryAdapter?.stopListening()
         }
@@ -139,15 +136,19 @@ class HomeFragment : Fragment(),
     }
 
     fun allDiscountItems() {
-        val args = Bundle()
-        args.putString(DISCOUNT_ID, "discountId")
-        findNavController().navigate(R.id.action_nav_productListFragment, args)
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
+        findNavController().navigate(action)
+//        val args = Bundle()
+//        args.putString(DISCOUNT_ID, "discountId")
+//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allNewArrivals() {
-        val args = Bundle()
-        args.putString(PASSED_ID, "newArrival")
-        findNavController().navigate(R.id.action_nav_productListFragment, args)
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, null, NEW_ARRIVAL_ID)
+        findNavController().navigate(action)
+//        val args = Bundle()
+//        args.putString(PASSED_ID, "newArrival")
+//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allBrands() {
@@ -272,7 +273,7 @@ class HomeFragment : Fragment(),
     }
 
     override fun mBrandItemClickListener(brandId: String) {
-        val action = HomeFragmentDirections.actionNavProductListFragment(brandId)
+        val action = HomeFragmentDirections.actionNavProductListFragment(brandId, null, null)
         findNavController().navigate(action)
     }
 

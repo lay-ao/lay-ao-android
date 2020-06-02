@@ -63,7 +63,7 @@ class BrandsListFragment : Fragment(),
 
     override fun mBrandsItemClickListener(brandId: String) {
         val action =
-            BrandsListFragmentDirections.actionBrandsListFragmentToProductListFragment(brandId)
+            BrandsListFragmentDirections.actionBrandsListFragmentToProductListFragment(brandId, null, null)
         findNavController().navigate(action)
     }
 

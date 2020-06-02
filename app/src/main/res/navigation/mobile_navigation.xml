@@ -29,8 +29,16 @@
             app:destination="@id/productListFragment">
             <argument
                 android:name="brandId"
-                android:defaultValue="NIP"
-                app:argType="string" />
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="discountId"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="newArrival"
+                app:argType="string"
+                app:nullable="true" />
         </action>
         <action
             android:id="@+id/home_to_favorites_dest"
@@ -153,8 +161,16 @@
         </action>
         <argument
             android:name="brandId"
-            android:defaultValue="NIP"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="discountId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="newArrival"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -301,8 +317,8 @@
             app:destination="@id/productListFragment">
             <argument
                 android:name="brandId"
-                android:defaultValue="NIP"
-                app:argType="string" />
+                app:argType="string"
+                app:nullable="true" />
         </action>
     </fragment>
     <fragment
