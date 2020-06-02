@@ -6,37 +6,44 @@ import androidx.room.PrimaryKey
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 
+
+/*
+* isFavorite Properties
+* 0 - False
+* 1 - True
+* */
+
 @Entity(tableName = "favorites_table")
-class Favorites {
+data class Favorites(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
+    var id: Int? = null,
 
     @ColumnInfo(name = "productId")
-    var productId: String = ""
+    var productId: String = "",
 
-    @ColumnInfo(name = "available")
-    var available: Boolean = false
+    @ColumnInfo(name = "isFavorite")
+    var isFavorite: Int = -1,
 
     @ColumnInfo(name = "brand")
-    var brand: String = ""
+    var brand: String = "",
 
     @ColumnInfo(name = "discount")
-    var discount: Double = 0.0
+    var discount: Double = 0.0,
 
     @ColumnInfo(name = "image")
-    var image: String = ""
+    var image: String = "",
 
     @ColumnInfo(name = "price")
-    var price: Double = 0.0
+    var price: Double = 0.0,
 
     @ColumnInfo(name = "tag")
-    var tag: String = ""
+    var tag: String = "",
 
     @ColumnInfo(name = "title")
-    var title: String = ""
+    var title: String = "",
 
     @ColumnInfo(name = "unit")
     var unit: String = ""
 
-}
+)

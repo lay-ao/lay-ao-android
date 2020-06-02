@@ -10,12 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.FavoriteAdapter
-import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.databinding.FragmentFavoritesBinding
 import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.CollectionReference
 
 class FavoritesFragment : Fragment() {
 
@@ -45,6 +43,7 @@ class FavoritesFragment : Fragment() {
         if (bottomMenu.visibility == View.GONE) {
             bottomMenu.visibility = View.VISIBLE
         }
+
 
         favoriteAdapter = FavoriteAdapter(favoriteViewModel)
 

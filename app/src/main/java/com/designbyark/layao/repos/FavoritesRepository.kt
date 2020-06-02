@@ -20,4 +20,8 @@ class FavoritesRepository(private val favDao: FavoriteDao) {
         favDao.deleteAFavorite(favorite)
     }
 
+    fun getFavorite(productId: String): LiveData<Int> {
+        return favDao.getFavorite(productId)
+    }
+
 }

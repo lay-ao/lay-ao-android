@@ -6,19 +6,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.SimilarProductListAdapter
+import com.designbyark.layao.data.Cart
+import com.designbyark.layao.data.Favorites
+import com.designbyark.layao.data.Products
+import com.designbyark.layao.databinding.FragmentProductDetailBinding
 import com.designbyark.layao.util.PRODUCTS_COLLECTION
 import com.designbyark.layao.util.findDiscountPrice
 import com.designbyark.layao.util.setHorizontalListLayout
 import com.designbyark.layao.util.setQuantityPrice
-import com.designbyark.layao.data.Products
-import com.designbyark.layao.data.Cart
-import com.designbyark.layao.data.Favorites
-import com.designbyark.layao.databinding.FragmentProductDetailBinding
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -38,7 +39,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
 
     private var mAdapter: SimilarProductListAdapter? = null
     private var firebaseUser: FirebaseUser? = null
-    private var documentExists: Boolean = false
+    private var isFavorite: Boolean = false
 
     private var discount: Double = 0.0
 
@@ -88,6 +89,16 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         val options = FirestoreRecyclerOptions.Builder<Products>()
             .setQuery(query, Products::class.java)
             .build()
+
+        favoriteViewModel.getFavorite(args.product.productId).observe(requireActivity(), Observer {
+            if (it == 0) {
+                isFavorite = false
+                binding.mFavorite.isSelected = false
+            } else if (it == 1) {
+                isFavorite = true
+                binding.mFavorite.isSelected = true
+            }
+        })
 
         mAdapter = SimilarProductListAdapter(
             options,
@@ -154,14 +165,27 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
 
     fun addToFav() {
 
-        if (documentExists)  {
-            documentExists = false
-            binding.mFavorite.isSelected = false
-        } else {
-            documentExists = true
-            binding.mFavorite.isSelected = true
-        }
+        val favorite = Favorites()
+        favorite.productId = args.product.productId
+        favorite.brand = args.product.brand
+        favorite.discount = args.product.discount
+        favorite.image = args.product.image
+        favorite.price = args.product.price
+        favorite.tag = args.product.tag
+        favorite.title = args.product.title
+        favorite.unit = args.product.unit
 
+        if (isFavorite) {
+            isFavorite = false
+            binding.mFavorite.isSelected = false
+            favorite.isFavorite = 0
+            favoriteViewModel.deleteAFavorite(favorite)
+        } else {
+            isFavorite = true
+            binding.mFavorite.isSelected = true
+            favorite.isFavorite = 1
+            favoriteViewModel.insert(favorite)
+        }
     }
 
     override fun onStart() {

@@ -8,6 +8,7 @@ import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.db.LayAoRoomDatabase
 import com.designbyark.layao.repos.FavoritesRepository
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -31,6 +32,12 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun deleteAFavorite(favorites: Favorites) = viewModelScope.launch {
         repository.deleteAFavorite(favorites)
+    }
+
+    fun getFavorite(productId: String): LiveData<Int>  {
+        return runBlocking {
+            repository.getFavorite(productId)
+        }
     }
 
 }

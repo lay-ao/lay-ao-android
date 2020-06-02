@@ -10,7 +10,7 @@ import com.designbyark.layao.dao.FavoriteDao
 import com.designbyark.layao.data.Favorites
 
 
-@Database(entities = [Cart::class, Favorites::class], version = 12, exportSchema = false)
+@Database(entities = [Cart::class, Favorites::class], version = 13, exportSchema = false)
 abstract class LayAoRoomDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao

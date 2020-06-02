@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.BindingAdapter
 import com.algolia.instantsearch.helper.android.highlighting.toSpannedString
 import com.bumptech.glide.Glide
-import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.ProductsData
