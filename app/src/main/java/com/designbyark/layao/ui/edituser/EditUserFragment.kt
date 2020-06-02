@@ -13,10 +13,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
-import com.designbyark.layao.common.LOG_TAG
-import com.designbyark.layao.common.USERS_COLLECTION
-import com.designbyark.layao.common.duplicationValue
-import com.designbyark.layao.common.emptyValidation
+import com.designbyark.layao.util.LOG_TAG
+import com.designbyark.layao.util.USERS_COLLECTION
+import com.designbyark.layao.util.duplicationValue
+import com.designbyark.layao.util.emptyValidation
 import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentEditUserBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -64,13 +64,25 @@ class EditUserFragment : Fragment() {
     fun editUser() {
 
         val fullName = binding.mFullNameET.text.toString().trim()
-        if (emptyValidation(fullName, binding.mFullNameIL)) return
+        if (emptyValidation(
+                fullName,
+                binding.mFullNameIL
+            )
+        ) return
 
         val houseNumber = binding.mHouseNumET.text.toString().trim()
-        if (emptyValidation(houseNumber, binding.mHouseNumIL)) return
+        if (emptyValidation(
+                houseNumber,
+                binding.mHouseNumIL
+            )
+        ) return
 
         val contact = binding.mContactET.text.toString().trim()
-        if (emptyValidation(contact, binding.mContactIL)) return
+        if (emptyValidation(
+                contact,
+                binding.mContactIL
+            )
+        ) return
 
         if (binding.mBlockSpinner.selectedItemPosition == 0) {
             Toast.makeText(requireContext(), "Kindly select block number", Toast.LENGTH_SHORT)
@@ -79,12 +91,20 @@ class EditUserFragment : Fragment() {
         }
 
         // Check for duplicate values
-        if (duplicationValue(user!!.fullName, fullName)) {
+        if (duplicationValue(
+                user!!.fullName,
+                fullName
+            )
+        ) {
             userDoc.update("fullName", fullName)
             Toast.makeText(requireContext(), "Name updated", Toast.LENGTH_SHORT).show()
         }
 
-        if (duplicationValue(user!!.houseNumber, houseNumber)) {
+        if (duplicationValue(
+                user!!.houseNumber,
+                houseNumber
+            )
+        ) {
             userDoc.update("houseNumber", houseNumber)
             Toast.makeText(requireContext(), "House Number updated", Toast.LENGTH_SHORT).show()
         }

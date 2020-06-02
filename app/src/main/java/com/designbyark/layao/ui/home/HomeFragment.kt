@@ -1,7 +1,6 @@
 package com.designbyark.layao.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.*
-import com.designbyark.layao.common.*
 import com.designbyark.layao.data.Banner
 import com.designbyark.layao.data.Brand
 import com.designbyark.layao.data.Category
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentHomeBinding
+import com.designbyark.layao.util.*
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -138,17 +137,11 @@ class HomeFragment : Fragment(),
     fun allDiscountItems() {
         val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
         findNavController().navigate(action)
-//        val args = Bundle()
-//        args.putString(DISCOUNT_ID, "discountId")
-//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allNewArrivals() {
         val action = HomeFragmentDirections.actionNavProductListFragment(null, null, NEW_ARRIVAL_ID)
         findNavController().navigate(action)
-//        val args = Bundle()
-//        args.putString(PASSED_ID, "newArrival")
-//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allBrands() {
@@ -204,7 +197,10 @@ class HomeFragment : Fragment(),
             CategoriesAdapter(options, this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(binding.mHomeCategoriesRV, requireContext())
+        setHorizontalListLayout(
+            binding.mHomeCategoriesRV,
+            requireContext()
+        )
         binding.mHomeCategoriesRV.adapter = mHomeCategoryAdapter
 
     }
@@ -222,7 +218,10 @@ class HomeFragment : Fragment(),
             DiscountItemsAdapter(options, this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(binding.mDiscountItemRV, requireContext())
+        setHorizontalListLayout(
+            binding.mDiscountItemRV,
+            requireContext()
+        )
         binding.mDiscountItemRV.adapter = mDiscountItemsAdapter
     }
 
@@ -238,7 +237,10 @@ class HomeFragment : Fragment(),
         mNewArrivalAdapter = NewArrivalAdapter(options, this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(binding.mNewArrivalRV, requireActivity())
+        setHorizontalListLayout(
+            binding.mNewArrivalRV,
+            requireActivity()
+        )
         binding.mNewArrivalRV.adapter = mNewArrivalAdapter
     }
 
@@ -258,7 +260,10 @@ class HomeFragment : Fragment(),
         mBrandsAdapter = BrandsAdapter(options, this)
 
         // Assigning adapter to Recycler View
-        setHorizontalListLayout(binding.mBrandsRV, requireContext())
+        setHorizontalListLayout(
+            binding.mBrandsRV,
+            requireContext()
+        )
         binding.mBrandsRV.adapter = mBrandsAdapter
     }
 

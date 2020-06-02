@@ -1,6 +1,8 @@
-package com.designbyark.layao.data.cart
+package com.designbyark.layao.repos
 
 import androidx.lifecycle.LiveData
+import com.designbyark.layao.data.Cart
+import com.designbyark.layao.dao.CartDao
 
 class CartRepository(private val cartDao: CartDao) {
 

@@ -1,4 +1,4 @@
-package com.designbyark.layao.common
+package com.designbyark.layao.util
 
 import android.Manifest
 import android.app.Activity
@@ -224,7 +224,9 @@ private fun createNotification(
     title: String,
     content: String
 ): NotificationCompat.Builder {
-    return NotificationCompat.Builder(context, CHANNEL_ID)
+    return NotificationCompat.Builder(context,
+        CHANNEL_ID
+    )
         .setSmallIcon(icon)
         .setContentTitle(title)
         .setStyle(
@@ -247,7 +249,12 @@ fun displayNotification(context: Context, icon: Int, title: String, content: Str
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
 
-        notificationManager.notify(1, createNotification(context, icon, title, content).build())
+        notificationManager.notify(1, createNotification(
+            context,
+            icon,
+            title,
+            content
+        ).build())
     }
 }
 

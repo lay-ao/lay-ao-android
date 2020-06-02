@@ -1,23 +1,27 @@
 package com.designbyark.layao.ui.productdetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.SimilarProductListAdapter
-import com.designbyark.layao.common.*
+import com.designbyark.layao.data.Cart
 import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.data.Products
-import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.databinding.FragmentProductDetailBinding
+import com.designbyark.layao.util.PRODUCTS_COLLECTION
+import com.designbyark.layao.util.findDiscountPrice
+import com.designbyark.layao.util.setHorizontalListLayout
+import com.designbyark.layao.util.setQuantityPrice
 import com.designbyark.layao.viewmodels.CartViewModel
+import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -30,11 +34,12 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
     private val args: ProductDetailFragmentArgs by navArgs()
 
     private lateinit var cartViewModel: CartViewModel
+    private lateinit var favoriteViewModel: FavoritesViewModel
     private lateinit var binding: FragmentProductDetailBinding
 
     private var mAdapter: SimilarProductListAdapter? = null
     private var firebaseUser: FirebaseUser? = null
-    private var documentExists: Boolean = false
+    private var isFavorite: Boolean = false
 
     private var discount: Double = 0.0
 
@@ -74,19 +79,9 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         firebaseUser = firebaseAuth.currentUser
 
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
+        favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoritesViewModel::class.java)
         firestore = FirebaseFirestore.getInstance()
         val productCollection = firestore.collection(PRODUCTS_COLLECTION)
-        if (firebaseUser != null) {
-            firestore.collection(USERS_COLLECTION).document(firebaseUser!!.uid)
-                .collection("Favorites").document(args.product.productId)
-                .get().addOnSuccessListener { documentSnapshot ->
-                    if (documentSnapshot.exists()) {
-                        documentExists = true
-                        binding.mFavorite.isSelected = true
-                    }
-                }
-        }
-
 
         val query = productCollection.whereEqualTo("tag", args.product.tag)
             .orderBy("title", Query.Direction.ASCENDING)
@@ -95,12 +90,25 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             .setQuery(query, Products::class.java)
             .build()
 
+        favoriteViewModel.getFavorite(args.product.productId).observe(requireActivity(), Observer {
+            if (it == 0) {
+                isFavorite = false
+                binding.mFavorite.isSelected = false
+            } else if (it == 1) {
+                isFavorite = true
+                binding.mFavorite.isSelected = true
+            }
+        })
+
         mAdapter = SimilarProductListAdapter(
             options,
             this,
             args.product.productId
         )
-        setHorizontalListLayout(binding.mSimilarProductsRV, requireContext())
+        setHorizontalListLayout(
+            binding.mSimilarProductsRV,
+            requireContext()
+        )
         binding.mSimilarProductsRV.adapter = mAdapter
     }
 
@@ -110,7 +118,12 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             quantity = 1
         }
         binding.mQuantity.text =
-            setQuantityPrice(args.product.price, quantity, args.product.discount, args.product.unit)
+            setQuantityPrice(
+                args.product.price,
+                quantity,
+                args.product.discount,
+                args.product.unit
+            )
     }
 
     fun add() {
@@ -139,7 +152,10 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         cart.quantity = quantity
         cart.stock = args.product.stock
         if (discount > 0) {
-            cart.total = findDiscountPrice(args.product.price, args.product.discount) * quantity
+            cart.total = findDiscountPrice(
+                args.product.price,
+                args.product.discount
+            ) * quantity
         } else {
             cart.total = args.product.price * quantity
         }
@@ -148,46 +164,27 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
     }
 
     fun addToFav() {
-        if (firebaseUser == null) {
-            Log.d(LOG_TAG, "Adding to Favorite: firebaseUser == null.")
-            return
-        }
 
-        if (documentExists) {
-            firestore.collection(USERS_COLLECTION).document(firebaseUser!!.uid)
-                .collection("Favorites").document(args.product.productId)
-                .delete().addOnCompleteListener { task ->
-                    if (task.isSuccessful && task.isComplete) {
-                        documentExists = false
-                        binding.mFavorite.isSelected = false
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e(LOG_TAG, exception.localizedMessage, exception)
-                }
-        }
+        val favorite = Favorites()
+        favorite.productId = args.product.productId
+        favorite.brand = args.product.brand
+        favorite.discount = args.product.discount
+        favorite.image = args.product.image
+        favorite.price = args.product.price
+        favorite.tag = args.product.tag
+        favorite.title = args.product.title
+        favorite.unit = args.product.unit
 
-        if (!documentExists) {
-            val favorites = Favorites()
-            favorites.productId = args.product.productId
-            favorites.brand = args.product.brand
-            favorites.discount = args.product.discount
-            favorites.image = args.product.image
-            favorites.price = args.product.price
-            favorites.tag = args.product.tag
-            favorites.title = args.product.title
-            favorites.unit = args.product.unit
-
-            firestore.collection(USERS_COLLECTION).document(firebaseUser!!.uid)
-                .collection("Favorites").document(args.product.productId)
-                .set(favorites).addOnCompleteListener { task ->
-                    if (task.isSuccessful && task.isComplete) {
-                        binding.mFavorite.isSelected = true
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e(LOG_TAG, exception.localizedMessage, exception)
-                }
+        if (isFavorite) {
+            isFavorite = false
+            binding.mFavorite.isSelected = false
+            favorite.isFavorite = 0
+            favoriteViewModel.deleteAFavorite(favorite)
+        } else {
+            isFavorite = true
+            binding.mFavorite.isSelected = true
+            favorite.isFavorite = 1
+            favoriteViewModel.insert(favorite)
         }
     }
 

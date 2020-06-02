@@ -1,7 +1,8 @@
-package com.designbyark.layao.data.cart
+package com.designbyark.layao.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.designbyark.layao.data.Cart
 
 @Dao
 interface CartDao {

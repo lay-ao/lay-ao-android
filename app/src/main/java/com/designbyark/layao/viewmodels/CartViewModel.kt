@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.designbyark.layao.data.cart.Cart
-import com.designbyark.layao.data.cart.CartRepository
+import com.designbyark.layao.data.Cart
+import com.designbyark.layao.repos.CartRepository
 import com.designbyark.layao.db.LayAoRoomDatabase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

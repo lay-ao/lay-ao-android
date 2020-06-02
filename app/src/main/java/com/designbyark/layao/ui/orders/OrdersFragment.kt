@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.OrderAdapter
-import com.designbyark.layao.common.LOG_TAG
-import com.designbyark.layao.common.ORDERS_COLLECTION
+import com.designbyark.layao.util.LOG_TAG
+import com.designbyark.layao.util.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.databinding.FragmentNoAuthOrderBinding
 import com.designbyark.layao.databinding.FragmentOrdersBinding
@@ -17,8 +17,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.Query
 
 class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
