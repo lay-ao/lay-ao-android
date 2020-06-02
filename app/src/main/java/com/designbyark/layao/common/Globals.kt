@@ -270,7 +270,7 @@ fun formatOrderId(orderId: String, phoneNumber: String): String {
             orderId.takeLast(3)
 }
 
-fun formatGender(code: Int): String {
+fun formatGender(code: Int?): String {
     return when (code) {
         1 -> "Female"
         2 -> "Male"
