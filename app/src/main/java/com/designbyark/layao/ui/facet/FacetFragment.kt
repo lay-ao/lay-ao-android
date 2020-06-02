@@ -30,7 +30,6 @@ class FacetFragment : Fragment() {
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
         val viewModel = ViewModelProvider(requireActivity()).get(SearchViewModel::class.java)

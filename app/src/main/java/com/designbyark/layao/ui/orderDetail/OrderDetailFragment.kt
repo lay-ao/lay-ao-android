@@ -10,37 +10,38 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.OrderCartAdapter
 import com.designbyark.layao.common.*
-import com.designbyark.layao.data.Order
 import com.designbyark.layao.databinding.FragmentOrderDetailBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.*
 
 class OrderDetailFragment : Fragment() {
 
     private var firebaseUser: FirebaseUser? = null
-    private var orderId: String? = null
     private var orderDocument: DocumentReference? = null
 
     private lateinit var collectionUserReference: CollectionReference
     private lateinit var binding: FragmentOrderDetailBinding
 
-    private var orderStatus: Int = 0
+    // private var orderId: String? = null
+    private var orderStatus: Long = 0
+    private val args: OrderDetailFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            orderId = it.getString("orderId")
-        }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        arguments?.let {
+//            orderId = it.getString("orderId")
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +50,7 @@ class OrderDetailFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
         binding.detail = this
+        binding.order = args.order
         return binding.root
     }
 
@@ -67,60 +69,31 @@ class OrderDetailFragment : Fragment() {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
 
-        orderDocument = orderId?.let { collectionReference.document(it) }
-        getOrderData(view)
+        orderDocument = args.order.orderId.let { collectionReference.document(it) }
+
+        val orderCartAdapter = OrderCartAdapter(args.order.items)
+        binding.mOrderCartRV.adapter = orderCartAdapter
+
+        listenToOrderStatus(view)
     }
 
     fun cancelOrder() {
-        orderId?.let {
-            showCancelAlert(requireContext())
-        }
+        showCancelAlert(requireContext())
     }
 
-    private fun getOrderData(view: View) {
+    private fun listenToOrderStatus(view: View) {
         orderDocument?.addSnapshotListener { snapshot, exception ->
 
             if (exception != null) {
-                Log.w(LOG_TAG, "Listen failed.", exception)
+                Log.w(LOG_TAG, "Listen failed: ", exception)
                 return@addSnapshotListener
             }
 
             if (snapshot != null && snapshot.exists()) {
-                val model = snapshot.toObject(Order::class.java)
-                if (model != null) {
-                    orderStatus = model.orderStatus
-                    binding.mOrderId.text = String.format(
-                        "Order ID: %s",
-                        formatOrderId(model.orderId, model.contactNumber)
-                    )
-                    setOrderStatus(model.orderStatus, view.context)
-                    binding.mCustomerName.text = String.format("Placed by %s", model.fullName)
-                    binding.mOrderAddress.text =
-                        String.format("Delivery at %s", model.completeAddress)
-                    binding.mCustomerContact.text =
-                        String.format("Contact: %s", model.contactNumber)
-                    binding.mCartTotal.text =
-                        String.format(
-                            Locale.getDefault(),
-                            "Grand Total: Rs. %.2f",
-                            model.grandTotal
-                        )
-                    binding.mTotalItems.text =
-                        String.format(
-                            Locale.getDefault(),
-                            "Total items: %d items",
-                            model.totalItems
-                        )
-                    binding.mOrderTiming.text = String.format(
-                        "Order placed on %s",
-                        formatDate(model.orderTime.toDate())
-                    )
-
-                    val orderCartAdapter = OrderCartAdapter(model.items)
-                    binding.mOrderCartRV.adapter = orderCartAdapter
-                }
+                orderStatus = snapshot.get("orderStatus") as Long
+                setOrderStatus(orderStatus, view.context)
             } else {
-                Log.d(LOG_TAG, "Current data: null")
+                Log.w(LOG_TAG, "Current data: null")
             }
         }
     }
@@ -130,35 +103,35 @@ class OrderDetailFragment : Fragment() {
         binding.mCancelOrder.visibility = visibility
     }
 
-    private fun setOrderStatus(status: Int, context: Context) {
+    private fun setOrderStatus(status: Long, context: Context) {
         binding.mOrderStatus.text = getOrderStatus(status)
         when (status) {
-            0 -> setStatusUI(
+            0L -> setStatusUI(
                 getColor(context, android.R.color.holo_orange_dark),
                 View.VISIBLE
             )
-            1 -> setStatusUI(
+            1L -> setStatusUI(
                 getColor(context, android.R.color.holo_blue_dark),
                 View.VISIBLE
             )
-            2 -> setStatusUI(
+            2L -> setStatusUI(
                 getColor(context, android.R.color.holo_green_dark),
                 View.INVISIBLE
             )
-            3 -> setStatusUI(
+            3L -> setStatusUI(
                 getColor(context, android.R.color.holo_purple),
                 View.INVISIBLE
             )
-            4 -> setStatusUI(
+            4L -> setStatusUI(
                 getColor(context, android.R.color.holo_red_dark),
                 View.INVISIBLE
             )
 
-            5 -> setStatusUI(
+            5L -> setStatusUI(
                 getColor(context, android.R.color.holo_green_dark),
                 View.INVISIBLE
             )
-            6 -> setStatusUI(
+            6L -> setStatusUI(
                 getColor(context, android.R.color.holo_red_dark),
                 View.INVISIBLE
             )

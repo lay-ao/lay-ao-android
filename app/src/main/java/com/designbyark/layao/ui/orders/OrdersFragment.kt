@@ -115,10 +115,9 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
         }
     }
 
-    override fun orderItemClickListener(orderId: String) {
-        val args = Bundle()
-        args.putString("orderId", orderId)
-        findNavController().navigate(R.id.action_navigation_orders_to_orderDetailFragment, args)
+    override fun orderItemClickListener(order: Order) {
+        val action = OrdersFragmentDirections.actionNavigationOrdersToOrderDetailFragment(order)
+        findNavController().navigate(action)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

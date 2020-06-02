@@ -117,9 +117,6 @@ class EditUserFragment : Fragment() {
     fun changePassword() {
         val action = EditUserFragmentDirections.actionEditUserFragmentToForgotPasswordFragment(0)
         findNavController().navigate(action)
-//        val args = Bundle()
-//        args.putInt("change_pass", 0)
-//        findNavController().navigate(R.id.action_editUserFragment_to_forgotPasswordFragment, args)
     }
 
     private fun findUserData() {

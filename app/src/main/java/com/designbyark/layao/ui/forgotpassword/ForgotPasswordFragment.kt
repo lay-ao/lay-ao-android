@@ -22,15 +22,6 @@ class ForgotPasswordFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: FragmentForgotPasswordBinding
 
-    // private var title: Int? = null
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments.let {
-//            title = it?.getInt("change_pass")
-//        }
-//    }
-
     private val args: ForgotPasswordFragmentArgs by navArgs()
 
     override fun onCreateView(

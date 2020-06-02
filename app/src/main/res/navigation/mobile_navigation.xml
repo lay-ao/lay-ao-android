@@ -216,7 +216,11 @@
         tools:layout="@layout/fragment_orders">
         <action
             android:id="@+id/action_navigation_orders_to_orderDetailFragment"
-            app:destination="@id/orderDetailFragment" />
+            app:destination="@id/orderDetailFragment">
+            <argument
+                android:name="order"
+                app:argType="com.designbyark.layao.data.Order" />
+        </action>
         <action
             android:id="@+id/orders_to_history_orders_dest"
             app:destination="@id/orderHistoryFragment" />
@@ -234,7 +238,11 @@
         android:id="@+id/orderDetailFragment"
         android:name="com.designbyark.layao.ui.orderDetail.OrderDetailFragment"
         android:label="Order Detail"
-        tools:layout="@layout/fragment_order_detail" />
+        tools:layout="@layout/fragment_order_detail" >
+        <argument
+            android:name="order"
+            app:argType="com.designbyark.layao.data.Order" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.designbyark.layao.ui.signup.SignUpFragment"
