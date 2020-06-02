@@ -5,28 +5,23 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.FavoriteAdapter
-import com.designbyark.layao.util.USERS_COLLECTION
 import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.databinding.FragmentFavoritesBinding
-import com.designbyark.layao.databinding.FragmentNoFavoritesBinding
 import com.designbyark.layao.util.MarginItemDecoration
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 
 class FavoritesFragment : Fragment() {
 
-    private lateinit var favoritesCollection: CollectionReference
-    private lateinit var emptyLayout: FragmentNoFavoritesBinding
     private lateinit var binding: FragmentFavoritesBinding
+    private lateinit var favoriteViewModel: FavoritesViewModel
 
-    private var firebaseUser: FirebaseUser? = null
     private var favoriteAdapter: FavoriteAdapter? = null
 
     override fun onCreateView(
@@ -34,15 +29,7 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        val firebaseAuth = FirebaseAuth.getInstance()
-        firebaseUser = firebaseAuth.currentUser
-        if (firebaseUser == null) {
-            emptyLayout =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_no_favorites, container, false)
-            emptyLayout.fav = this
-            return emptyLayout.root
-        }
-
+        favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoritesViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorites, container, false)
         return binding.root
     }
@@ -59,19 +46,16 @@ class FavoritesFragment : Fragment() {
             bottomMenu.visibility = View.VISIBLE
         }
 
-        if (firebaseUser == null) {
-            return
-        }
+        favoriteAdapter = FavoriteAdapter(favoriteViewModel)
 
-        val firestore = FirebaseFirestore.getInstance()
-        favoritesCollection = firestore.collection(USERS_COLLECTION).document(firebaseUser?.uid!!)
-            .collection("Favorites")
-
-        val options = FirestoreRecyclerOptions.Builder<Favorites>()
-            .setQuery(favoritesCollection, Favorites::class.java)
-            .build()
-
-        favoriteAdapter = FavoriteAdapter(options, favoritesCollection)
+        favoriteViewModel.allFavorites.observe(requireActivity(), Observer {
+            favoriteAdapter?.setFavorites(it)
+            if (it.isEmpty()) {
+                binding.noFavoritesSection.visibility = View.VISIBLE
+            } else {
+                binding.noFavoritesSection.visibility = View.GONE
+            }
+        })
 
         binding.mFavoritesRV.let {
             it.adapter = favoriteAdapter
@@ -95,15 +79,4 @@ class FavoritesFragment : Fragment() {
         menu.clear()
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (favoriteAdapter != null)
-            favoriteAdapter?.startListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (favoriteAdapter != null)
-            favoriteAdapter?.stopListening()
-    }
 }

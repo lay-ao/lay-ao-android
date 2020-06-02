@@ -17,8 +17,10 @@ import com.designbyark.layao.util.setHorizontalListLayout
 import com.designbyark.layao.util.setQuantityPrice
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.Cart
+import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.databinding.FragmentProductDetailBinding
 import com.designbyark.layao.viewmodels.CartViewModel
+import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -31,6 +33,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
     private val args: ProductDetailFragmentArgs by navArgs()
 
     private lateinit var cartViewModel: CartViewModel
+    private lateinit var favoriteViewModel: FavoritesViewModel
     private lateinit var binding: FragmentProductDetailBinding
 
     private var mAdapter: SimilarProductListAdapter? = null
@@ -75,6 +78,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         firebaseUser = firebaseAuth.currentUser
 
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
+        favoriteViewModel = ViewModelProvider(requireActivity()).get(FavoritesViewModel::class.java)
         firestore = FirebaseFirestore.getInstance()
         val productCollection = firestore.collection(PRODUCTS_COLLECTION)
 

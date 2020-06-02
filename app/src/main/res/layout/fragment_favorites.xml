@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="favorite"
+            type="com.designbyark.layao.ui.favorites.FavoritesFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +27,82 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
+            tools:itemCount="0"
             tools:listitem="@layout/body_favorite" />
+
+        <LinearLayout
+            android:id="@+id/no_favorites_section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/login_to_see_favorites"
+                android:src="@drawable/ic_heart" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/hind_bold"
+                android:text="@string/login_to_see_favorites"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/black"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mLoginAuth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/white"
+                    android:ems="7"
+                    android:fontFamily="@font/open_sans"
+                    android:onClick="@{() -> favorite.login()}"
+                    android:text="@string/login"
+                    android:textColor="@color/colorTextPrimary"
+                    app:strokeColor="@color/colorPrimaryDark"
+                    app:strokeWidth="1dp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mRegisterAuth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:ems="7"
+                    android:fontFamily="@font/open_sans"
+                    android:onClick="@{() -> favorite.register()}"
+                    android:text="@string/register" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
