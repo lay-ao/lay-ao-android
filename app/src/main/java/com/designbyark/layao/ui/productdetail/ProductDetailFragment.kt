@@ -1,7 +1,6 @@
 package com.designbyark.layao.ui.productdetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.SimilarProductListAdapter
-import com.designbyark.layao.common.*
-import com.designbyark.layao.data.Favorites
+import com.designbyark.layao.common.PRODUCTS_COLLECTION
+import com.designbyark.layao.common.findDiscountPrice
+import com.designbyark.layao.common.setHorizontalListLayout
+import com.designbyark.layao.common.setQuantityPrice
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.databinding.FragmentProductDetailBinding
@@ -76,17 +77,6 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
         firestore = FirebaseFirestore.getInstance()
         val productCollection = firestore.collection(PRODUCTS_COLLECTION)
-        if (firebaseUser != null) {
-            firestore.collection(USERS_COLLECTION).document(firebaseUser!!.uid)
-                .collection("Favorites").document(args.product.productId)
-                .get().addOnSuccessListener { documentSnapshot ->
-                    if (documentSnapshot.exists()) {
-                        documentExists = true
-                        binding.mFavorite.isSelected = true
-                    }
-                }
-        }
-
 
         val query = productCollection.whereEqualTo("tag", args.product.tag)
             .orderBy("title", Query.Direction.ASCENDING)
@@ -148,47 +138,15 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
     }
 
     fun addToFav() {
-        if (firebaseUser == null) {
-            Log.d(LOG_TAG, "Adding to Favorite: firebaseUser == null.")
-            return
+
+        if (documentExists)  {
+            documentExists = false
+            binding.mFavorite.isSelected = false
+        } else {
+            documentExists = true
+            binding.mFavorite.isSelected = true
         }
 
-        if (documentExists) {
-            firestore.collection(USERS_COLLECTION).document(firebaseUser!!.uid)
-                .collection("Favorites").document(args.product.productId)
-                .delete().addOnCompleteListener { task ->
-                    if (task.isSuccessful && task.isComplete) {
-                        documentExists = false
-                        binding.mFavorite.isSelected = false
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e(LOG_TAG, exception.localizedMessage, exception)
-                }
-        }
-
-        if (!documentExists) {
-            val favorites = Favorites()
-            favorites.productId = args.product.productId
-            favorites.brand = args.product.brand
-            favorites.discount = args.product.discount
-            favorites.image = args.product.image
-            favorites.price = args.product.price
-            favorites.tag = args.product.tag
-            favorites.title = args.product.title
-            favorites.unit = args.product.unit
-
-            firestore.collection(USERS_COLLECTION).document(firebaseUser!!.uid)
-                .collection("Favorites").document(args.product.productId)
-                .set(favorites).addOnCompleteListener { task ->
-                    if (task.isSuccessful && task.isComplete) {
-                        binding.mFavorite.isSelected = true
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e(LOG_TAG, exception.localizedMessage, exception)
-                }
-        }
     }
 
     override fun onStart() {
