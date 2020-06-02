@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.designbyark.layao.data.Cart
 import com.designbyark.layao.dao.CartDao
+import com.designbyark.layao.dao.FavoriteDao
 import com.designbyark.layao.data.Favorites
 
 
@@ -13,6 +14,7 @@ import com.designbyark.layao.data.Favorites
 abstract class LayAoRoomDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
+    abstract fun favoriteDao(): FavoriteDao
 
     companion object {
 
