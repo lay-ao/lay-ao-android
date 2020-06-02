@@ -137,17 +137,11 @@ class HomeFragment : Fragment(),
     fun allDiscountItems() {
         val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
         findNavController().navigate(action)
-//        val args = Bundle()
-//        args.putString(DISCOUNT_ID, "discountId")
-//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allNewArrivals() {
         val action = HomeFragmentDirections.actionNavProductListFragment(null, null, NEW_ARRIVAL_ID)
         findNavController().navigate(action)
-//        val args = Bundle()
-//        args.putString(PASSED_ID, "newArrival")
-//        findNavController().navigate(R.id.action_nav_productListFragment, args)
     }
 
     fun allBrands() {

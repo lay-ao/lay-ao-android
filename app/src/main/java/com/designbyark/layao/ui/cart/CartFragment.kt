@@ -133,9 +133,5 @@ class CartFragment : Fragment() {
         val checkout = Checkout(totalPrice, totalItemCount)
         val action = CartFragmentDirections.actionNavigationCartToCheckoutFragment(checkout)
         findNavController().navigate(action)
-//        val args = Bundle()
-//        args.putDouble("grand_total", totalPrice)
-//        args.putInt("total_items", totalItemCount)
-//        findNavController().navigate(R.id.action_navigation_cart_to_checkoutFragment, args)
     }
 }

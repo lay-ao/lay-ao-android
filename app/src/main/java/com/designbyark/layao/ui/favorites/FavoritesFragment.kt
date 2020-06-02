@@ -18,6 +18,7 @@ import com.designbyark.layao.util.MarginItemDecoration
 import com.designbyark.layao.util.PRODUCTS_COLLECTION
 import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.FirebaseFirestore
 
 class FavoritesFragment : Fragment(), FavoriteAdapter.OnFavoriteClickListener {
@@ -82,6 +83,34 @@ class FavoritesFragment : Fragment(), FavoriteAdapter.OnFavoriteClickListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+        inflater.inflate(R.menu.favorites_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_fav_delete -> {
+                showAlertDialog()
+                true
+            }
+            R.id.action_fav_sync -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showAlertDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Delete all Favorites")
+            .setMessage("Are you sure you want to delete all your favorite items")
+            .setPositiveButton("Yes") { dialog, _ ->
+                favoriteViewModel.deleteAllFavorites()
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onFavItemClickListener(productId: String) {
