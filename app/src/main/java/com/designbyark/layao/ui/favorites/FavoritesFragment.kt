@@ -28,6 +28,8 @@ class FavoritesFragment : Fragment(), FavoriteAdapter.OnFavoriteClickListener {
 
     private var favoriteAdapter: FavoriteAdapter? = null
 
+    private var listSize: Int = -1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,9 +56,10 @@ class FavoritesFragment : Fragment(), FavoriteAdapter.OnFavoriteClickListener {
 
         favoriteAdapter = FavoriteAdapter(favoriteViewModel, this)
 
-        favoriteViewModel.allFavorites.observe(requireActivity(), Observer {
-            favoriteAdapter?.setFavorites(it)
-            if (it.isEmpty()) {
+        favoriteViewModel.allFavorites.observe(requireActivity(), Observer { favorites ->
+            favoriteAdapter?.setFavorites(favorites)
+            listSize = favorites.size
+            if (favorites.isEmpty()) {
                 binding.noFavoritesSection.visibility = View.VISIBLE
             } else {
                 binding.noFavoritesSection.visibility = View.GONE
@@ -92,12 +95,18 @@ class FavoritesFragment : Fragment(), FavoriteAdapter.OnFavoriteClickListener {
                 showAlertDialog()
                 true
             }
-            R.id.action_fav_sync -> {
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+
+        requireActivity().invalidateOptionsMenu()
+        menu.findItem(R.id.action_fav_delete).isVisible = listSize != 0
+
+        super.onPrepareOptionsMenu(menu)
+    }
+
 
     private fun showAlertDialog() {
         MaterialAlertDialogBuilder(requireContext())
