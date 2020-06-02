@@ -32,17 +32,16 @@ class SimilarProductListAdapter internal constructor(
         position: Int,
         model: Products
     ) {
+        val id = snapshots.getSnapshot(holder.adapterPosition).id
         holder.bind(model)
-        if (snapshots.getSnapshot(holder.adapterPosition).id == productId) {
+        model.productId = id
+        if (id == productId) {
             holder.itemView.visibility = View.GONE
             holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
             return
         }
         holder.itemView.setOnClickListener {
-            val data = mutableMapOf<String, String>()
-            data["id"] = snapshots.getSnapshot(holder.adapterPosition).id
-            data["tag"] = model.tag
-            itemClickListener.mProductListItemClickListener(data)
+            itemClickListener.mProductListItemClickListener(model)
         }
     }
 
@@ -57,7 +56,7 @@ class SimilarProductListAdapter internal constructor(
     }
 
     interface ProductListItemClickListener {
-        fun mProductListItemClickListener(productData: MutableMap<String, String>)
+        fun mProductListItemClickListener(product: Products)
     }
 
 }

@@ -17,7 +17,6 @@ import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.cart.Cart
 import com.designbyark.layao.databinding.FragmentProductDetailBinding
-import com.designbyark.layao.ui.home.HomeFragment
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -210,12 +209,9 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         menu.clear()
     }
 
-    override fun mProductListItemClickListener(productData: MutableMap<String, String>) {
-        val args = Bundle()
-        args.putString(HomeFragment.PRODUCT_ID, productData["id"])
-        args.putString(HomeFragment.PRODUCT_TAG, productData["tag"])
-        findNavController().navigate(R.id.action_productDetailFragment_self, args)
+    override fun mProductListItemClickListener(product: Products) {
+        val action = ProductDetailFragmentDirections.actionProductDetailFragmentSelf(product)
+        findNavController().navigate(action)
     }
-
 
 }

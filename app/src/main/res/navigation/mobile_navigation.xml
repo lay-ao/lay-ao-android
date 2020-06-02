@@ -60,7 +60,7 @@
 
         <action
             android:id="@+id/action_navigation_category_to_CPListFragment"
-            app:destination="@id/CPListFragment" >
+            app:destination="@id/CPListFragment">
             <argument
                 android:name="categoryId"
                 android:defaultValue="NIP"
@@ -129,7 +129,11 @@
         <action
             android:id="@+id/action_productDetailFragment_self"
             app:destination="@id/productDetailFragment"
-            app:popUpTo="@id/productDetailFragment" />
+            app:launchSingleTop="true">
+            <argument
+                android:name="product"
+                app:argType="com.designbyark.layao.data.Products" />
+        </action>
         <argument
             android:name="product"
             app:argType="com.designbyark.layao.data.Products" />
@@ -238,7 +242,7 @@
         android:id="@+id/orderDetailFragment"
         android:name="com.designbyark.layao.ui.orderDetail.OrderDetailFragment"
         android:label="Order Detail"
-        tools:layout="@layout/fragment_order_detail" >
+        tools:layout="@layout/fragment_order_detail">
         <argument
             android:name="order"
             app:argType="com.designbyark.layao.data.Order" />
@@ -283,8 +287,8 @@
             app:destination="@id/forgotPasswordFragment">
             <argument
                 android:name="status"
-                app:argType="integer"
-                android:defaultValue="-1" />
+                android:defaultValue="-1"
+                app:argType="integer" />
         </action>
     </fragment>
     <fragment
@@ -344,11 +348,11 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="com.designbyark.layao.ui.forgotpassword.ForgotPasswordFragment"
         android:label="Forgot Password"
-        tools:layout="@layout/fragment_forgot_password" >
+        tools:layout="@layout/fragment_forgot_password">
         <argument
             android:name="status"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
 
 </navigation>
