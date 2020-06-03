@@ -1,9 +1,7 @@
 package com.designbyark.layao.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -32,12 +30,7 @@ class HomeFragment : Fragment(),
     CategoriesAdapter.CategoryItemClickListener {
 
     companion object {
-        const val BANNER_ID = "bannerId"
         const val PRODUCT_ID = "productId"
-        const val PRODUCT_TAG = "productTag"
-        const val BRAND_ID = "brandId"
-        const val CATEGORY_ID = "categoryId"
-        const val PASSED_ID = "passedId"
         const val DISCOUNT_ID = "discountId"
         const val NEW_ARRIVAL_ID = "newArrivalId"
     }
@@ -67,10 +60,6 @@ class HomeFragment : Fragment(),
         if (bottomMenu.visibility == View.GONE) {
             bottomMenu.visibility = View.VISIBLE
         }
-
-//        (requireActivity() as AppCompatActivity).run {
-//            supportActionBar?.setSubtitle(getString(R.string.app_slogan))
-//        }
 
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
@@ -292,6 +281,9 @@ class HomeFragment : Fragment(),
         findNavController().navigate(action)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.general_menu, menu)
+    }
 
 }
 
