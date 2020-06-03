@@ -123,24 +123,6 @@ class HomeFragment : Fragment(),
 
     }
 
-    fun allDiscountItems() {
-        val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
-        findNavController().navigate(action)
-    }
-
-    fun allNewArrivals() {
-        val action = HomeFragmentDirections.actionNavProductListFragment(null, null, NEW_ARRIVAL_ID)
-        findNavController().navigate(action)
-    }
-
-    fun allBrands() {
-        findNavController().navigate(R.id.action_navigation_home_to_brandsListFragment)
-    }
-
-    fun allCategories() {
-        findNavController().navigate(R.id.action_navigation_home_to_navigation_category)
-    }
-
     private fun getBanners(firestore: FirebaseFirestore) {
 
         // Getting collection reference from firestore
@@ -198,7 +180,7 @@ class HomeFragment : Fragment(),
 
         // Applying query to collection reference
         val query = collection.whereGreaterThan(DISCOUNT, 0)
-            .orderBy(DISCOUNT, Query.Direction.ASCENDING)
+            .orderBy(DISCOUNT, Query.Direction.ASCENDING).limit(5)
 
         // Setting query with model class
         val options = getProductOptions(query)
@@ -261,6 +243,11 @@ class HomeFragment : Fragment(),
         findNavController().navigate(action)
     }
 
+    override fun onSeeMoreClickListener() {
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
+        findNavController().navigate(action)
+    }
+
     override fun mNewArrivalClickListener(product: Products) {
         val action = HomeFragmentDirections.actionNavProductDetailFragment(product)
         findNavController().navigate(action)
@@ -283,6 +270,24 @@ class HomeFragment : Fragment(),
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.general_menu, menu)
+    }
+
+    fun allDiscountItems() {
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
+        findNavController().navigate(action)
+    }
+
+    fun allNewArrivals() {
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, null, NEW_ARRIVAL_ID)
+        findNavController().navigate(action)
+    }
+
+    fun allBrands() {
+        findNavController().navigate(R.id.action_navigation_home_to_brandsListFragment)
+    }
+
+    fun allCategories() {
+        findNavController().navigate(R.id.action_navigation_home_to_navigation_category)
     }
 
 }

@@ -65,6 +65,8 @@ class UserFragment : Fragment() {
             supportActionBar?.title = title
         }
 
+        if (firebaseUser == null) { return }
+
         val firestore = FirebaseFirestore.getInstance()
         val userCollection = firestore.collection(USERS_COLLECTION)
 
