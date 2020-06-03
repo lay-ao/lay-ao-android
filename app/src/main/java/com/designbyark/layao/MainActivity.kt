@@ -18,23 +18,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var cartViewModel: CartViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
-//    private lateinit var firebaseAuth: FirebaseAuth
-//    var firebaseUser: FirebaseUser? = null
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-//        firebaseAuth = FirebaseAuth.getInstance()
-//        firebaseAuth.addAuthStateListener { firebaseAuth ->
-//            if (firebaseAuth.currentUser == null) {
-//                Log.d(LOG_TAG, "Not Signed in!")
-//            } else {
-//                firebaseUser = firebaseAuth.currentUser
-//                Log.d(LOG_TAG, "Current user: ${firebaseUser?.email}")
-//            }
-//        }
 
         setSupportActionBar(binding.toolbar)
 
@@ -66,11 +54,6 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.isVisible = true
             }
         });
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.general_menu, menu)
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

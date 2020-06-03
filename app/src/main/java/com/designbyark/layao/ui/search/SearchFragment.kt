@@ -1,9 +1,7 @@
 package com.designbyark.layao.ui.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -28,6 +26,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         binding.search = this
         return binding.root
@@ -52,6 +51,10 @@ class SearchFragment : Fragment() {
             it.autoScrollToStart(viewModel.adapterProduct)
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.general_menu, menu)
     }
 
     fun displayFilters() {
