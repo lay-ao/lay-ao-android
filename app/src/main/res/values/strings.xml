@@ -84,7 +84,7 @@
     <string name="grand_total">Grand Total</string>
     <string name="total_items">Total Items</string>
     <string name="cart_items">Cart Items</string>
-    <string name="empty_cart">Cart is Empty!</string>
+    <string name="empty_cart">Cart is empty</string>
     <string name="delivery_fee">Delivery Fee</string>
     <string name="cart_total">Cart Total</string>
     <string name="gst_information">GST included within the amount</string>
