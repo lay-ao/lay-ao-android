@@ -14,7 +14,6 @@ import com.designbyark.layao.R
 import com.designbyark.layao.adapters.CartAdapter
 import com.designbyark.layao.data.Checkout
 import com.designbyark.layao.databinding.FragmentCartBinding
-import com.designbyark.layao.databinding.FragmentEmptyCartBinding
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
@@ -23,26 +22,19 @@ class CartFragment : Fragment() {
 
     private lateinit var cartViewModel: CartViewModel
     private lateinit var binding: FragmentCartBinding
-    private lateinit var emptyBinding: FragmentEmptyCartBinding
 
     private var totalPrice: Double = 0.0
     private var totalItemCount: Int = 0
+
+    private var listSize: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false)
-        emptyBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_empty_cart, container, false)
-
         cartViewModel = ViewModelProvider(requireActivity()).get(CartViewModel::class.java)
-        if (cartViewModel.itemCount() == 0) {
-            emptyBinding.cart = this
-            return emptyBinding.root
-        }
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false)
         binding.cart = this
         return binding.root
     }
@@ -56,31 +48,29 @@ class CartFragment : Fragment() {
             bottomMenu.visibility = View.VISIBLE
         }
 
-        if (cartViewModel.itemCount() == 0) {
-            (requireActivity() as AppCompatActivity).run {
-                supportActionBar?.setTitle(R.string.title_cart)
-            }
-            return
-        }
-
         (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setTitle(R.string.cart_items)
+            supportActionBar?.setTitle(R.string.title_cart)
         }
 
         cartViewModel.getGrandTotal().observe(requireActivity(), Observer {
             if (it == null || it < 1) {
-                binding.mCartTotal.text = "Rs. 0"
                 totalPrice = 0.0
+                binding.emptyCartSection.visibility = View.VISIBLE
+                binding.statSection.visibility = View.GONE
                 return@Observer
+            } else {
+                binding.emptyCartSection.visibility = View.GONE
+                binding.statSection.visibility = View.VISIBLE
+                binding.mCartTotal.text = String.format(Locale.getDefault(), "Rs. %.0f", it)
+                totalPrice = it
             }
-            binding.mCartTotal.text = String.format(Locale.getDefault(), "Rs. %.0f", it)
-            totalPrice = it
         })
 
         val cartAdapter = CartAdapter(cartViewModel)
         binding.mCartRV.adapter = cartAdapter
 
         cartViewModel.allCartItems.observe(requireActivity(), Observer { items ->
+            listSize = items.size
             items?.let { cartAdapter.setItems(it) }
             totalItemCount = items.size
             binding.mTotalItems.text = String.format(Locale.getDefault(), "x%d", totalItemCount)
@@ -92,12 +82,15 @@ class CartFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (cartViewModel.itemCount() == 0) {
-            menu.clear()
-            return
-        }
         menu.clear()
         inflater.inflate(R.menu.cart_menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+
+        requireActivity().invalidateOptionsMenu()
+        menu.findItem(R.id.cart_delete_all).isVisible = listSize != 0
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
