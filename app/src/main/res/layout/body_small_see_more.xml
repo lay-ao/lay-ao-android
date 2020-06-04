@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="75dp"
@@ -11,10 +10,10 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_see_more"
             android:fontFamily="@font/open_sans"
-            android:drawableTop="@drawable/ic_see_more_arrow"
-            android:text="@string/see_all"
             android:gravity="center"
+            android:text="@string/see_all"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/colorTextPrimary"
             android:textSize="12sp"

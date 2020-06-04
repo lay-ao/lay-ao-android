@@ -18,30 +18,6 @@ class BrandsAdapter internal constructor(
     private val itemClickListener: BrandItemClickListener
 ) : FirestoreRecyclerAdapter<Brand, BrandsAdapter.MultipleViewHolder>(options) {
 
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrandViewHolder {
-//        val layoutInflater = LayoutInflater.from(parent.context)
-//        val binding = BodyBrandsBinding.inflate(layoutInflater, parent, false)
-//        return BrandViewHolder(binding)
-//    }
-//
-//    override fun onBindViewHolder(holder: BrandViewHolder, position: Int, model: Brand) {
-//        holder.bind(model)
-//        holder.itemView.setOnClickListener {
-//            itemClickListener.mBrandItemClickListener(
-//                snapshots.getSnapshot(holder.adapterPosition).id
-//            )
-//        }
-//    }
-//
-//    class BrandViewHolder(private val binding: BodyBrandsBinding) :
-//        RecyclerView.ViewHolder(binding.root) {
-//
-//        fun bind(brand: Brand) {
-//            binding.brand = brand
-//            binding.executePendingBindings()
-//        }
-//    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultipleViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding: ViewDataBinding

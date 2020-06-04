@@ -253,6 +253,11 @@ class HomeFragment : Fragment(),
         findNavController().navigate(action)
     }
 
+    override fun onNewArrivalSeeMoreClickListener() {
+        val action = HomeFragmentDirections.actionNavProductListFragment(null, null, NEW_ARRIVAL_ID)
+        findNavController().navigate(action)
+    }
+
     override fun mBrandItemClickListener(brandId: String) {
         val action = HomeFragmentDirections.actionNavProductListFragment(brandId, null, null)
         findNavController().navigate(action)
