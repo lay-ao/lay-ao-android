@@ -58,21 +58,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-//        val now = LocalTime.now()
-//        val opening = LocalTime.parse("09:00 AM", DateTimeFormat.forPattern("hh:mm a"))
-//        val closing = LocalTime.parse("07:00 PM", DateTimeFormat.forPattern("hh:mm a"))
-//        when {
-//            now > closing -> {
-//                Log.d(LOG_TAG, "Schedule order for tomorrow")
-//            }
-//            now > opening -> {
-//                Log.d(LOG_TAG, "Orders are being delivered")
-//            }
-//            else -> {
-//                Log.d(LOG_TAG, "Unknown time")
-//            }
-//        }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

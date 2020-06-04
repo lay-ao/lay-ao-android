@@ -1,6 +1,7 @@
 package com.designbyark.layao.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
+import org.joda.time.LocalTime
+import org.joda.time.format.DateTimeFormat
 
 class HomeFragment : Fragment(),
     DiscountItemsAdapter.DiscountItemClickListener,
@@ -66,6 +69,26 @@ class HomeFragment : Fragment(),
         val auth = FirebaseAuth.getInstance()
         var user = auth.currentUser
 
+        firestore.collection("Misc").document("store-timing")
+            .addSnapshotListener { snapshot, exception ->
+
+                if (exception != null) {
+                    Log.d(LOG_TAG, exception.localizedMessage, exception)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot == null) {
+                    Log.d(LOG_TAG, "Misc: snapshot is null!")
+                    return@addSnapshotListener
+                }
+
+                val openingTime = snapshot.getString("opening")
+                val closingTime = snapshot.getString("closing")
+
+                updateServiceTiming(openingTime, closingTime, view)
+
+            }
+
         user?.reload()?.addOnSuccessListener {
             user = auth.currentUser
             if (!user?.isEmailVerified!!) {
@@ -82,6 +105,27 @@ class HomeFragment : Fragment(),
         getNewArrivals(productsCollection)
         getBrands(firestore)
 
+    }
+
+    private fun updateServiceTiming(opening: String?, closing: String?, view: View) {
+        val now = LocalTime.now()
+        val openingTime = LocalTime.parse(opening, DateTimeFormat.forPattern("hh:mm a"))
+        val closingTime = LocalTime.parse(closing, DateTimeFormat.forPattern("hh:mm a"))
+        when {
+            now > closingTime -> {
+                binding.mServiceStatus.text = getString(R.string.schedule_orders)
+                binding.mServiceStatus.background =
+                    view.context.getDrawable(R.drawable.purple_background)
+            }
+            now > openingTime -> {
+                binding.mServiceStatus.text = getString(R.string.active_service)
+                binding.mServiceStatus.background =
+                    view.context.getDrawable(R.drawable.green_background)
+            }
+            else -> {
+                binding.mServiceStatus.visibility = View.GONE
+            }
+        }
     }
 
     override fun onStart() {
