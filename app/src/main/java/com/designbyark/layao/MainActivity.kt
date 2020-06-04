@@ -1,7 +1,7 @@
 package com.designbyark.layao
 
 import android.os.Bundle
-import android.view.Menu
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,7 +11,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.designbyark.layao.databinding.ActivityMainBinding
+import com.designbyark.layao.util.LOG_TAG
 import com.designbyark.layao.viewmodels.CartViewModel
+import org.joda.time.LocalTime
+import org.joda.time.format.DateTimeFormat
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,7 +56,23 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.number = it.size
                 badgeCount.isVisible = true
             }
-        });
+        })
+
+//        val now = LocalTime.now()
+//        val opening = LocalTime.parse("09:00 AM", DateTimeFormat.forPattern("hh:mm a"))
+//        val closing = LocalTime.parse("07:00 PM", DateTimeFormat.forPattern("hh:mm a"))
+//        when {
+//            now > closing -> {
+//                Log.d(LOG_TAG, "Schedule order for tomorrow")
+//            }
+//            now > opening -> {
+//                Log.d(LOG_TAG, "Orders are being delivered")
+//            }
+//            else -> {
+//                Log.d(LOG_TAG, "Unknown time")
+//            }
+//        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
