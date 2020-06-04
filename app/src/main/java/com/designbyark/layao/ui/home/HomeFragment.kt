@@ -268,6 +268,10 @@ class HomeFragment : Fragment(),
         findNavController().navigate(action)
     }
 
+    override fun onCategorySeeMoreClickListener() {
+        findNavController().navigate(R.id.action_navigation_home_to_navigation_category)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.general_menu, menu)
     }
