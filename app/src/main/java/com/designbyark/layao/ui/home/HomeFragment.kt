@@ -258,6 +258,10 @@ class HomeFragment : Fragment(),
         findNavController().navigate(action)
     }
 
+    override fun onBrandSeeMoreClickListener() {
+        findNavController().navigate(R.id.action_navigation_home_to_brandsListFragment)
+    }
+
     override fun mBannerItemClickListener(banner: Banner) {
         val action = HomeFragmentDirections.actionNavBannerDetailFragment(banner)
         findNavController().navigate(action)
