@@ -8,6 +8,10 @@ import com.google.firebase.firestore.PropertyName
 @IgnoreExtraProperties
 class Products() : Parcelable {
 
+    enum class ItemType {
+        PRODUCTS, MORE
+    }
+
     @PropertyName("product_id")
     var productId: String = ""
 
