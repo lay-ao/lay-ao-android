@@ -53,6 +53,9 @@ class Order() : Parcelable {
     @PropertyName("cancelled")
     var cancelled: Boolean = false
 
+    @PropertyName("scheduled")
+    var scheduled: Boolean = false
+
     constructor(parcel: Parcel) : this() {
         orderId = parcel.readString() ?: ""
         fullName = parcel.readString() ?: ""
@@ -67,6 +70,7 @@ class Order() : Parcelable {
         grandTotal = parcel.readDouble()
         userId = parcel.readString() ?: ""
         cancelled = parcel.readByte() != 0.toByte()
+        scheduled = parcel.readByte() != 0.toByte()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -83,6 +87,7 @@ class Order() : Parcelable {
         parcel.writeDouble(grandTotal)
         parcel.writeString(userId)
         parcel.writeByte(if (cancelled) 1 else 0)
+        parcel.writeByte(if (scheduled) 1 else 0)
     }
 
     override fun describeContents(): Int {
