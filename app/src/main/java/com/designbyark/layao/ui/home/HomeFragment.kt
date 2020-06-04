@@ -243,7 +243,7 @@ class HomeFragment : Fragment(),
         findNavController().navigate(action)
     }
 
-    override fun onSeeMoreClickListener() {
+    override fun onDiscountSeeMoreClickListener() {
         val action = HomeFragmentDirections.actionNavProductListFragment(null, DISCOUNT_ID, null)
         findNavController().navigate(action)
     }
