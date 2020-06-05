@@ -170,7 +170,7 @@
             android:gravity="center|start"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="12sp"
-            app:setPlacedTiming="@{order.orderTime}"
+            app:setPlacedTiming="@{order}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mTotalItems"

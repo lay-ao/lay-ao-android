@@ -1,22 +1,26 @@
 package com.designbyark.layao.adapters
 
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.BindingAdapter
 import com.algolia.instantsearch.helper.android.highlighting.toSpannedString
 import com.bumptech.glide.Glide
+import com.designbyark.layao.R
+import com.designbyark.layao.data.Cart
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.ProductsData
-import com.designbyark.layao.data.Cart
 import com.designbyark.layao.util.*
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
+import org.joda.time.LocalDate
 import java.util.*
 
 @BindingAdapter("app:setImage")
@@ -34,7 +38,8 @@ fun setTitle(view: TextView, title: String) {
 
 @BindingAdapter("app:setValidity")
 fun setValidity(view: TextView, date: Date) {
-    view.text = String.format("Valid till %s",
+    view.text = String.format(
+        "Valid till %s",
         formatDate(date)
     )
 }
@@ -240,6 +245,7 @@ fun setOrderStatus(view: TextView, status: Long) {
 @BindingAdapter("app:setOrderUI")
 fun setOrderUI(view: MaterialCardView, status: Long) {
     when (status) {
+        -1L -> view.strokeColor = getColor(view.context, android.R.color.holo_blue_dark)
         0L -> view.strokeColor = getColor(view.context, android.R.color.holo_orange_dark)
         1L -> view.strokeColor = getColor(view.context, android.R.color.holo_blue_dark)
         2L -> view.strokeColor = getColor(view.context, android.R.color.holo_green_dark)
@@ -253,20 +259,25 @@ fun setOrderUI(view: MaterialCardView, status: Long) {
 
 @BindingAdapter("app:setGrandTotal")
 fun setGrandTotal(view: TextView, grandTotal: Double) {
-    view.text = String.format(Locale.getDefault(), "Grand Total: Rs. %.0f", grandTotal)
+    view.text = String.format(Locale.getDefault(), "Rs. %.0f", grandTotal)
 }
 
 @BindingAdapter("app:setOrderTiming")
-fun setOrderTiming(view: TextView, time: Timestamp) {
-    view.text = String.format(
-        "Order time: %s", DateUtils.getRelativeDateTimeString(
-            view.context,
-            time.toDate().time,
-            DateUtils.SECOND_IN_MILLIS,
-            DateUtils.YEAR_IN_MILLIS,
-            0
+fun setOrderTiming(view: TextView, order: Order) {
+    if (order.scheduled) {
+        view.text = view.context.getString(R.string.tomorrow_schedule)
+        view.setTypeface(null, Typeface.BOLD_ITALIC)
+    } else {
+        view.text = String.format(
+            "Order time: %s", DateUtils.getRelativeDateTimeString(
+                view.context,
+                order.orderTime.toDate().time,
+                DateUtils.SECOND_IN_MILLIS,
+                DateUtils.YEAR_IN_MILLIS,
+                0
+            )
         )
-    )
+    }
 }
 
 @BindingAdapter("app:setItems")
@@ -342,15 +353,24 @@ fun setTotalItems(view: TextView, count: Int) {
 }
 
 @BindingAdapter("app:setPlacedTiming")
-fun setPlacedTiming(view: TextView, time: Timestamp) {
-    view.text = String.format("Order was placed %s\n(%s)",
-        DateUtils.getRelativeDateTimeString(
-            view.context,
-            time.toDate().time,
-            DateUtils.SECOND_IN_MILLIS,
-            DateUtils.YEAR_IN_MILLIS,
-            0
-        ),
-        formatDate(time.toDate())
-    )
+fun setPlacedTiming(view: TextView, order: Order) {
+    if (order.scheduled) {
+        val tomorrow = LocalDate.now().plusDays(1)
+        view.text = String.format(
+            "Order Scheduled for %s around 9:00 AM - 10:00 AM",
+            tomorrow.toString("EEEE, dd MMMM, yyyy")
+        )
+    } else {
+        view.text = String.format(
+            "Order was placed %s\n(%s)",
+            DateUtils.getRelativeDateTimeString(
+                view.context,
+                order.orderTime.toDate().time,
+                DateUtils.SECOND_IN_MILLIS,
+                DateUtils.YEAR_IN_MILLIS,
+                0
+            ),
+            formatDate(order.orderTime.toDate())
+        )
+    }
 }

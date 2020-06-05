@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import org.joda.time.LocalDate
 
 class OrderDetailFragment : Fragment() {
 
@@ -30,17 +31,8 @@ class OrderDetailFragment : Fragment() {
     private lateinit var collectionUserReference: CollectionReference
     private lateinit var binding: FragmentOrderDetailBinding
 
-    // private var orderId: String? = null
     private var orderStatus: Long = 0
     private val args: OrderDetailFragmentArgs by navArgs()
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        arguments?.let {
-//            orderId = it.getString("orderId")
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,6 +98,10 @@ class OrderDetailFragment : Fragment() {
         binding.mOrderStatus.text =
             getOrderStatus(status)
         when (status) {
+            -1L -> setStatusUI(
+                getColor(context, android.R.color.holo_blue_dark),
+                View.VISIBLE
+            )
             0L -> setStatusUI(
                 getColor(context, android.R.color.holo_orange_dark),
                 View.VISIBLE

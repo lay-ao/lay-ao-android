@@ -112,18 +112,15 @@ class HomeFragment : Fragment(),
         val openingTime = LocalTime.parse(opening, DateTimeFormat.forPattern("hh:mm a"))
         val closingTime = LocalTime.parse(closing, DateTimeFormat.forPattern("hh:mm a"))
         when {
-            now > closingTime -> {
-                binding.mServiceStatus.text = getString(R.string.schedule_orders)
-                binding.mServiceStatus.background =
-                    view.context.getDrawable(R.drawable.purple_background)
-            }
-            now > openingTime -> {
+            now < closingTime && now > openingTime -> {
                 binding.mServiceStatus.text = getString(R.string.active_service)
                 binding.mServiceStatus.background =
                     view.context.getDrawable(R.drawable.green_background)
             }
             else -> {
-                binding.mServiceStatus.visibility = View.GONE
+                binding.mServiceStatus.text = getString(R.string.schedule_orders)
+                binding.mServiceStatus.background =
+                    view.context.getDrawable(R.drawable.purple_background)
             }
         }
     }

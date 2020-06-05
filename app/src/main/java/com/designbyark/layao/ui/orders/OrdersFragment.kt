@@ -85,6 +85,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
         adapter = OrderAdapter(options, this)
         binding.mActiveOrdersRV.adapter = adapter
+
     }
 
     fun buySomething() {

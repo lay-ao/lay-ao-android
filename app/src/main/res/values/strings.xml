@@ -140,6 +140,7 @@
     <string name="see_all">See All</string>
     <string name="schedule_orders">Scheduling orders for tomorrow</string>
     <string name="active_service">Service is active</string>
+    <string name="tomorrow_schedule">Order scheduled for tomorrow</string>
 
 
 </resources>

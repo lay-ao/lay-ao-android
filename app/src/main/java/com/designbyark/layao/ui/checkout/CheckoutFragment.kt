@@ -201,14 +201,13 @@ class CheckoutFragment : Fragment() {
         order.block = binding.blockNumber.selectedItemPosition
         order.items = cartViewModel.allCartItems.value!!
         order.orderTime = Timestamp.now()
-        order.orderStatus = 0
         order.totalItems = args.checkout.totalItems
         order.grandTotal = totalAmount
         order.userId = auth.currentUser?.uid!!
         order.cancelled = false
 
         val now = LocalTime.now()
-        if (now > closingTime) {
+        if (now > closingTime && now < openingTime) {
              displayScheduledOrderDialog(order, phoneNumber)
         } else {
             displayConfirmationDialog(order, phoneNumber)
@@ -225,6 +224,7 @@ class CheckoutFragment : Fragment() {
             )
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
                 order.scheduled = true
+                order.orderStatus = -1
                 placeOrder(order, phoneNumber)
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -239,6 +239,7 @@ class CheckoutFragment : Fragment() {
             .setTitle("Confirm Delivery Address")
             .setMessage("Are you sure you want us to deliver at ${order.completeAddress}")
             .setPositiveButton("Yes") { _, _ ->
+                order.orderStatus = 0
                 placeOrder(order, phoneNumber)
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
