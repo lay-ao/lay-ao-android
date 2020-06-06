@@ -21,9 +21,6 @@ class User() : Parcelable {
     @PropertyName("password")
     var password: String = ""
 
-    @PropertyName("wallet")
-    var wallet: Double = 0.0
-
     @PropertyName("completeAddress")
     var completeAddress: String = ""
 
@@ -39,21 +36,16 @@ class User() : Parcelable {
     @PropertyName("gender")
     var gender: Int = 0
 
-    @PropertyName("fineCount")
-    var fineCount: Int = 0
-
     constructor(parcel: Parcel) : this() {
         userId = parcel.readString() ?: ""
         fullName = parcel.readString() ?: ""
         email = parcel.readString() ?: ""
         password = parcel.readString() ?: ""
-        wallet = parcel.readDouble()
         completeAddress = parcel.readString() ?: ""
         houseNumber = parcel.readString() ?: ""
         blockNumber = parcel.readInt()
         contact = parcel.readString() ?: ""
         gender = parcel.readInt()
-        fineCount = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -61,13 +53,11 @@ class User() : Parcelable {
         parcel.writeString(fullName)
         parcel.writeString(email)
         parcel.writeString(password)
-        parcel.writeDouble(wallet)
         parcel.writeString(completeAddress)
         parcel.writeString(houseNumber)
         parcel.writeInt(blockNumber)
         parcel.writeString(contact)
         parcel.writeInt(gender)
-        parcel.writeInt(fineCount)
     }
 
     override fun describeContents(): Int {
