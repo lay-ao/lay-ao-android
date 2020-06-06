@@ -24,12 +24,19 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import org.joda.time.LocalDateTime
+import org.joda.time.LocalTime
+import org.joda.time.format.DateTimeFormat
 import java.util.*
 
 class CheckoutFragment : Fragment() {
 
+
     private val args: CheckoutFragmentArgs by navArgs()
 
+    private var openingTimeString: String? = ""
+    private lateinit var closingTime: LocalTime
+    private lateinit var openingTime: LocalTime
     private lateinit var binding: FragmentCheckoutBinding
 
     private var totalAmount: Double = 0.0
@@ -82,11 +89,38 @@ class CheckoutFragment : Fragment() {
             binding.mRetrieveData.visibility = View.GONE
         }
 
-        binding.mCartTotal.text = String.format(Locale.getDefault(), "Rs. %.0f", args.checkout.cartTotal)
+        binding.mCartTotal.text =
+            String.format(Locale.getDefault(), "Rs. %.0f", args.checkout.cartTotal)
         binding.mTotalItems.text =
             String.format(Locale.getDefault(), "%d %s", args.checkout.totalItems, itemPlurals)
         binding.mDeliveryFee.text = String.format(Locale.getDefault(), "Rs. %.0f", deliveryFee)
         binding.mGrandTotalAmount.text = String.format(Locale.getDefault(), "Rs. %.0f", totalAmount)
+
+        firebase.collection("Misc").document("store-timing")
+            .addSnapshotListener { snapshot, exception ->
+
+                if (exception != null) {
+                    Log.d(LOG_TAG, exception.localizedMessage, exception)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot == null) {
+                    Log.d(LOG_TAG, "Misc: snapshot is null!")
+                    return@addSnapshotListener
+                }
+
+                openingTimeString = snapshot.getString("opening")
+                val closingTimeString = snapshot.getString("closing")
+
+                openingTime =
+                    LocalTime.parse(openingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+                closingTime =
+                    LocalTime.parse(closingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+
+                binding.serviceHours.text =
+                    String.format("Service Hours: %s - %s", openingTimeString, closingTimeString)
+
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -122,7 +156,8 @@ class CheckoutFragment : Fragment() {
                     }
 
                     if (model.blockNumber == 0) {
-                        Toast.makeText(requireContext(), "No Block found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "No Block found", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         binding.blockNumber.setSelection(model.blockNumber)
                     }
@@ -147,21 +182,10 @@ class CheckoutFragment : Fragment() {
         val phoneNumber = binding.mContactET.text.toString().trim()
         val houseNumber = binding.mHouseNumberET.text.toString().trim()
 
-        if (emptyValidation(
-                fullName,
-                binding.mFullNameIL
-            )
-        ) return
-        if (phoneValidation(
-                phoneNumber,
-                binding.mContactIL
-            )
-        ) return
-        if (emptyValidation(
-                houseNumber,
-                binding.mHouseNumberIL
-            )
-        ) return
+        if (emptyValidation(fullName, binding.mFullNameIL)) return
+        if (phoneValidation(phoneNumber, binding.mContactIL)) return
+        if (emptyValidation(houseNumber, binding.mHouseNumberIL)) return
+
         if (binding.blockNumber.selectedItemPosition == 0) {
             Toast.makeText(requireContext(), "No block selected", Toast.LENGTH_SHORT).show()
             return
@@ -177,13 +201,43 @@ class CheckoutFragment : Fragment() {
         order.block = binding.blockNumber.selectedItemPosition
         order.items = cartViewModel.allCartItems.value!!
         order.orderTime = Timestamp.now()
-        order.orderStatus = 0
         order.totalItems = args.checkout.totalItems
         order.grandTotal = totalAmount
         order.userId = auth.currentUser?.uid!!
         order.cancelled = false
 
-        displayConfirmationDialog(order, phoneNumber)
+        val now = LocalTime.now()
+        if (now > closingTime) {
+            displayScheduledOrderDialog(order, phoneNumber)
+        } else if (now > openingTime) {
+            displayConfirmationDialog(order, phoneNumber)
+        }
+    }
+
+    private fun displayScheduledOrderDialog(order: Order, phoneNumber: String) {
+
+        val tomorrow = LocalDateTime.now().plusDays(1)
+            .withTime(9, 0, 0, 0)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_time)
+            .setTitle("Scheduling Order")
+            .setMessage(
+                "Your order will be scheduled for tomorrow (${formatDate(
+                    tomorrow.toDate()
+                )} at ${formatTime(tomorrow.toDate())}). " +
+                        "Are you sure you want to continue?"
+            )
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                order.scheduledTime = Timestamp(tomorrow.toDate())
+                order.scheduled = true
+                order.orderStatus = -1
+                placeOrder(order, phoneNumber)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun displayConfirmationDialog(order: Order, phoneNumber: String) {
@@ -192,6 +246,7 @@ class CheckoutFragment : Fragment() {
             .setTitle("Confirm Delivery Address")
             .setMessage("Are you sure you want us to deliver at ${order.completeAddress}")
             .setPositiveButton("Yes") { _, _ ->
+                order.orderStatus = 0
                 placeOrder(order, phoneNumber)
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ ->

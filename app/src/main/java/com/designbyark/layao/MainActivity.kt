@@ -1,7 +1,7 @@
 package com.designbyark.layao
 
 import android.os.Bundle
-import android.view.Menu
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,7 +11,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.designbyark.layao.databinding.ActivityMainBinding
+import com.designbyark.layao.util.LOG_TAG
 import com.designbyark.layao.viewmodels.CartViewModel
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
+import org.joda.time.LocalDateTime
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.number = it.size
                 badgeCount.isVisible = true
             }
-        });
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

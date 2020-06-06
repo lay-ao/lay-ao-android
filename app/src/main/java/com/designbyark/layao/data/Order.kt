@@ -6,6 +6,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.ServerTimestamp
+import java.util.*
 
 @IgnoreExtraProperties
 class Order() : Parcelable {
@@ -53,6 +54,12 @@ class Order() : Parcelable {
     @PropertyName("cancelled")
     var cancelled: Boolean = false
 
+    @PropertyName("scheduled")
+    var scheduled: Boolean = false
+
+    @PropertyName("scheduledTime")
+    var scheduledTime: Timestamp = Timestamp.now()
+
     constructor(parcel: Parcel) : this() {
         orderId = parcel.readString() ?: ""
         fullName = parcel.readString() ?: ""
@@ -67,6 +74,8 @@ class Order() : Parcelable {
         grandTotal = parcel.readDouble()
         userId = parcel.readString() ?: ""
         cancelled = parcel.readByte() != 0.toByte()
+        scheduled = parcel.readByte() != 0.toByte()
+        scheduledTime = parcel.readParcelable(Timestamp::class.java.classLoader) ?: Timestamp.now()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -83,6 +92,8 @@ class Order() : Parcelable {
         parcel.writeDouble(grandTotal)
         parcel.writeString(userId)
         parcel.writeByte(if (cancelled) 1 else 0)
+        parcel.writeByte(if (scheduled) 1 else 0)
+        parcel.writeParcelable(scheduledTime, flags)
     }
 
     override fun describeContents(): Int {
@@ -98,5 +109,6 @@ class Order() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
 
 }

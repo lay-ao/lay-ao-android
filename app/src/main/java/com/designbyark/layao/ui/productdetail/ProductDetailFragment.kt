@@ -160,7 +160,6 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             cart.total = args.product.price * quantity
         }
         cartViewModel.insert(cart)
-        Toast.makeText(requireActivity(), "Added to cart!", Toast.LENGTH_LONG).show()
     }
 
     fun addToFav() {

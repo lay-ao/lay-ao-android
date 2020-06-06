@@ -20,7 +20,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="12dp">
 
             <TextView
@@ -40,7 +40,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view8"
-                app:setOrderTiming="@{order.orderTime}"
+                app:setOrderTiming="@{order}"
                 tools:text="12 March 2020" />
 
             <TextView
@@ -54,7 +54,6 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/mOrderTiming"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mOrderTiming"
@@ -68,6 +67,7 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="3dp"
                 app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/mCartTotal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:setOrderUI="@{order.orderStatus}"
@@ -92,22 +92,19 @@
 
             <TextView
                 android:id="@+id/mCartTotal"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center|start"
                 android:lines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/holo_green_dark"
-                android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/order_status_section"
-                app:layout_constraintEnd_toStartOf="@+id/order_status_section"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8"
                 app:setGrandTotal="@{order.grandTotal}"
-                tools:text="Grand Total: Rs. 12000" />
+                tools:text="Rs. 12000" />
 
             <View
                 android:id="@+id/view8"
@@ -118,7 +115,7 @@
                 android:background="@android:color/darker_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mCartTotal" />
+                app:layout_constraintTop_toBottomOf="@+id/scheduled_status" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -127,10 +124,36 @@
                 android:layout_marginTop="8dp"
                 android:contentDescription="@null"
                 android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/mTotalItems"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view8"
                 app:srcCompat="@drawable/ic_next" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grand_total"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/scheduled_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/order_was_scheduled"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mCartTotal"
+                app:setScheduledStatus="@{order}"
+                tools:visibility="gone" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -260,6 +260,7 @@ fun displayNotification(context: Context, icon: Int, title: String, content: Str
 
 fun getOrderStatus(status: Long): String {
     return when (status) {
+        -1L -> "Scheduled"
         0L -> "Processing Order" // Orange
         1L -> "Order Active"     // Blue
         2L -> "Order on the way" // Green
