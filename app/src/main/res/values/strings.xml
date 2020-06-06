@@ -141,6 +141,8 @@
     <string name="schedule_orders">Scheduling orders for tomorrow</string>
     <string name="active_service">Service is active</string>
     <string name="tomorrow_schedule">Order scheduled for tomorrow</string>
+    <string name="order_was_scheduled">Order was scheduled</string>
+    <string name="cancel_order_msg">Order can be cancelled only when your order is being processed.</string>
 
 
 </resources>

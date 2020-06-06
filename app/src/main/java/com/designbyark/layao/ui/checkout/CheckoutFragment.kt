@@ -24,7 +24,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import org.joda.time.LocalDate
+import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
 import java.util.*
@@ -207,22 +207,29 @@ class CheckoutFragment : Fragment() {
         order.cancelled = false
 
         val now = LocalTime.now()
-        if (now > closingTime && now < openingTime) {
-             displayScheduledOrderDialog(order, phoneNumber)
-        } else {
+        if (now > closingTime) {
+            displayScheduledOrderDialog(order, phoneNumber)
+        } else if (now > openingTime) {
             displayConfirmationDialog(order, phoneNumber)
         }
     }
 
     private fun displayScheduledOrderDialog(order: Order, phoneNumber: String) {
+
+        val tomorrow = LocalDateTime.now().plusDays(1)
+            .withTime(9, 0, 0, 0)
+
         MaterialAlertDialogBuilder(requireContext())
             .setIcon(R.drawable.ic_time)
             .setTitle("Scheduling Order")
             .setMessage(
-                "As service will reopen at $openingTimeString, so your order will scheduled for tomorrow. " +
+                "Your order will be scheduled for tomorrow (${formatDate(
+                    tomorrow.toDate()
+                )} at ${formatTime(tomorrow.toDate())}). " +
                         "Are you sure you want to continue?"
             )
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                order.scheduledTime = Timestamp(tomorrow.toDate())
                 order.scheduled = true
                 order.orderStatus = -1
                 placeOrder(order, phoneNumber)

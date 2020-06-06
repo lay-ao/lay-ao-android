@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.BindingAdapter
 import com.algolia.instantsearch.helper.android.highlighting.toSpannedString
 import com.bumptech.glide.Glide
@@ -19,8 +18,6 @@ import com.designbyark.layao.data.Products
 import com.designbyark.layao.data.ProductsData
 import com.designbyark.layao.util.*
 import com.google.android.material.card.MaterialCardView
-import com.google.firebase.Timestamp
-import org.joda.time.LocalDate
 import java.util.*
 
 @BindingAdapter("app:setImage")
@@ -264,10 +261,10 @@ fun setGrandTotal(view: TextView, grandTotal: Double) {
 
 @BindingAdapter("app:setOrderTiming")
 fun setOrderTiming(view: TextView, order: Order) {
-    if (order.scheduled) {
+    if (order.scheduled && order.orderStatus == -1L) {
         view.text = view.context.getString(R.string.tomorrow_schedule)
         view.setTypeface(null, Typeface.BOLD_ITALIC)
-    } else {
+    } else if (order.orderStatus > -1) {
         view.text = String.format(
             "Order time: %s", DateUtils.getRelativeDateTimeString(
                 view.context,
@@ -354,13 +351,13 @@ fun setTotalItems(view: TextView, count: Int) {
 
 @BindingAdapter("app:setPlacedTiming")
 fun setPlacedTiming(view: TextView, order: Order) {
-    if (order.scheduled) {
-        val tomorrow = LocalDate.now().plusDays(1)
+    if (order.scheduled && order.orderStatus == -1L) {
         view.text = String.format(
-            "Order Scheduled for %s around 9:00 AM - 10:00 AM",
-            tomorrow.toString("EEEE, dd MMMM, yyyy")
+            "Order Scheduled for %s at %s",
+            formatDate(order.scheduledTime.toDate()),
+            formatTime(order.scheduledTime.toDate())
         )
-    } else {
+    } else if (order.orderStatus > -1) {
         view.text = String.format(
             "Order was placed %s\n(%s)",
             DateUtils.getRelativeDateTimeString(
@@ -372,5 +369,15 @@ fun setPlacedTiming(view: TextView, order: Order) {
             ),
             formatDate(order.orderTime.toDate())
         )
+    }
+}
+
+// TODO ADD SCHEDULED BINDING ADAPTER
+@BindingAdapter("app:setScheduledStatus")
+fun setScheduledStatus(view: TextView, order: Order) {
+    if (order.orderStatus > -1L && order.scheduled) {
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.GONE
     }
 }

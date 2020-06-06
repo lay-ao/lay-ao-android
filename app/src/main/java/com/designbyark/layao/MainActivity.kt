@@ -13,8 +13,9 @@ import androidx.navigation.ui.*
 import com.designbyark.layao.databinding.ActivityMainBinding
 import com.designbyark.layao.util.LOG_TAG
 import com.designbyark.layao.viewmodels.CartViewModel
-import org.joda.time.LocalTime
-import org.joda.time.format.DateTimeFormat
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
+import org.joda.time.LocalDateTime
 
 
 class MainActivity : AppCompatActivity() {
@@ -57,7 +58,6 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.isVisible = true
             }
         })
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
