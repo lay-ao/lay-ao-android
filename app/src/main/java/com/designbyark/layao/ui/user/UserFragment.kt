@@ -70,16 +70,12 @@ class UserFragment : Fragment() {
         val firestore = FirebaseFirestore.getInstance()
         val userCollection = firestore.collection(USERS_COLLECTION)
 
-        getUserData(view, userCollection, firebaseUser!!)
+        getUserData(userCollection, firebaseUser!!)
     }
 
-    private fun getUserData(
-        view: View,
-        userCollection: CollectionReference,
-        firebaseUser: FirebaseUser
-    ) {
+    private fun getUserData(userCollection: CollectionReference, firebaseUser: FirebaseUser) {
         userCollection.document(firebaseUser.uid)
-            .addSnapshotListener { snapshot, e ->
+            .addSnapshotListener { snapshot, _ ->
 
                 if (snapshot != null && snapshot.exists()) {
                     val model = snapshot.toObject(User::class.java)

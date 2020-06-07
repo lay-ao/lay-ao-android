@@ -13,6 +13,8 @@ import com.designbyark.layao.databinding.FragmentSignInBinding
 import com.designbyark.layao.util.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class SignInFragment : Fragment() {
 
@@ -23,7 +25,6 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false)
         binding.signin = this
         return binding.root
@@ -35,7 +36,7 @@ class SignInFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
         (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+            supportActionBar?.hide()
         }
 
         val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
@@ -70,38 +71,54 @@ class SignInFragment : Fragment() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isComplete && task.isSuccessful) {
-                    enableInteraction(
-                        requireActivity(),
-                        binding.mIncludeProgressBar
-                    )
+                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                     findNavController().navigate(R.id.action_signInFragment_to_navigation_user)
                 } else {
                     Log.e(
                         LOG_TAG,
                         "signInWithEmailAndPassword -> addOnCompleteListener: ${task.exception?.localizedMessage}"
                     )
-                    enableInteraction(
-                        requireActivity(),
-                        binding.mIncludeProgressBar
-                    )
+                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                     return@addOnCompleteListener
                 }
             }
-            .addOnFailureListener {
-                Log.e(
-                    LOG_TAG,
-                    "signInWithEmailAndPassword -> addOnFailureListener: ${it.localizedMessage}"
-                )
-                enableInteraction(
-                    requireActivity(),
-                    binding.mIncludeProgressBar
-                )
+            .addOnFailureListener { exception ->
+
+                if (exception is FirebaseAuthInvalidCredentialsException) {
+                    notifyUser("Invalid Credentials")
+                } else if (exception is FirebaseAuthInvalidUserException) {
+
+                    when (exception.errorCode) {
+                        "ERROR_USER_NOT_FOUND" -> notifyUser("No matching account found. Create Account")
+                        "ERROR_USER_DISABLED" -> notifyUser("User is disabled, contact customer support")
+                        else -> Log.d(LOG_TAG, exception.localizedMessage, exception)
+                    }
+
+                }
+
+                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                 return@addOnFailureListener
             }
     }
 
+    private fun notifyUser(error: String = "") {
+        binding.errorMsg.visibility = View.VISIBLE
+        binding.errorMsg.text = error
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+    }
+
+    fun cancel() {
+        findNavController().navigateUp()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.show()
+        }
     }
 
 

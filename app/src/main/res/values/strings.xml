@@ -143,6 +143,7 @@
     <string name="tomorrow_schedule">Order scheduled for tomorrow</string>
     <string name="order_was_scheduled">Order was scheduled</string>
     <string name="cancel_order_msg">Order can be cancelled only when your order is being processed.</string>
+    <string name="user_collision_msg">User already exists. Try logging in</string>
 
 
 </resources>

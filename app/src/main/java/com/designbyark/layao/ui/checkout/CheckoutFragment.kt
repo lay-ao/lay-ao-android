@@ -228,7 +228,7 @@ class CheckoutFragment : Fragment() {
                 )} at ${formatTime(tomorrow.toDate())}). " +
                         "Are you sure you want to continue?"
             )
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 order.scheduledTime = Timestamp(tomorrow.toDate())
                 order.scheduled = true
                 order.orderStatus = -1

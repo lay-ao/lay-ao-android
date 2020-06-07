@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -39,106 +40,55 @@ class SignUpDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         firebaseAuth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
         userCollection = firestore.collection(USERS_COLLECTION)
     }
 
-    private fun saveUserAtFirestore(firebaseUser: FirebaseUser) {
-        userCollection.document(firebaseUser.uid)
-            .set(args.user)
+    private fun updateUserInfo(firebaseUser: FirebaseUser) {
+        userCollection.document(firebaseUser.uid).set(args.user)
             .addOnCompleteListener { task ->
                 if (task.isComplete && task.isSuccessful) {
-                    sendVerificationEmail()
-
+                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    findNavController().navigate(R.id.action_signUpDetailsFragment_to_navigation_user)
                 } else {
-                    enableInteraction(
-                        requireActivity(),
-                        binding.mIncludeProgressBar
-                    )
-                    Log.e(
-                        LOG_TAG,
-                        "saveUserAtFirestore -> addOnCompleteListener: task is neither complete nor successful"
-                    )
+                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    Log.e(LOG_TAG, "Cannot update user info")
                     return@addOnCompleteListener
                 }
             }
-            .addOnFailureListener {
-                enableInteraction(
-                    requireActivity(),
-                    binding.mIncludeProgressBar
-                )
-                Log.e(
-                    LOG_TAG,
-                    "saveUserAtFirestore -> addOnFailureListener: ${it.localizedMessage}",
-                    it
-                )
+            .addOnFailureListener { exception ->
+                Log.d(LOG_TAG, exception.localizedMessage, exception)
+                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                 return@addOnFailureListener
             }
     }
 
     fun skip() {
-        // Disable Interaction
-        disableInteraction(
-            requireActivity(),
-            binding.mIncludeProgressBar
-        )
-
-        // Set Default values
-        args.user.houseNumber = ""
-        args.user.blockNumber = 0
-        args.user.completeAddress = ""
-        args.user.gender = 0
-        args.user.contact = ""
-        args.user.fineCount = 0
-
-        // Store user at Firestore
-        Log.d(LOG_TAG, "saveUserAtFirestore (Skip): Started")
-        saveUserAtFirestore(firebaseAuth.currentUser!!)
+        findNavController().navigate(R.id.action_signUpDetailsFragment_to_navigation_user)
     }
 
     fun completeRegistration() {
         // Disable Interaction
-        disableInteraction(
-            requireActivity(),
-            binding.mIncludeProgressBar
-        )
+        disableInteraction(requireActivity(), binding.mIncludeProgressBar)
 
         // Validate fields
         val phoneNumber = binding.mContactET.text.toString().trim()
         val houseNumber = binding.mHouseNumET.text.toString().trim()
 
-        if (phoneValidation(
-                phoneNumber,
-                binding.mContactIL
-            )
-        ) {
-            enableInteraction(
-                requireActivity(),
-                binding.mIncludeProgressBar
-            )
+        if (phoneValidation(phoneNumber, binding.mContactIL)) {
+            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
             return
         }
-        if (emptyValidation(
-                houseNumber,
-                binding.mHouseNumIL
-            )
-        ) {
-            enableInteraction(
-                requireActivity(),
-                binding.mIncludeProgressBar
-            )
+        if (emptyValidation(houseNumber, binding.mHouseNumIL)) {
+            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
             return
         }
 
         if (binding.mBlockSpinner.selectedItemPosition == 0) {
             Toast.makeText(requireContext(), "Invalid block selected", Toast.LENGTH_LONG)
                 .show()
-            enableInteraction(
-                requireActivity(),
-                binding.mIncludeProgressBar
-            )
+            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
             return
         }
 
@@ -152,32 +102,17 @@ class SignUpDetailsFragment : Fragment() {
         )
         args.user.gender = binding.mGenderSpinner.selectedItemPosition
         args.user.contact = phoneNumber
-        args.user.fineCount = 0
 
         // Start Registration Process
         Log.d(LOG_TAG, "saveUserAtFirestore (Done): Started")
-        saveUserAtFirestore(firebaseAuth.currentUser!!)
+        updateUserInfo(firebaseAuth.currentUser!!)
     }
 
-    private fun sendVerificationEmail() {
-        val user = firebaseAuth.currentUser
-        user?.sendEmailVerification()
-            ?.addOnCompleteListener { task ->
-                if (task.isComplete && task.isSuccessful) {
-                    Log.d(LOG_TAG, "Email Sent")
-                    enableInteraction(
-                        requireActivity(),
-                        binding.mIncludeProgressBar
-                    )
-                    findNavController().navigate(R.id.action_signUpDetailsFragment_to_navigation_user)
-                }
-            }?.addOnFailureListener { exception ->
-                Log.e(LOG_TAG, exception.localizedMessage, exception)
-                enableInteraction(
-                    requireActivity(),
-                    binding.mIncludeProgressBar
-                )
-            }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.show()
+        }
     }
 
 }
