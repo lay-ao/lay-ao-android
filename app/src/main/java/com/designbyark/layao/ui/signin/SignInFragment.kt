@@ -25,7 +25,6 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false)
         binding.signin = this
         return binding.root
@@ -90,15 +89,9 @@ class SignInFragment : Fragment() {
                 } else if (exception is FirebaseAuthInvalidUserException) {
 
                     when (exception.errorCode) {
-                        "ERROR_USER_NOT_FOUND" -> {
-                            notifyUser("No matching account found. Create Account")
-                        }
-                        "ERROR_USER_DISABLED" -> {
-                            notifyUser("User is disabled, contact customer support")
-                        }
-                        else -> {
-                            Log.d(LOG_TAG, exception.localizedMessage, exception)
-                        }
+                        "ERROR_USER_NOT_FOUND" -> notifyUser("No matching account found. Create Account")
+                        "ERROR_USER_DISABLED" -> notifyUser("User is disabled, contact customer support")
+                        else -> Log.d(LOG_TAG, exception.localizedMessage, exception)
                     }
 
                 }

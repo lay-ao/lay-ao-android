@@ -31,7 +31,6 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false)
         binding.signup = this
         return binding.root

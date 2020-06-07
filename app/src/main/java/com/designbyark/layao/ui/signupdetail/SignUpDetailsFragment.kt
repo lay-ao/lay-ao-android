@@ -40,15 +40,13 @@ class SignUpDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         firebaseAuth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
         userCollection = firestore.collection(USERS_COLLECTION)
     }
 
     private fun updateUserInfo(firebaseUser: FirebaseUser) {
-        userCollection.document(firebaseUser.uid)
-            .set(args.user)
+        userCollection.document(firebaseUser.uid).set(args.user)
             .addOnCompleteListener { task ->
                 if (task.isComplete && task.isSuccessful) {
                     enableInteraction(requireActivity(), binding.mIncludeProgressBar)
