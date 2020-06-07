@@ -117,6 +117,10 @@ class SignInFragment : Fragment() {
         menu.clear()
     }
 
+    fun cancel() {
+        findNavController().navigateUp()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as AppCompatActivity).run {

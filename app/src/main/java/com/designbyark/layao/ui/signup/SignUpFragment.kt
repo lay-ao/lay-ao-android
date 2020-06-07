@@ -9,17 +9,23 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.designbyark.layao.MainActivity
 import com.designbyark.layao.R
 import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentSignUpBinding
 import com.designbyark.layao.util.*
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var userCollection: CollectionReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,13 +41,14 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
+        val firestore = FirebaseFirestore.getInstance()
+        userCollection = firestore.collection("Users")
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.hide()
         }
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
-        bottomMenu.visibility = View.GONE
+        (requireActivity() as MainActivity).binding.bottomNavView.visibility = View.GONE
     }
 
     fun signUp() {
@@ -102,6 +109,11 @@ class SignUpFragment : Fragment() {
         userModel.fullName = fullName
         userModel.email = email
         userModel.password = confirmPassword
+        userModel.houseNumber = ""
+        userModel.blockNumber = 0
+        userModel.completeAddress = ""
+        userModel.gender = 0
+        userModel.contact = ""
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -112,13 +124,14 @@ class SignUpFragment : Fragment() {
                         Log.d(LOG_TAG, "createUserWithEmailAndPassword: Started!")
                         updateAuthProfile(fullName, user, userModel)
                     } else {
-                        Log.e(LOG_TAG, "currentUser: user is null")
+                        Log.e(LOG_TAG, "Current user is null")
                         enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                         return@addOnCompleteListener
                     }
                 } else {
-                    Log.e(LOG_TAG, "task: neither completed nor successful")
+                    Log.e(LOG_TAG, "Cannot create user with email and password")
                     enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    return@addOnCompleteListener
                 }
             }
             .addOnFailureListener { exception ->
@@ -146,22 +159,10 @@ class SignUpFragment : Fragment() {
         user.updateProfile(profileUpdates)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful && task.isComplete) {
-
                     Log.d(LOG_TAG, "updateProfile: Started!")
-                    enableInteraction(
-                        requireActivity(),
-                        binding.mIncludeProgressBar
-                    )
-                    val action =
-                        SignUpFragmentDirections.actionSignUpFragmentToSignUpDetailsFragment(
-                            userModel
-                        )
-                    findNavController().navigate(action)
+                    saveUserAtFirestore(user, userModel)
                 } else {
-                    enableInteraction(
-                        requireActivity(),
-                        binding.mIncludeProgressBar
-                    )
+                    enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                     Log.e(
                         LOG_TAG,
                         "updateAuthProfile -> updateProfile -> addOnCompleteListener: " +
@@ -170,19 +171,47 @@ class SignUpFragment : Fragment() {
                     return@addOnCompleteListener
                 }
             }
-            .addOnFailureListener {
-                enableInteraction(
-                    requireActivity(),
-                    binding.mIncludeProgressBar
-                )
-                Log.d(
-                    LOG_TAG,
-                    "updateAuthProfile -> updateProfile -> addOnFailureListener: " +
-                            it.localizedMessage,
-                    it
-                )
+            .addOnFailureListener { exception ->
+                Log.d(LOG_TAG, exception.localizedMessage, exception)
+                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                 return@addOnFailureListener
             }
+    }
+
+    private fun saveUserAtFirestore(user: FirebaseUser, userModel: User) {
+
+        userCollection.document(user.uid).set(userModel).addOnCompleteListener { task ->
+            if (task.isComplete && task.isSuccessful) {
+                sendVerificationEmail(user, userModel)
+            } else {
+                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                Log.d(LOG_TAG, "Unable to save user data, reason:", task.exception)
+            }
+        }.addOnFailureListener { exception ->
+            Log.d(LOG_TAG, exception.localizedMessage, exception)
+            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+            return@addOnFailureListener
+        }
+    }
+
+    private fun sendVerificationEmail(user: FirebaseUser, userModel: User) {
+
+        user.sendEmailVerification().addOnCompleteListener { task ->
+            if (task.isComplete && task.isSuccessful) {
+                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                val action =
+                    SignUpFragmentDirections.actionSignUpFragmentToSignUpDetailsFragment(userModel)
+                findNavController().navigate(action)
+            } else {
+                Log.d(LOG_TAG, "Unable to send verification email, reason:", task.exception)
+                enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                return@addOnCompleteListener
+            }
+        }.addOnFailureListener { exception ->
+            Log.d(LOG_TAG, exception.localizedMessage, exception)
+            enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+            return@addOnFailureListener
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -192,7 +221,6 @@ class SignUpFragment : Fragment() {
     fun cancel() {
         findNavController().navigateUp()
     }
-
 
 }
 
