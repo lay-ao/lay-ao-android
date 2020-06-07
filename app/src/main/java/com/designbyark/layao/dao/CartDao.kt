@@ -23,7 +23,7 @@ interface CartDao {
     suspend fun updateCart(cart: Cart)
 
     @Query("SELECT * FROM cart_table WHERE productId = :productId LIMIT 1")
-    suspend fun getItem(productId: String): Cart
+    suspend fun getItem(productId: String): Cart?
 
     @Query("SELECT COUNT(*) FROM cart_table")
     suspend fun itemCount(): Int

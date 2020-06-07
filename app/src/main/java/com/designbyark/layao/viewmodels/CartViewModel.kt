@@ -46,4 +46,8 @@ class CartViewModel(application: Application) : AndroidViewModel(application) {
         repository.itemCount()
     }
 
+    fun getItem(productId: String): Cart? = runBlocking {
+        repository.getItem(productId)
+    }
+
 }

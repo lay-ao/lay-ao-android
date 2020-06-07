@@ -63,6 +63,7 @@
                 android:gravity="end"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@android:color/holo_green_dark"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/mImage"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -170,7 +171,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mAddToCart"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/colorPrimary"
@@ -178,8 +179,9 @@
                 android:onClick="@{() -> detail.addToCart()}"
                 android:text="@string/add_to_cart"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/mAdd"
-                app:layout_constraintStart_toStartOf="@+id/mSubtract"
+                app:icon="@drawable/ic_cart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mQuantity" />
 
             <TextView
@@ -237,7 +239,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/hind_bold"
                 android:text="@string/similar_products"
@@ -247,7 +249,22 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mAddToCart" />
+                app:layout_constraintTop_toBottomOf="@+id/cart_message" />
+
+            <TextView
+                android:id="@+id/cart_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mAddToCart"
+                tools:text="Cart Updated!"
+                tools:visibility="invisible" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
