@@ -32,4 +32,8 @@ class CartRepository(private val cartDao: CartDao) {
         return cartDao.itemCount()
     }
 
+    suspend fun getItem(productId: String): Cart? {
+        return cartDao.getItem(productId)
+    }
+
 }

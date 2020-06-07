@@ -1,9 +1,14 @@
 package com.designbyark.layao.ui.productdetail
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,13 +21,11 @@ import com.designbyark.layao.data.Cart
 import com.designbyark.layao.data.Favorites
 import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentProductDetailBinding
-import com.designbyark.layao.util.PRODUCTS_COLLECTION
-import com.designbyark.layao.util.findDiscountPrice
-import com.designbyark.layao.util.setHorizontalListLayout
-import com.designbyark.layao.util.setQuantityPrice
+import com.designbyark.layao.util.*
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.designbyark.layao.viewmodels.FavoritesViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -110,6 +113,15 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
             requireContext()
         )
         binding.mSimilarProductsRV.adapter = mAdapter
+
+        val item = cartViewModel.getItem(args.product.productId)
+        if (item != null) {
+            binding.mAddToCart.text = "Already in cart"
+            binding.mAddToCart.backgroundTintList =
+                ColorStateList.valueOf(Color.parseColor("#387BA2"))
+            binding.mAddToCart.icon = view.context.getDrawable(R.drawable.ic_done)
+            binding.mAddToCart.iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
+        }
     }
 
     fun subtract() {
@@ -142,6 +154,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
 
     fun addToCart() {
         val cart = Cart()
+        cart.productId = args.product.productId
         cart.brand = args.product.brand
         cart.discount = args.product.discount
         cart.image = args.product.image
@@ -152,14 +165,27 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         cart.quantity = quantity
         cart.stock = args.product.stock
         if (discount > 0) {
-            cart.total = findDiscountPrice(
-                args.product.price,
-                args.product.discount
-            ) * quantity
+            cart.total = findDiscountPrice(args.product.price, args.product.discount) * quantity
         } else {
             cart.total = args.product.price * quantity
         }
-        cartViewModel.insert(cart)
+
+        val item = cartViewModel.getItem(args.product.productId)
+
+        if (item != null) {
+            cartViewModel.updateCart(cart)
+            notifyUser("Cart Updated!", android.R.color.holo_blue_dark)
+        } else {
+            cartViewModel.insert(cart)
+            notifyUser("Added to cart!", android.R.color.holo_green_dark)
+        }
+    }
+
+    private fun notifyUser(message: String, @ColorRes color: Int) {
+        binding.cartMessage.text = message
+        binding.cartMessage.setTextColor(
+            ContextCompat.getColor(binding.root.context, color)
+        )
     }
 
     fun addToFav() {
@@ -202,12 +228,13 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
+        inflater.inflate(R.menu.product_detail_menu, menu)
     }
 
     override fun mProductListItemClickListener(product: Products) {
         val action = ProductDetailFragmentDirections.actionProductDetailFragmentSelf(product)
         findNavController().navigate(action)
     }
+
 
 }
