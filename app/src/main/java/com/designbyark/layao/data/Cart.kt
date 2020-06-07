@@ -10,6 +10,9 @@ class Cart() {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
 
+    @ColumnInfo(name = "productId")
+    var productId: String = ""
+
     @ColumnInfo(name = "brand")
     var brand: String = ""
 

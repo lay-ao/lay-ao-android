@@ -152,10 +152,7 @@ class ProductDetailFragment : Fragment(), SimilarProductListAdapter.ProductListI
         cart.quantity = quantity
         cart.stock = args.product.stock
         if (discount > 0) {
-            cart.total = findDiscountPrice(
-                args.product.price,
-                args.product.discount
-            ) * quantity
+            cart.total = findDiscountPrice(args.product.price, args.product.discount) * quantity
         } else {
             cart.total = args.product.price * quantity
         }

@@ -2,6 +2,7 @@ package com.designbyark.layao.ui.cart
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.adapters.CartAdapter
 import com.designbyark.layao.data.Checkout
 import com.designbyark.layao.databinding.FragmentCartBinding
+import com.designbyark.layao.util.LOG_TAG
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
