@@ -121,6 +121,31 @@ class CheckoutFragment : Fragment() {
                     String.format("Service Hours: %s - %s", openingTimeString, closingTimeString)
 
             }
+
+        if (auth.currentUser != null) {
+            userCollection.document(auth.currentUser!!.uid).get()
+                .addOnSuccessListener {
+                    val model = it.toObject(User::class.java)
+                    if (model != null) {
+
+                        // Set name
+                        binding.mFullNameET.setText(model.fullName, TextView.BufferType.EDITABLE)
+
+                        // Set contact
+                        binding.mContactET.setText(model.contact, TextView.BufferType.EDITABLE)
+
+                        // Set house number
+                        binding.mHouseNumberET.setText(
+                            model.houseNumber,
+                            TextView.BufferType.EDITABLE
+                        )
+
+                        // Set block number
+                        binding.blockNumber.setSelection(model.blockNumber)
+
+                    }
+                }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -277,7 +302,6 @@ class CheckoutFragment : Fragment() {
                 Log.e(LOG_TAG, "Error adding document", e)
             }
     }
-
 
     private fun showLoginInfo() {
         MaterialAlertDialogBuilder(requireContext())
