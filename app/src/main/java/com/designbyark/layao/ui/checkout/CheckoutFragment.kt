@@ -85,10 +85,6 @@ class CheckoutFragment : Fragment() {
 
         totalAmount = args.checkout.cartTotal + deliveryFee
 
-        if (auth.currentUser == null) {
-            binding.mRetrieveData.visibility = View.GONE
-        }
-
         binding.mCartTotal.text =
             String.format(Locale.getDefault(), "Rs. %.0f", args.checkout.cartTotal)
         binding.mTotalItems.text =
@@ -123,72 +119,29 @@ class CheckoutFragment : Fragment() {
             }
 
         if (auth.currentUser != null) {
-            userCollection.document(auth.currentUser!!.uid).get()
-                .addOnSuccessListener {
-                    val model = it.toObject(User::class.java)
-                    if (model != null) {
+            userCollection.document(auth.currentUser!!.uid).get().addOnSuccessListener {
+                val model = it.toObject(User::class.java)
+                if (model != null) {
 
-                        // Set name
-                        binding.mFullNameET.setText(model.fullName, TextView.BufferType.EDITABLE)
+                    // Set name
+                    binding.mFullNameET.setText(model.fullName, TextView.BufferType.EDITABLE)
 
-                        // Set contact
-                        binding.mContactET.setText(model.contact, TextView.BufferType.EDITABLE)
+                    // Set contact
+                    binding.mContactET.setText(model.contact, TextView.BufferType.EDITABLE)
 
-                        // Set house number
-                        binding.mHouseNumberET.setText(
-                            model.houseNumber,
-                            TextView.BufferType.EDITABLE
-                        )
+                    // Set house number
+                    binding.mHouseNumberET.setText(model.houseNumber, TextView.BufferType.EDITABLE)
 
-                        // Set block number
-                        binding.blockNumber.setSelection(model.blockNumber)
+                    // Set block number
+                    binding.blockNumber.setSelection(model.blockNumber)
 
-                    }
                 }
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-    }
-
-    fun retrieveInfo() {
-        userCollection.document(auth.currentUser!!.uid).get()
-            .addOnSuccessListener {
-                val model = it.toObject(User::class.java)
-                if (model != null) {
-
-                    // Set name
-                    if (model.fullName.isEmpty()) {
-                        binding.mFullNameIL.error = "No Name found!"
-                    } else {
-                        binding.mFullNameET.setText(model.fullName, TextView.BufferType.EDITABLE)
-                    }
-
-                    if (model.contact.isEmpty()) {
-                        binding.mContactIL.error = "No Contact entered!"
-                    } else {
-                        binding.mContactET.setText(model.contact, TextView.BufferType.EDITABLE)
-                    }
-
-                    if (model.houseNumber.isEmpty()) {
-                        binding.mHouseNumberIL.error = "No House No. found"
-                    } else {
-                        binding.mHouseNumberET.setText(
-                            model.houseNumber,
-                            TextView.BufferType.EDITABLE
-                        )
-                    }
-
-                    if (model.blockNumber == 0) {
-                        Toast.makeText(requireContext(), "No Block found", Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        binding.blockNumber.setSelection(model.blockNumber)
-                    }
-
-                }
-            }
     }
 
     fun placeOrder() {

@@ -283,44 +283,16 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mPlaceOrder"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/open_sans"
                 android:onClick="@{() -> checkout.placeOrder()}"
                 android:text="@string/place_order"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/view4"
-                app:layout_constraintTop_toBottomOf="@+id/address_section" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mRetrieveData"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/open_sans"
-                android:onClick="@{() -> checkout.retrieveInfo()}"
-                android:text="@string/retrieve_user_data"
-                android:textColor="@color/colorPrimary"
-                app:backgroundTint="@android:color/white"
-                app:layout_constraintEnd_toStartOf="@+id/view4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/address_section"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="1dp" />
-
-            <View
-                android:id="@+id/view4"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/mPlaceOrder"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/address_section" />
+
 
             <View
                 android:id="@+id/view5"
