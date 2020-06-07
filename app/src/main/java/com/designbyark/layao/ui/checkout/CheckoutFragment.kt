@@ -185,10 +185,10 @@ class CheckoutFragment : Fragment() {
         order.cancelled = false
 
         val now = LocalTime.now()
-        if (now > closingTime) {
-            displayScheduledOrderDialog(order, phoneNumber)
-        } else if (now > openingTime) {
+        if (now.isAfter(openingTime) && now.isBefore(closingTime) || now.isEqual(openingTime)) {
             displayConfirmationDialog(order, phoneNumber)
+        } else {
+            displayScheduledOrderDialog(order, phoneNumber)
         }
     }
 

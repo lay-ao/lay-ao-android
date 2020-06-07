@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
@@ -21,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import org.joda.time.LocalDate
 
 class OrderDetailFragment : Fragment() {
 
@@ -38,6 +38,7 @@ class OrderDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
         binding.detail = this
@@ -47,7 +48,7 @@ class OrderDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
+
 
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -156,7 +157,19 @@ class OrderDetailFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
+        if (args.order.orderStatus == 6L) {
+            inflater.inflate(R.menu.order_detail_menu, menu)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_reorder -> {
+                Toast.makeText(requireContext(), "Reorder", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }
