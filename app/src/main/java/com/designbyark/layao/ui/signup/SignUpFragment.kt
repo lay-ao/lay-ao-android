@@ -37,7 +37,7 @@ class SignUpFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
         (requireActivity() as AppCompatActivity).run {
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+            supportActionBar?.hide()
         }
 
         val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
@@ -188,6 +188,11 @@ class SignUpFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
     }
+
+    fun cancel() {
+        findNavController().navigateUp()
+    }
+
 
 }
 

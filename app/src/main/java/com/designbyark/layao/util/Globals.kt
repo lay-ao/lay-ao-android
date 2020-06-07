@@ -320,17 +320,11 @@ fun disableInteraction(activity: Activity, layout: View) {
         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
     )
     layout.visibility = View.VISIBLE
-    (activity as AppCompatActivity).run {
-        supportActionBar?.hide()
-    }
 }
 
 fun enableInteraction(activity: Activity, layout: View) {
     activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     layout.visibility = View.GONE
-    (activity as AppCompatActivity).run {
-        supportActionBar?.show()
-    }
 }
 
 // region LOCATION HELPER FUNCTIONS
