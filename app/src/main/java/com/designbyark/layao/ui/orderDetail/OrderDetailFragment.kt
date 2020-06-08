@@ -5,28 +5,38 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.OrderCartAdapter
+import com.designbyark.layao.data.Order
 import com.designbyark.layao.databinding.FragmentOrderDetailBinding
 import com.designbyark.layao.util.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import org.joda.time.LocalDate
+import org.joda.time.LocalDateTime
+import org.joda.time.LocalTime
+import org.joda.time.format.DateTimeFormat
 
 class OrderDetailFragment : Fragment() {
 
     private var firebaseUser: FirebaseUser? = null
     private var orderDocument: DocumentReference? = null
+
+    private lateinit var orderCollection: CollectionReference
+    private lateinit var closingTime: LocalTime
+    private lateinit var openingTime: LocalTime
 
     private lateinit var collectionUserReference: CollectionReference
     private lateinit var binding: FragmentOrderDetailBinding
@@ -38,6 +48,7 @@ class OrderDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
         binding.detail = this
@@ -47,7 +58,6 @@ class OrderDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
 
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -55,6 +65,7 @@ class OrderDetailFragment : Fragment() {
 
         firebaseUser = firebaseAuth.currentUser
         collectionUserReference = firebaseFirestore.collection(USERS_COLLECTION)
+        orderCollection = firebaseFirestore.collection(ORDERS_COLLECTION)
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
@@ -66,6 +77,29 @@ class OrderDetailFragment : Fragment() {
         binding.mOrderCartRV.adapter = orderCartAdapter
 
         listenToOrderStatus(view)
+
+        firebaseFirestore.collection("Misc").document("store-timing")
+            .addSnapshotListener { snapshot, exception ->
+
+                if (exception != null) {
+                    Log.d(LOG_TAG, exception.localizedMessage, exception)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot == null) {
+                    Log.d(LOG_TAG, "Misc: snapshot is null!")
+                    return@addSnapshotListener
+                }
+
+                val openingTimeString = snapshot.getString("opening")
+                val closingTimeString = snapshot.getString("closing")
+
+                openingTime =
+                    LocalTime.parse(openingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+                closingTime =
+                    LocalTime.parse(closingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+
+            }
     }
 
     fun cancelOrder() {
@@ -156,7 +190,98 @@ class OrderDetailFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
+        if (args.order.orderStatus >= 5L) {
+            inflater.inflate(R.menu.order_detail_menu, menu)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_reorder -> {
+                reorder()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun reorder() {
+
+        val order = args.order
+        order.orderTime = Timestamp.now()
+        order.cancelled = false
+        order.orderStatus = 0
+
+        val now = LocalTime.now()
+        if (now.isAfter(openingTime) && now.isBefore(closingTime) || now.isEqual(openingTime)) {
+            displayConfirmationDialog(order, args.order.contactNumber)
+        } else {
+            displayScheduledOrderDialog(order, args.order.contactNumber)
+        }
+
+    }
+
+    private fun displayScheduledOrderDialog(order: Order, phoneNumber: String) {
+
+        val tomorrow = LocalDateTime.now().plusDays(1)
+            .withTime(9, 0, 0, 0)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_time)
+            .setTitle("Scheduling Order")
+            .setMessage(
+                "Reorder will be scheduled for tomorrow (${formatDate(
+                    tomorrow.toDate()
+                )} at ${formatTime(tomorrow.toDate())}). " +
+                        "Are you sure you want to continue?"
+            )
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                order.scheduledTime = Timestamp(tomorrow.toDate())
+                order.scheduled = true
+                order.orderStatus = -1
+                placeOrder(order, phoneNumber)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun displayConfirmationDialog(order: Order, phoneNumber: String) {
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Confirm Reorder")
+            .setMessage("Are you sure you want us to deliver at ${order.completeAddress}")
+            .setPositiveButton("Yes") { _, _ ->
+                order.orderStatus = 0
+                placeOrder(order, phoneNumber)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun placeOrder(order: Order, phoneNumber: String) {
+        orderCollection.add(order)
+            .addOnSuccessListener { documentReference ->
+                Toast.makeText(requireContext(), "Order Placed!", Toast.LENGTH_LONG).show()
+                orderCollection.document(documentReference.id)
+                    .update("orderId", documentReference.id)
+                displayNotification(
+                    requireContext(),
+                    R.drawable.ic_favorite_red,
+                    "Order Received",
+                    "Thank you for placing your order again. Your order id is ${formatOrderId(
+                        documentReference.id,
+                        phoneNumber.trim()
+                    )}. Kindly, contact on our helpline for any further assistance. Thank you."
+                )
+                Toast.makeText(binding.root.context, "Reorder successful", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.e(LOG_TAG, "Error adding document", e)
+            }
     }
 
 }

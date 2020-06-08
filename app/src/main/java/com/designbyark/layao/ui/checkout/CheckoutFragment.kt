@@ -185,10 +185,10 @@ class CheckoutFragment : Fragment() {
         order.cancelled = false
 
         val now = LocalTime.now()
-        if (now > closingTime) {
-            displayScheduledOrderDialog(order, phoneNumber)
-        } else if (now > openingTime) {
+        if (now.isAfter(openingTime) && now.isBefore(closingTime) || now.isEqual(openingTime)) {
             displayConfirmationDialog(order, phoneNumber)
+        } else {
+            displayScheduledOrderDialog(order, phoneNumber)
         }
     }
 
@@ -222,7 +222,7 @@ class CheckoutFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Confirm Delivery Address")
-            .setMessage("Are you sure you want us to deliver at ${order.completeAddress}")
+            .setMessage("Deliver the same order at ${order.completeAddress}?")
             .setPositiveButton("Yes") { _, _ ->
                 order.orderStatus = 0
                 placeOrder(order, phoneNumber)
