@@ -6,6 +6,7 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.designbyark.layao.MainActivity
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.*
 import com.designbyark.layao.data.Banner
@@ -59,7 +60,7 @@ class HomeFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
+        val bottomMenu = (requireActivity() as MainActivity).binding.bottomNavView
         if (bottomMenu.visibility == View.GONE) {
             bottomMenu.visibility = View.VISIBLE
         }
