@@ -191,17 +191,21 @@ class HomeFragment : Fragment(),
             .whereEqualTo(ACTIVE, true)
             .orderBy("validity", Query.Direction.ASCENDING)
 
-        query.get().addOnSuccessListener { documents ->
+        query.addSnapshotListener { value, e ->
+
+            if (e != null) {
+                Log.d(LOG_TAG, "Banner loading failed", e)
+                return@addSnapshotListener
+            }
+
             val bannerList: ArrayList<Banner> = arrayListOf()
-            for (document in documents) {
+            for (document in value!!) {
                 val banner = document.toObject(Banner::class.java)
                 bannerList.add(banner)
             }
-            binding.mBannerImageSlider.sliderAdapter =
-                BannerSliderAdapter(
-                    bannerList,
-                    this
-                )
+
+            binding.mBannerImageSlider.sliderAdapter = BannerSliderAdapter(bannerList, this)
+
         }
 
         binding.mBannerImageSlider.startAutoCycle()
