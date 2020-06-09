@@ -145,6 +145,8 @@
     <string name="cancel_order_msg">Order can be cancelled only when your order is being processed.</string>
     <string name="user_collision_msg">User already exists. Try logging in</string>
     <string name="reorder">Reorder</string>
+    <string name="title_no_wifi">No Internet Connection</string>
+    <string name="network_error_msg">Network not available</string>
 
 
 </resources>
