@@ -53,7 +53,11 @@
             app:destination="@id/brandsListFragment" />
         <action
             android:id="@+id/action_navigation_home_to_CPListFragment"
-            app:destination="@id/CPListFragment">
+            app:destination="@id/CPListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
             <argument
                 android:name="categoryId"
                 android:defaultValue="NIP"
