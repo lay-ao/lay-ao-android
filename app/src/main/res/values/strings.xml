@@ -138,7 +138,7 @@
     <string name="login_long_msg">Already have an account? Log in</string>
     <string name="edit_info">Edit Info</string>
     <string name="see_all">See All</string>
-    <string name="schedule_orders">Scheduling orders for tomorrow</string>
+    <string name="schedule_orders">Scheduling orders</string>
     <string name="active_service">Service is active</string>
     <string name="tomorrow_schedule">Order scheduled for tomorrow</string>
     <string name="order_was_scheduled">Order was scheduled</string>
