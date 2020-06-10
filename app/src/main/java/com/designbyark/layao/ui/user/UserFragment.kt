@@ -123,12 +123,13 @@ class UserFragment : Fragment() {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
 
-        requireActivity().invalidateOptionsMenu()
-        if (!isConnectedToInternet(requireContext())) {
-            menu.findItem(R.id.no_wifi).isVisible = true
-            menu.findItem(R.id.user_edit).isVisible = false
-        } else {
-            if (firebaseUser != null) {
+
+        if (firebaseUser != null) {
+            requireActivity().invalidateOptionsMenu()
+            if (!isConnectedToInternet(requireContext())) {
+                menu.findItem(R.id.no_wifi).isVisible = true
+                menu.findItem(R.id.user_edit).isVisible = false
+            } else {
                 getUserData(userCollection, firebaseUser!!)
             }
         }
