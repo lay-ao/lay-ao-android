@@ -369,6 +369,9 @@ class HomeFragment : Fragment(),
                     showNoInternetDialog()
                 }
             }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
             .show()
     }
 
