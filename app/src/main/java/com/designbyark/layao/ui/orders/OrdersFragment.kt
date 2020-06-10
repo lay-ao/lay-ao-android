@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.OrderAdapter
-import com.designbyark.layao.util.LOG_TAG
-import com.designbyark.layao.util.ORDERS_COLLECTION
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.databinding.FragmentNoAuthOrderBinding
 import com.designbyark.layao.databinding.FragmentOrdersBinding
+import com.designbyark.layao.util.LOG_TAG
+import com.designbyark.layao.util.ORDERS_COLLECTION
+import com.designbyark.layao.util.isConnectedToInternet
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -59,7 +61,7 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
 
         val query = orderCollection.whereEqualTo("userId", firebaseUser?.uid)
             .whereLessThanOrEqualTo("orderStatus", 4)
-            // .orderBy("orderStatus", Query.Direction.DESCENDING)
+        // .orderBy("orderStatus", Query.Direction.DESCENDING)
 
         query.addSnapshotListener { value, e ->
             var count = 0
@@ -126,6 +128,44 @@ class OrdersFragment : Fragment(), OrderAdapter.OrderItemClickListener {
             menu.clear()
             inflater.inflate(R.menu.orders_menu, menu)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.no_wifi -> {
+                showNoInternetDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+
+        requireActivity().invalidateOptionsMenu()
+        if (!isConnectedToInternet(requireContext())) {
+            menu.findItem(R.id.no_wifi).isVisible = true
+        }
+
+        super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun showNoInternetDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to access your orders")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    dialog.dismiss()
+                } else {
+                    showNoInternetDialog()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
 }

@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/no_wifi"
+        android:icon="@drawable/ic_no_wifi"
+        android:title="@string/title_no_wifi"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/orders_to_history_orders_dest"
         android:icon="@drawable/ic_history_white_24dp"
         android:title="@string/history"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
 </menu>
