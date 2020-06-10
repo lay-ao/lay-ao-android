@@ -12,6 +12,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.databinding.FragmentSignInBinding
 import com.designbyark.layao.util.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -49,8 +50,9 @@ class SignInFragment : Fragment() {
     }
 
     fun signIn() {
+
         if (!isConnectedToInternet(requireContext())) {
-            Log.e(LOG_TAG, "Not connected to the internet!")
+            showNoInternetDialog()
             return
         }
 
@@ -58,16 +60,9 @@ class SignInFragment : Fragment() {
         if (emailValidation(email, binding.mEmailIL)) return
 
         val password = binding.mPasswordET.text.toString()
-        if (passwordValidation(
-                password,
-                binding.mPasswordIL
-            )
-        ) return
+        if (passwordValidation(password, binding.mPasswordIL)) return
 
-        disableInteraction(
-            requireActivity(),
-            binding.mIncludeProgressBar
-        )
+        disableInteraction(requireActivity(), binding.mIncludeProgressBar)
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isComplete && task.isSuccessful) {
@@ -89,8 +84,8 @@ class SignInFragment : Fragment() {
                 } else if (exception is FirebaseAuthInvalidUserException) {
 
                     when (exception.errorCode) {
-                        "ERROR_USER_NOT_FOUND" -> notifyUser("No matching account found. Create Account")
-                        "ERROR_USER_DISABLED" -> notifyUser("User is disabled, contact customer support")
+                        "ERROR_USER_NOT_FOUND" -> showNoSignUpDialog()
+                        "ERROR_USER_DISABLED" -> notifyUser("User is disabled, contact customer support (support@layao.com)")
                         else -> Log.d(LOG_TAG, exception.localizedMessage, exception)
                     }
 
@@ -99,6 +94,38 @@ class SignInFragment : Fragment() {
                 enableInteraction(requireActivity(), binding.mIncludeProgressBar)
                 return@addOnFailureListener
             }
+    }
+
+    private fun showNoInternetDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to sign in")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    dialog.dismiss()
+                } else {
+                    showNoInternetDialog()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showNoSignUpDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_home_black_24dp)
+            .setTitle("No account found")
+            .setMessage("No matching account found, either Sign Up or enter credentials again.")
+            .setPositiveButton("Sign Up") { _, _ ->
+                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun notifyUser(error: String = "") {

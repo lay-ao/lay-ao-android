@@ -14,7 +14,9 @@ import com.algolia.instantsearch.helper.android.searchbox.SearchBoxViewAppCompat
 import com.algolia.instantsearch.helper.android.searchbox.connectView
 import com.designbyark.layao.R
 import com.designbyark.layao.databinding.FragmentSearchBinding
+import com.designbyark.layao.util.isConnectedToInternet
 import com.designbyark.layao.viewmodels.SearchViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
@@ -55,6 +57,45 @@ class SearchFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.general_menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+
+        requireActivity().invalidateOptionsMenu()
+        if (!isConnectedToInternet(requireContext())) {
+            menu.findItem(R.id.no_wifi).isVisible = true
+        }
+
+        super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.no_wifi -> {
+                showNoInternetDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showNoInternetDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Search requires network connection, kindly connect to a " +
+                    "network and try searching again")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    dialog.dismiss()
+                } else {
+                    showNoInternetDialog()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     fun displayFilters() {

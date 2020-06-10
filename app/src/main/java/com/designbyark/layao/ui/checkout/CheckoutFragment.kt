@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import org.joda.time.LocalDateTime
@@ -30,7 +31,6 @@ import org.joda.time.format.DateTimeFormat
 import java.util.*
 
 class CheckoutFragment : Fragment() {
-
 
     private val args: CheckoutFragmentArgs by navArgs()
 
@@ -92,35 +92,50 @@ class CheckoutFragment : Fragment() {
         binding.mDeliveryFee.text = String.format(Locale.getDefault(), "Rs. %.0f", deliveryFee)
         binding.mGrandTotalAmount.text = String.format(Locale.getDefault(), "Rs. %.0f", totalAmount)
 
-        firebase.collection("Misc").document("store-timing")
-            .addSnapshotListener { snapshot, exception ->
+        if (isConnectedToInternet(view.context)) {
+            firebase.collection("Misc").document("store-timing")
+                .addSnapshotListener { snapshot, exception ->
 
-                if (exception != null) {
-                    Log.d(LOG_TAG, exception.localizedMessage, exception)
+                    if (exception != null) {
+                        Log.d(LOG_TAG, exception.localizedMessage, exception)
+                        return@addSnapshotListener
+                    }
+
+                    if (snapshot == null) {
+                        Log.d(LOG_TAG, "Misc: snapshot is null!")
+                        return@addSnapshotListener
+                    }
+
+                    openingTimeString = snapshot.getString("opening")
+                    val closingTimeString = snapshot.getString("closing")
+
+                    openingTime =
+                        LocalTime.parse(openingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+                    closingTime =
+                        LocalTime.parse(closingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+
+                    binding.serviceHours.text =
+                        String.format(
+                            "Service Hours: %s - %s",
+                            openingTimeString,
+                            closingTimeString
+                        )
+
+                }
+        } else {
+            binding.serviceHours.text = getString(R.string.title_no_wifi)
+            binding.serviceHours.background = view.context.getDrawable(R.drawable.error_background)
+        }
+
+        if (isConnectedToInternet(view.context) && auth.currentUser != null) {
+            userCollection.document(auth.currentUser!!.uid).addSnapshotListener { value, e ->
+
+                if (e != null) {
+                    Log.d(LOG_TAG, "Cannot retrieve data", e)
                     return@addSnapshotListener
                 }
 
-                if (snapshot == null) {
-                    Log.d(LOG_TAG, "Misc: snapshot is null!")
-                    return@addSnapshotListener
-                }
-
-                openingTimeString = snapshot.getString("opening")
-                val closingTimeString = snapshot.getString("closing")
-
-                openingTime =
-                    LocalTime.parse(openingTimeString, DateTimeFormat.forPattern("hh:mm a"))
-                closingTime =
-                    LocalTime.parse(closingTimeString, DateTimeFormat.forPattern("hh:mm a"))
-
-                binding.serviceHours.text =
-                    String.format("Service Hours: %s - %s", openingTimeString, closingTimeString)
-
-            }
-
-        if (auth.currentUser != null) {
-            userCollection.document(auth.currentUser!!.uid).get().addOnSuccessListener {
-                val model = it.toObject(User::class.java)
+                val model = value?.toObject(User::class.java)
                 if (model != null) {
 
                     // Set name
@@ -141,19 +156,62 @@ class CheckoutFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
+        inflater.inflate(R.menu.no_wifi_menu, menu)
+    }
+
+    private fun showNoNetworkDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to access different features and items.")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    dialog.dismiss()
+                } else {
+                    showNoNetworkDialog()
+                }
+            }
+            .show()
+    }
+
+    private fun showVerifyEmail(user: FirebaseUser) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_email_color)
+            .setTitle("Email not verified")
+            .setMessage("Kindly verify your email by clicking on the link sent at ${user.email}")
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNegativeButton("Resend Verification Email") { dialog, which ->
+                user.sendEmailVerification().addOnCompleteListener { task ->
+                    if (task.isSuccessful || task.isComplete) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Verification Email Sent",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            .show()
     }
 
     fun placeOrder() {
         if (!isConnectedToInternet(requireContext())) {
-            Toast.makeText(requireContext(), "Not connected to the internet!", Toast.LENGTH_SHORT)
-                .show()
+            showNoNetworkDialog()
             return
         }
 
         if (auth.currentUser == null) {
             showLoginInfo()
             return
+        }
+
+        if (auth.currentUser != null) {
+            if (!auth.currentUser?.isEmailVerified!!) {
+                showVerifyEmail(auth.currentUser!!)
+                return
+            }
         }
 
         val fullName = binding.mFullNameET.text.toString().trim()
@@ -271,5 +329,26 @@ class CheckoutFragment : Fragment() {
                 dialog.dismiss()
             }
             .show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.no_wifi -> {
+                showNoNetworkDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+
+        requireActivity().invalidateOptionsMenu()
+        if (!isConnectedToInternet(requireContext())) {
+            menu.findItem(R.id.no_wifi).isVisible = true
+        }
+
+
+        super.onPrepareOptionsMenu(menu)
     }
 }

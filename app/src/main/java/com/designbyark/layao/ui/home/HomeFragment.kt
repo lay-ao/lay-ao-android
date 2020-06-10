@@ -3,9 +3,12 @@ package com.designbyark.layao.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.designbyark.layao.MainActivity
 import com.designbyark.layao.R
 import com.designbyark.layao.adapters.*
 import com.designbyark.layao.data.Banner
@@ -15,7 +18,7 @@ import com.designbyark.layao.data.Products
 import com.designbyark.layao.databinding.FragmentHomeBinding
 import com.designbyark.layao.util.*
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -59,7 +62,7 @@ class HomeFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bottomMenu: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav_view)
+        val bottomMenu = (requireActivity() as MainActivity).binding.bottomNavView
         if (bottomMenu.visibility == View.GONE) {
             bottomMenu.visibility = View.VISIBLE
         }
@@ -69,25 +72,29 @@ class HomeFragment : Fragment(),
         val auth = FirebaseAuth.getInstance()
         var user = auth.currentUser
 
-        firestore.collection("Misc").document("store-timing")
-            .addSnapshotListener { snapshot, exception ->
+        if (isConnectedToInternet(view.context)) {
+            firestore.collection("Misc").document("store-timing")
+                .addSnapshotListener { snapshot, exception ->
 
-                if (exception != null) {
-                    Log.d(LOG_TAG, exception.localizedMessage, exception)
-                    return@addSnapshotListener
+                    if (exception != null) {
+                        Log.d(LOG_TAG, exception.localizedMessage, exception)
+                        return@addSnapshotListener
+                    }
+
+                    if (snapshot == null) {
+                        Log.d(LOG_TAG, "Misc: snapshot is null!")
+                        return@addSnapshotListener
+                    }
+
+                    val openingTime = snapshot.getString("opening")
+                    val closingTime = snapshot.getString("closing")
+
+                    updateServiceTiming(openingTime, closingTime, view)
+
                 }
-
-                if (snapshot == null) {
-                    Log.d(LOG_TAG, "Misc: snapshot is null!")
-                    return@addSnapshotListener
-                }
-
-                val openingTime = snapshot.getString("opening")
-                val closingTime = snapshot.getString("closing")
-
-                updateServiceTiming(openingTime, closingTime, view)
-
-            }
+        } else {
+            updateServiceMessage(R.string.network_error_msg, R.drawable.error_background)
+        }
 
         user?.reload()?.addOnSuccessListener {
             user = auth.currentUser
@@ -112,17 +119,27 @@ class HomeFragment : Fragment(),
         val openingTime = LocalTime.parse(opening, DateTimeFormat.forPattern("hh:mm a"))
         val closingTime = LocalTime.parse(closing, DateTimeFormat.forPattern("hh:mm a"))
         when {
-            now < closingTime && now > openingTime -> {
-                binding.mServiceStatus.text = getString(R.string.active_service)
-                binding.mServiceStatus.background =
-                    view.context.getDrawable(R.drawable.green_background)
-            }
-            else -> {
-                binding.mServiceStatus.text = getString(R.string.schedule_orders)
-                binding.mServiceStatus.background =
-                    view.context.getDrawable(R.drawable.purple_background)
-            }
+            now < closingTime && now > openingTime -> updateServiceMessage(
+                R.string.active_service,
+                R.drawable.green_background
+            )
+            else -> updateServiceMessage(R.string.schedule_orders, R.drawable.purple_background)
         }
+    }
+
+    private fun updateServiceMessage(@StringRes message: Int, @DrawableRes background: Int) {
+        binding.mServiceStatus.text = getString(message)
+        binding.mServiceStatus.background = binding.root.context.getDrawable(background)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+
+        requireActivity().invalidateOptionsMenu()
+        if (!isConnectedToInternet(requireContext())) {
+            menu.findItem(R.id.no_wifi).isVisible = true
+        }
+
+        super.onPrepareOptionsMenu(menu)
     }
 
     override fun onStart() {
@@ -174,17 +191,21 @@ class HomeFragment : Fragment(),
             .whereEqualTo(ACTIVE, true)
             .orderBy("validity", Query.Direction.ASCENDING)
 
-        query.get().addOnSuccessListener { documents ->
+        query.addSnapshotListener { value, e ->
+
+            if (e != null) {
+                Log.d(LOG_TAG, "Banner loading failed", e)
+                return@addSnapshotListener
+            }
+
             val bannerList: ArrayList<Banner> = arrayListOf()
-            for (document in documents) {
+            for (document in value!!) {
                 val banner = document.toObject(Banner::class.java)
                 bannerList.add(banner)
             }
-            binding.mBannerImageSlider.sliderAdapter =
-                BannerSliderAdapter(
-                    bannerList,
-                    this
-                )
+
+            binding.mBannerImageSlider.sliderAdapter = BannerSliderAdapter(bannerList, this)
+
         }
 
         binding.mBannerImageSlider.startAutoCycle()
@@ -324,6 +345,34 @@ class HomeFragment : Fragment(),
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.general_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.no_wifi -> {
+                showNoInternetDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showNoInternetDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to access different features and items.")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    dialog.dismiss()
+                } else {
+                    showNoInternetDialog()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     fun allDiscountItems() {

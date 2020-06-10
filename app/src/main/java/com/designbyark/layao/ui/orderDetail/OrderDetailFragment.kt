@@ -78,28 +78,30 @@ class OrderDetailFragment : Fragment() {
 
         listenToOrderStatus(view)
 
-        firebaseFirestore.collection("Misc").document("store-timing")
-            .addSnapshotListener { snapshot, exception ->
+        if (isConnectedToInternet(view.context)) {
+            firebaseFirestore.collection("Misc").document("store-timing")
+                .addSnapshotListener { snapshot, exception ->
 
-                if (exception != null) {
-                    Log.d(LOG_TAG, exception.localizedMessage, exception)
-                    return@addSnapshotListener
+                    if (exception != null) {
+                        Log.d(LOG_TAG, exception.localizedMessage, exception)
+                        return@addSnapshotListener
+                    }
+
+                    if (snapshot == null) {
+                        Log.d(LOG_TAG, "Misc: snapshot is null!")
+                        return@addSnapshotListener
+                    }
+
+                    val openingTimeString = snapshot.getString("opening")
+                    val closingTimeString = snapshot.getString("closing")
+
+                    openingTime =
+                        LocalTime.parse(openingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+                    closingTime =
+                        LocalTime.parse(closingTimeString, DateTimeFormat.forPattern("hh:mm a"))
+
                 }
-
-                if (snapshot == null) {
-                    Log.d(LOG_TAG, "Misc: snapshot is null!")
-                    return@addSnapshotListener
-                }
-
-                val openingTimeString = snapshot.getString("opening")
-                val closingTimeString = snapshot.getString("closing")
-
-                openingTime =
-                    LocalTime.parse(openingTimeString, DateTimeFormat.forPattern("hh:mm a"))
-                closingTime =
-                    LocalTime.parse(closingTimeString, DateTimeFormat.forPattern("hh:mm a"))
-
-            }
+        }
     }
 
     fun cancelOrder() {
@@ -175,6 +177,12 @@ class OrderDetailFragment : Fragment() {
             .setIcon(R.drawable.ic_warning_color_24dp)
             .setMessage("Are you sure you want to cancel the order?")
             .setPositiveButton("Yes") { dialog, _ ->
+
+                if (!isConnectedToInternet(context)) {
+                    showNoInternetDialog(context)
+                    return@setPositiveButton
+                }
+
                 orderDocument?.update("orderStatus", 6)
                 orderDocument?.update("cancelled", true)
                 displayNotification(
@@ -189,10 +197,56 @@ class OrderDetailFragment : Fragment() {
             .show()
     }
 
+    private fun showNoInternetDialog(context: Context) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to cancel the order.")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    showCancelAlert(context)
+                } else {
+                    showNoInternetDialog(context)
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showNoInternetReorderDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to to reorder.")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    dialog.dismiss()
+                } else {
+                    showNoInternetReorderDialog()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (args.order.orderStatus >= 5L) {
             inflater.inflate(R.menu.order_detail_menu, menu)
         }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+
+        requireActivity().invalidateOptionsMenu()
+        if (!isConnectedToInternet(requireContext())) {
+            menu.findItem(R.id.no_wifi).isVisible = true
+        }
+
+        super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -206,6 +260,11 @@ class OrderDetailFragment : Fragment() {
     }
 
     private fun reorder() {
+
+        if (!isConnectedToInternet(requireContext())) {
+            showNoInternetReorderDialog()
+            return
+        }
 
         val order = args.order
         order.orderTime = Timestamp.now()

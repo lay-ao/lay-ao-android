@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.designbyark.layao.R
 import com.designbyark.layao.databinding.FragmentSignUpDetailsBinding
 import com.designbyark.layao.util.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -68,7 +69,28 @@ class SignUpDetailsFragment : Fragment() {
         findNavController().navigate(R.id.action_signUpDetailsFragment_to_navigation_user)
     }
 
+    private fun showNoInternetDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to complete registration or if you " +
+                    "wish to do it later, choose skip")
+            .setPositiveButton("Skip") { dialog, _ ->
+                skip()
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     fun completeRegistration() {
+
+        if (!isConnectedToInternet(requireContext())) {
+            showNoInternetDialog()
+            return
+        }
+
         // Disable Interaction
         disableInteraction(requireActivity(), binding.mIncludeProgressBar)
 

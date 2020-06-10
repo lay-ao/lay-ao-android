@@ -76,14 +76,6 @@ class FavoritesFragment : Fragment(), FavoriteAdapter.OnFavoriteClickListener {
         }
     }
 
-    fun login() {
-        findNavController().navigate(R.id.action_favoritesFragment_to_signInFragment)
-    }
-
-    fun register() {
-        findNavController().navigate(R.id.action_favoritesFragment_to_signUpFragment)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.favorites_menu, menu)

@@ -14,6 +14,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentSignUpBinding
 import com.designbyark.layao.util.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
@@ -52,12 +53,30 @@ class SignUpFragment : Fragment() {
 
     fun signUp() {
         if (!isConnectedToInternet(requireContext())) {
-            Log.e(LOG_TAG, "Not connected to the internet!")
+            showNoInternetDialog()
             return
         }
 
         disableInteraction(requireActivity(), binding.mIncludeProgressBar)
         startRegistrationProcess()
+    }
+
+    private fun showNoInternetDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_no_wifi)
+            .setTitle("No network found")
+            .setMessage("Kindly connect to a network to sign up")
+            .setPositiveButton("Try Again") { dialog, _ ->
+                if (isConnectedToInternet(requireContext())) {
+                    dialog.dismiss()
+                } else {
+                    showNoInternetDialog()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun startRegistrationProcess() {
@@ -88,19 +107,13 @@ class SignUpFragment : Fragment() {
 
         if (!binding.mTerms.isChecked) {
             binding.mTermsText.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    android.R.color.holo_red_dark
-                )
+                ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
             )
             enableInteraction(requireActivity(), binding.mIncludeProgressBar)
             return
         } else {
             binding.mTermsText.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    android.R.color.holo_blue_dark
-                )
+                ContextCompat.getColor(requireContext(), android.R.color.holo_blue_dark)
             )
         }
 
