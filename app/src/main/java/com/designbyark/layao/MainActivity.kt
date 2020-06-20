@@ -1,5 +1,9 @@
 package com.designbyark.layao
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -11,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.designbyark.layao.databinding.ActivityMainBinding
+import com.designbyark.layao.util.CHANNEL_ID
 import com.designbyark.layao.util.LOG_TAG
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.firebase.Timestamp
@@ -58,6 +63,20 @@ class MainActivity : AppCompatActivity() {
                 badgeCount.isVisible = true
             }
         })
+
+        createNotificationChannel()
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(
+                NotificationChannel(CHANNEL_ID, "Orders", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    description = "Notifications based on the status of an Order"
+                }
+            )
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

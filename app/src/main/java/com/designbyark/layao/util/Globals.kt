@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
@@ -14,9 +15,12 @@ import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -43,11 +47,6 @@ const val TITLE = "title"
 const val ACTIVE = "active"
 const val DISCOUNT = "discount"
 const val NEW_ARRIVAL = "newArrival"
-
-// Notification
-const val CHANNEL_ID = "default"
-const val CHANNEL_NAME = "Default"
-const val CHANNEL_DESC = "Default channels is for testing"
 
 // Location
 const val REQUEST_CODE_LOCATION = 100
@@ -219,45 +218,44 @@ fun duplicationValue(
 
 // endregion
 
-private fun createNotification(
-    context: Context,
-    icon: Int,
-    title: String,
-    content: String
-): NotificationCompat.Builder {
-    return NotificationCompat.Builder(context,
-        CHANNEL_ID
-    )
-        .setSmallIcon(icon)
-        .setContentTitle(title)
-        .setStyle(
-            NotificationCompat.BigTextStyle()
-                .bigText(content)
+const val CHANNEL_ID = "order_channel"
+fun displayNotification(context: Context, @DrawableRes icon: Int, title: String, content: String) {
+    with(NotificationManagerCompat.from(context)) {
+        notify(
+            0, NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(icon)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(content))
+                .setAutoCancel(true)
+                .build()
         )
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-}
-
-fun displayNotification(context: Context, icon: Int, title: String, content: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val name = CHANNEL_NAME
-        val descriptionText = CHANNEL_DESC
-        val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-            description = descriptionText
-        }
-
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-
-        notificationManager.notify(1, createNotification(
-            context,
-            icon,
-            title,
-            content
-        ).build())
     }
 }
+
+fun displayNotification(
+    context: Context,
+    @DrawableRes icon: Int,
+    title: String,
+    content: String,
+    pendingIntent: PendingIntent
+) {
+    with(NotificationManagerCompat.from(context)) {
+        notify(
+            0, NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(icon)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(content))
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build()
+        )
+    }
+}
+
 
 fun getOrderStatus(status: Long): String {
     return when (status) {

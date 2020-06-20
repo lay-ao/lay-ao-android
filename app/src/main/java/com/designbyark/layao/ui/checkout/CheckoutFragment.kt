@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.designbyark.layao.MainActivity
 import com.designbyark.layao.R
 import com.designbyark.layao.data.Order
 import com.designbyark.layao.data.User
@@ -292,6 +294,13 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun placeOrder(order: Order, phoneNumber: String) {
+
+        val pendingIntent = NavDeepLinkBuilder(requireContext())
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.navigation_orders)
+            .createPendingIntent()
+
         orderCollection.add(order)
             .addOnSuccessListener { documentReference ->
                 Toast.makeText(requireContext(), "Order Placed!", Toast.LENGTH_LONG).show()
@@ -304,7 +313,8 @@ class CheckoutFragment : Fragment() {
                     "Thank you for placing your order. Your order id is ${formatOrderId(
                         documentReference.id,
                         phoneNumber.trim()
-                    )}. Kindly, contact on our helpline for any further assistance. Thank you."
+                    )}. Click to check your status.",
+                    pendingIntent
                 )
                 cartViewModel.deleteCart()
                 findNavController().navigate(R.id.action_checkoutFragment_to_navigation_home)
