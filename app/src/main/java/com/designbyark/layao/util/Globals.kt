@@ -11,6 +11,7 @@ import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
@@ -27,6 +28,8 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.designbyark.layao.data.Products
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,6 +53,23 @@ const val NEW_ARRIVAL = "newArrival"
 
 // Location
 const val REQUEST_CODE_LOCATION = 100
+
+fun sendTokenToFirestore(token: String) {
+
+    val auth = FirebaseAuth.getInstance()
+
+    val firestore = FirebaseFirestore.getInstance()
+    val userCollection = firestore.collection("Users")
+    userCollection.document(auth.currentUser?.uid!!).update("token", token)
+        .addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(LOG_TAG, "update failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            Log.d(LOG_TAG, "Token updated successfully")
+        }
+}
 
 // RecyclerView Helper Methods
 fun setHorizontalListLayout(recyclerView: RecyclerView, context: Context) {

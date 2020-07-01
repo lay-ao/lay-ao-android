@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.iid.FirebaseInstanceId
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
 import org.joda.time.LocalTime
@@ -112,6 +113,22 @@ class HomeFragment : Fragment(),
         getNewArrivals(productsCollection)
         getBrands(firestore)
 
+        getToken()
+
+    }
+
+    private fun getToken() {
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d(LOG_TAG, "getInstanceId failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new Instance ID token
+            val token = task.result?.token
+            Log.d(LOG_TAG, "Passing token from MainActivity")
+            sendTokenToFirestore(token ?: return@addOnCompleteListener)
+        }
     }
 
     private fun updateServiceTiming(opening: String?, closing: String?, view: View) {
