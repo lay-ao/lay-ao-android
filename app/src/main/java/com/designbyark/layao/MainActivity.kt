@@ -20,6 +20,7 @@ import com.designbyark.layao.util.LOG_TAG
 import com.designbyark.layao.viewmodels.CartViewModel
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import org.joda.time.LocalDateTime
 
 
@@ -65,6 +66,20 @@ class MainActivity : AppCompatActivity() {
         })
 
         createNotificationChannel()
+        displayToken()
+    }
+
+    private fun displayToken() {
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d(LOG_TAG, "getInstanceId failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new Instance ID token
+            val token = task.result?.token
+            Log.d(LOG_TAG, token ?: "No token found!")
+        }
     }
 
     private fun createNotificationChannel() {
