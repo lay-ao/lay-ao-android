@@ -235,5 +235,9 @@ class SignUpFragment : Fragment() {
         findNavController().navigateUp()
     }
 
+    fun termsAndConditions() {
+        findNavController().navigate(R.id.action_signUpFragment_to_TACFragment)
+    }
+
 }
 
