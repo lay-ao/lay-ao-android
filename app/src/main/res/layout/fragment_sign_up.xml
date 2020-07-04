@@ -207,6 +207,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="12sp"
+                android:textStyle="italic"
                 android:onClick="@{() -> signup.termsAndConditions()}"
                 app:layout_constraintBottom_toBottomOf="@+id/mTerms"
                 app:layout_constraintEnd_toEndOf="@+id/mConfirmPassIL"

@@ -29,6 +29,7 @@ class TACFragment : Fragment() {
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.show()
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
 
         binding = DataBindingUtil.inflate(
