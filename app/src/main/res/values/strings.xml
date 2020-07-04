@@ -148,7 +148,8 @@
     <string name="title_no_wifi">No Internet Connection</string>
     <string name="network_error_msg">Network not available</string>
     <string name="no_favs">No Favorites Added Yet</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
+    <string name="tac_fragment_label">Terms and Conditions</string>
 
 
 </resources>

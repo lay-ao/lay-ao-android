@@ -1,7 +1,11 @@
 package com.designbyark.layao.ui.signup
 
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +47,14 @@ class SignUpFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
         userCollection = firestore.collection("Users")
+
+        val spannable = SpannableString(getString(R.string.terms_and_condition_label))
+        spannable.setSpan(
+            ForegroundColorSpan(Color.BLUE),
+            15, 35,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        binding.mTermsText.text = spannable
 
         (requireActivity() as AppCompatActivity).run {
             supportActionBar?.hide()
@@ -233,6 +245,10 @@ class SignUpFragment : Fragment() {
 
     fun cancel() {
         findNavController().navigateUp()
+    }
+
+    fun termsAndConditions() {
+        findNavController().navigate(R.id.action_signUpFragment_to_TACFragment)
     }
 
 }
