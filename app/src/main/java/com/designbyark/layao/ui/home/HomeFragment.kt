@@ -20,9 +20,11 @@ import com.designbyark.layao.util.*
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.iid.FirebaseInstanceId
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
 import org.joda.time.LocalTime
@@ -47,6 +49,7 @@ class HomeFragment : Fragment(),
     private var mBrandsAdapter: BrandsAdapter? = null
 
     private lateinit var binding: FragmentHomeBinding
+    private var user: FirebaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,7 +73,7 @@ class HomeFragment : Fragment(),
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
         val auth = FirebaseAuth.getInstance()
-        var user = auth.currentUser
+        user = auth.currentUser
 
         if (isConnectedToInternet(view.context)) {
             firestore.collection("Misc").document("store-timing")
@@ -111,6 +114,11 @@ class HomeFragment : Fragment(),
         getDiscountItems(productsCollection)
         getNewArrivals(productsCollection)
         getBrands(firestore)
+
+        if (user == null) {
+            return
+        }
+        getToken()
 
     }
 

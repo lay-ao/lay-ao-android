@@ -67,6 +67,7 @@ class SignInFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isComplete && task.isSuccessful) {
                     enableInteraction(requireActivity(), binding.mIncludeProgressBar)
+                    getToken()
                     findNavController().navigate(R.id.action_signInFragment_to_navigation_user)
                 } else {
                     Log.e(

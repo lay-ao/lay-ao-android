@@ -17,10 +17,9 @@ import androidx.navigation.ui.*
 import com.designbyark.layao.databinding.ActivityMainBinding
 import com.designbyark.layao.util.CHANNEL_ID
 import com.designbyark.layao.util.LOG_TAG
+import com.designbyark.layao.util.sendTokenToFirestore
 import com.designbyark.layao.viewmodels.CartViewModel
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
-import org.joda.time.LocalDateTime
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 class MainActivity : AppCompatActivity() {

@@ -15,10 +15,7 @@ import com.designbyark.layao.R
 import com.designbyark.layao.data.User
 import com.designbyark.layao.databinding.FragmentActiveUserBinding
 import com.designbyark.layao.databinding.FragmentNoUserBinding
-import com.designbyark.layao.util.LOG_TAG
-import com.designbyark.layao.util.USERS_COLLECTION
-import com.designbyark.layao.util.formatGender
-import com.designbyark.layao.util.isConnectedToInternet
+import com.designbyark.layao.util.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -87,6 +84,7 @@ class UserFragment : Fragment() {
                 setLoadingView(textView)
             }
         }
+        getToken()
     }
 
     private fun setLoadingView(view: TextView) {

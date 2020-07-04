@@ -36,6 +36,9 @@ class User() : Parcelable {
     @PropertyName("gender")
     var gender: Int = 0
 
+    @PropertyName("token")
+    var token: String = ""
+
     constructor(parcel: Parcel) : this() {
         userId = parcel.readString() ?: ""
         fullName = parcel.readString() ?: ""
