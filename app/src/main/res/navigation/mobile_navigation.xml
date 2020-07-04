@@ -532,8 +532,8 @@
     </fragment>
     <fragment
         android:id="@+id/TACFragment"
+        android:label="@string/tac_fragment_label"
         android:name="com.designbyark.layao.TACFragment"
-        android:label="fragment_terms_and_condition"
         tools:layout="@layout/fragment_terms_and_condition" />
 
 </navigation>
