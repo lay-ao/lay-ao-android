@@ -381,6 +381,13 @@
                 android:name="user"
                 app:argType="com.designbyark.layao.data.User" />
         </action>
+        <action
+            android:id="@+id/action_signUpFragment_to_TACFragment"
+            app:destination="@id/TACFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -523,5 +530,10 @@
             android:defaultValue="-1"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/TACFragment"
+        android:name="com.designbyark.layao.TACFragment"
+        android:label="fragment_terms_and_condition"
+        tools:layout="@layout/fragment_terms_and_condition" />
 
 </navigation>
