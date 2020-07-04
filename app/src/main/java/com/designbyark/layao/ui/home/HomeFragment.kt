@@ -20,6 +20,7 @@ import com.designbyark.layao.util.*
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -48,6 +49,7 @@ class HomeFragment : Fragment(),
     private var mBrandsAdapter: BrandsAdapter? = null
 
     private lateinit var binding: FragmentHomeBinding
+    private var user: FirebaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +73,7 @@ class HomeFragment : Fragment(),
         // Getting firestore instance
         val firestore = FirebaseFirestore.getInstance()
         val auth = FirebaseAuth.getInstance()
-        var user = auth.currentUser
+        user = auth.currentUser
 
         if (isConnectedToInternet(view.context)) {
             firestore.collection("Misc").document("store-timing")
@@ -113,6 +115,9 @@ class HomeFragment : Fragment(),
         getNewArrivals(productsCollection)
         getBrands(firestore)
 
+        if (user == null) {
+            return
+        }
         getToken()
 
     }
@@ -127,6 +132,7 @@ class HomeFragment : Fragment(),
             // Get new Instance ID token
             val token = task.result?.token
             Log.d(LOG_TAG, "Passing token from MainActivity")
+            Log.d(LOG_TAG, token)
             sendTokenToFirestore(token ?: return@addOnCompleteListener)
         }
     }
