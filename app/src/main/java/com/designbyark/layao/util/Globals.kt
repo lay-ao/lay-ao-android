@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.iid.FirebaseInstanceId
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,6 +54,19 @@ const val NEW_ARRIVAL = "newArrival"
 
 // Location
 const val REQUEST_CODE_LOCATION = 100
+
+fun getToken() {
+    FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+        if (!task.isSuccessful) {
+            Log.d(LOG_TAG, "getInstanceId failed", task.exception)
+            return@addOnCompleteListener
+        }
+
+        // Get new Instance ID token
+        val token = task.result?.token
+        sendTokenToFirestore(token ?: return@addOnCompleteListener)
+    }
+}
 
 fun sendTokenToFirestore(token: String) {
 

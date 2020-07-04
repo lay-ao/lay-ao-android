@@ -122,21 +122,6 @@ class HomeFragment : Fragment(),
 
     }
 
-    private fun getToken() {
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.d(LOG_TAG, "getInstanceId failed", task.exception)
-                return@addOnCompleteListener
-            }
-
-            // Get new Instance ID token
-            val token = task.result?.token
-            Log.d(LOG_TAG, "Passing token from MainActivity")
-            Log.d(LOG_TAG, token)
-            sendTokenToFirestore(token ?: return@addOnCompleteListener)
-        }
-    }
-
     private fun updateServiceTiming(opening: String?, closing: String?, view: View) {
         val now = LocalTime.now()
         val openingTime = LocalTime.parse(opening, DateTimeFormat.forPattern("hh:mm a"))

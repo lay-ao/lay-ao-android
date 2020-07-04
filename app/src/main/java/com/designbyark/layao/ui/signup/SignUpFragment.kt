@@ -126,6 +126,7 @@ class SignUpFragment : Fragment() {
         userModel.completeAddress = ""
         userModel.gender = 0
         userModel.contact = ""
+        userModel.token = ""
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
